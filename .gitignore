@@ -6,3 +6,7 @@ cpp/data_structures/rbtree/cmake-build-debug/
 .idea/
 
 cpp/algoritmins/binary_search/cmake-build-debug/
+
+cpp/algoritmins/search/benchmark/cmake-build-debug/
+
+cpp/algoritmins/search/cmake-build-debug/

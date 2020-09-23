@@ -6,4 +6,4 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(
         ${PROJECT_NAME}
         Main.cpp
-        BinarySearch.cpp)
+        Search.cpp)

@@ -10,8 +10,10 @@
 namespace cpstl {
 
     template <typename T>
-    int binary_search(std::vector<T> const &inputs, T key, size_t start, size_t end);
+    int binary_search(std::vector<T> const &inputs, T key, int start, int end);
 
+    template <typename T>
+    int exponential_search(std::vector<T> const &inputs, T key);
 }
 
 #endif //RBTREE_BINARYSEARCH_H
