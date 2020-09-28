@@ -29,6 +29,7 @@ template<class T>
 void RBTree<T>::insert_node(T value)
 {
     Node<T> *z = new Node<T>(value);
+
     Node<T> *y = NIL;
     Node<T> *x = this->root;
     while (x != NIL) {
@@ -47,15 +48,15 @@ void RBTree<T>::insert_node(T value)
     } else {
         y->right = z;
     }
+    delete x;
+    delete y;
     z->red = true; // All new node insert inside the RB tree are red
-    if (z->parent->parent != NIL)
-        rb_insert_fixup(this->root, z);
+    rb_insert_fixup(z);
 }
 
 
 template<class T>
-void RBTree<T>::rb_insert_fixup(Node<T> *&root, Node<T> *&new_node) {
-    std::cout << "New node " << new_node->key;
+void RBTree<T>::rb_insert_fixup(Node<T> *&new_node) {
     while (new_node->parent != NIL && new_node->parent->red) {
         if (new_node->parent == new_node->parent->parent->left) {
             Node<T> *y = new_node->parent->parent->right;
@@ -73,14 +74,15 @@ void RBTree<T>::rb_insert_fixup(Node<T> *&root, Node<T> *&new_node) {
                 new_node->parent->parent->red = false;
                 right_rotation(new_node->parent->parent);
             }
+            delete y;
         } else {
             Node<T> *y = new_node->parent->parent->left;
-            if (y && y->red) {
+            if (y->red) {
                 new_node->parent->red = false;
                 y->red = false;
                 new_node->parent->parent->red = true;
                 new_node = new_node->parent->parent;
-            } else{
+            } else {
                 if (new_node == new_node->parent->left) {
                     new_node = new_node->parent;
                     left_rotation(new_node);
@@ -89,6 +91,7 @@ void RBTree<T>::rb_insert_fixup(Node<T> *&root, Node<T> *&new_node) {
                 new_node->parent->parent->red = false;
                 right_rotation(new_node->parent->parent);
             }
+            delete y;
         }
     }
     this->root->red = false;
@@ -105,7 +108,7 @@ void RBTree<T>::left_rotation(Node<T> *&value)
     child->parent = value->parent;
     if (value->parent == NIL) {
         this->root = child;
-    } else if (value->key == value->parent->left->key) {
+    } else if (value == value->parent->left) {
         value->parent->left = child;
     } else {
         value->parent->right = child;
@@ -118,14 +121,14 @@ template<class T>
 void RBTree<T>::right_rotation(Node<T> *&value)
 {
     Node<T> *left_child = value->left;
-    value->left = left_child->right;
     if (left_child->right != NIL) {
+        value->left = left_child->right;
         left_child->right->parent = value;
     }
-    left_child->parent = value->parent;
     if (value->parent == NIL) {
+        left_child->parent = value->parent;
         this->root = left_child;
-    } else if (value->key == value->parent->right->key) {
+    } else if (value == value->parent->right) {
         value->parent->right = left_child;
     } else {
         value->parent->right = left_child;

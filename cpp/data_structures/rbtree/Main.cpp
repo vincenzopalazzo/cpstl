@@ -13,12 +13,12 @@ void print_level_tree(const cpstl::Node<T> *root, std::string elem);
 
 int main()
 {
-    RBTree<int> root = RBTree<int>(10);
+    RBTree<int> *root = new RBTree<int>(10);
     std::cout << "-------- Insert -----------" << std::endl;
-    root.insert_node(12);
-    root.insert_node(13);
-    root.insert_node(11);
-    print_level_tree<int>(root.get_root(), "Root");
+    root->insert_node(12);
+    root->insert_node(13);
+    //root->insert_node(11);
+    print_level_tree<int>(root->get_root(), "Root");
 
     /*std::cout << "-------- delete -----------" << std::endl;
     btree::delete_node(root.get(), 2);
@@ -31,7 +31,7 @@ int main()
 template <class T>
 void print_level_tree(const cpstl::Node<T> *root, std::string elem)
 {
-    if (!root)
+    if (root == NIL)
         return;
 
     std::cout << elem << " " << root->key << std::endl;

@@ -30,12 +30,12 @@ namespace cpstl {
     private:
         Node<T> *root;
 
-        //Method
+        //Methods
         void left_rotation(Node<T> *&value);
 
         void right_rotation(Node<T> *&value);
 
-        void rb_insert_fixup(Node<T> *&root, Node<T> *&new_node);
+        void rb_insert_fixup(Node<T> *&new_node);
 
         Node<T> *search_value_rb(Node<T> *&node, T value);
 
