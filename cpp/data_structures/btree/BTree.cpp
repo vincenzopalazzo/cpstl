@@ -5,117 +5,107 @@
 #include <iostream>
 #include <assert.h>
 
-namespace btree {
+using namespace btree;
 
-    template <typename T>
-    void transplan(struct Node<T> *u, struct Node<T> *v);
+template<class T>
+BTree<T>::BTree(Node<T> *&root) {
+    this->root = root;
+}
+template<class T>
+BTree<T>::BTree() {
+    this->root = nullptr;
+}
 
-    template <typename T>
-    btree::Node<T> *tree_minimum(btree::Node<T> *node);
+template<class T>
+bool btree::BTree<T>::insert_node(T value) {
+    this->root = insert_recursive(this->root, value);
+    return true;
+}
 
-    template<typename T>
-    bool insert_node(struct Node<T> *root, T value) {
-        Node<T> *y = nullptr;
-        Node<T> *x = root;
-        while (x != nullptr) {
-            y = x;
-            if (value < y->value) {
-                //std::cout << "Go to left" << std::endl;
-                x = x->left;
-            } else {
-                //std::cout << "Go to right" << std::endl;
-                x = x->right;
-            }
-        }
-        //Never happen with my implementation on three;
-        /*if (!y) {
-            //Three empty
-
-            root->value = value;
-        }*/
-        if (value <= y->value){
-            y->left = new Node<T>;
-            y->left->value = value;
-            y->left->parent = y;
-        } else {
-            //std::cout << "New node" << std::endl;
-            y->right = new Node<T>;
-            y->right->value = value;
-            y->right->parent = y;
-        }
-        return true;
+template<class T>
+Node<T> *BTree<T>::insert_recursive(Node<T> *&node, T value) {
+    if (!node) {
+        node = new Node<T>(value);
+    } else if (node->value > value) {
+        node->left = insert_recursive(node->left, value);
+    } else {
+        node->right = insert_recursive(node->right, value);
     }
+    return node;
+}
 
-    template <class T>
-    bool delete_node(struct Node<T> *root, T value)
-    {
-        assert(root != nullptr);
-        btree::Node<int> *victim = get_node(root, value);
-        if (!victim) return false;
-        if (!victim->left)
-            transplan(victim, victim->right);
-        else if (!victim->right)
-            transplan(victim, victim->left);
-        else {
-            auto y = tree_minimum(victim->right);
-            if (y->parent->value != value) {
-                transplan(y, y->right);
-                y->right = victim->right;
-                y->right->parent = y;
-            }
+template<class T>
+void BTree<T>::transplan(Node<T> *&victim, Node<T> *&survived) {
+    if (!victim->parent) {
+        this->root = survived;
+    } else if (victim == victim->parent->left) {
+        victim->parent->left = survived;
+    } else {
+        victim->parent->right = survived;
+    }
+    if (survived)
+        survived->parent = victim->parent;
+}
+
+template<class T>
+bool BTree<T>::delete_node(T value) {
+    auto victim = search_node(value);
+    if (!victim) return false;
+    if (!victim->right) {
+        transplan(victim, victim->left);
+    } else {
+        auto y = tree_minimum(victim->right);
+        if (y->parent != victim) {
+            transplan(y, y->right);
+            y->right = victim->right;
+            y->right->parent = y;
+        } else {
             transplan(victim, y);
             y->left = victim->left;
             y->left->parent = y;
         }
-        return true;
     }
-
-    template<class T>
-    Node<T> *get_node(Node<T> *root, T key)
-    {
-        if (!root or root->value == key) {
-            std::cout << "Find elem\n";
-            return root;
-        }
-        if (key < root->value) {
-           return get_node(root->left, key);
-        }
-        return get_node(root->right, key);
-    }
-
-    template <typename T>
-    void transplan(struct Node<T> *u, struct Node<T> *v)
-    {
-        assert(u);
-        assert(v);
-        if (!u->parent) {
-            //Root cases;
-            //Bug if remove the last element I need to reset the root with
-            //this code I can't do this
-            std::cout << "transplan root find";
-            u = v;
-        } else if (u->parent->left && u->parent->left->value == u->value) {
-            std::cout << "left elem find";
-            u->parent->left = v;
-        } else {
-            std::cout << "right elem find";
-            u->parent->right = v;
-        }
-        if (v)
-            v->parent = u->parent;
-    }
-
-    template <typename T>
-    btree::Node<T> *tree_minimum(btree::Node<T> *node)
-    {
-        assert(node != nullptr && "Node reference null");
-        if (node->left)
-            node = node->left;
-        return node;
-    }
+    return true;
 }
 
-template class btree::Node<int>;
-template bool btree::insert_node<int>(struct Node<int> *root, int value);
-template bool btree::delete_node<int>(struct Node<int> *root, int value);
-template btree::Node<int> *btree::get_node<int>(struct Node<int> *root, int value);
+template<class T>
+Node<T> *BTree<T>::get_root() {
+    return this->root;
+}
+
+template<class T>
+Node<T> *BTree<T>::tree_minimum(Node<T> *&node) {
+    if (node->left)
+        tree_minimum(node->left);
+    return node;
+}
+
+template<class T>
+Node<T> *BTree<T>::search_node(T value) {
+    return get_node_recursive(this->root, value);
+}
+
+template<class T>
+Node<T> *BTree<T>::get_node_recursive(Node<T> *&root, T key) {
+    if (root == nullptr) return nullptr;
+    if (root->value == key) return root;
+    if (root->value > key) {
+        return get_node_recursive(root->left, key);
+    }
+    return get_node_recursive(root->right, key);
+}
+
+template<class T>
+T BTree<T>::min() {
+    auto selector = this->root;
+    while (selector->left) {
+        selector = selector->left;
+    }
+    return selector->value;
+}
+
+template
+class btree::Node<int>;
+
+template
+class btree::BTree<int>;

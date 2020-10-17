@@ -1,7 +1,6 @@
 //
 // Created by vincent on 9/20/20.
 //
-#include <assert.h>
 #include <iostream>
 #include "RBTree.h"
 
@@ -26,10 +25,8 @@ T RBTree<T>::min_value() {
 }
 
 template<class T>
-void RBTree<T>::insert_node(T value)
-{
+void RBTree<T>::insert_node(T value) {
     Node<T> *z = new Node<T>(value);
-
     Node<T> *y = NIL;
     Node<T> *x = this->root;
     while (x != NIL) {
@@ -54,27 +51,26 @@ void RBTree<T>::insert_node(T value)
     rb_insert_fixup(z);
 }
 
-
 template<class T>
 void RBTree<T>::rb_insert_fixup(Node<T> *&new_node) {
     while (new_node->parent != NIL && new_node->parent->red) {
         if (new_node->parent == new_node->parent->parent->left) {
-            Node<T> *y = new_node->parent->parent->right;
-            if (y->red) {
+            Node<T> *gran_parent = new_node->parent->parent->right;
+            if (gran_parent->red) {
                 new_node->parent->red = false;
-                y->red = false;
+                gran_parent->red = false;
                 new_node->parent->parent->red = true;
                 new_node = new_node->parent->parent;
-            } else{
+            } else {
                 if (new_node->key == new_node->parent->right->key) {
-                    new_node = new_node->parent;
-                    left_rotation(new_node);
+                    left_rotation(new_node->parent);
+                } else {
+                    new_node->parent->red = false;
+                    new_node->parent->parent->red = false;
+                    right_rotation(new_node->parent->parent);
                 }
-                new_node->parent->red = false;
-                new_node->parent->parent->red = false;
-                right_rotation(new_node->parent->parent);
             }
-            delete y;
+            delete gran_parent;
         } else {
             Node<T> *y = new_node->parent->parent->left;
             if (y->red) {
@@ -84,12 +80,12 @@ void RBTree<T>::rb_insert_fixup(Node<T> *&new_node) {
                 new_node = new_node->parent->parent;
             } else {
                 if (new_node == new_node->parent->left) {
-                    new_node = new_node->parent;
-                    left_rotation(new_node);
+                    left_rotation(new_node->parent);
+                } else {
+                    new_node->parent->red = false;
+                    new_node->parent->parent->red = false;
+                    right_rotation(new_node->parent->parent);
                 }
-                new_node->parent->red = false;
-                new_node->parent->parent->red = false;
-                right_rotation(new_node->parent->parent);
             }
             delete y;
         }
@@ -98,8 +94,7 @@ void RBTree<T>::rb_insert_fixup(Node<T> *&new_node) {
 }
 
 template<class T>
-void RBTree<T>::left_rotation(Node<T> *&value)
-{
+void RBTree<T>::left_rotation(Node<T> *&value) {
     Node<T> *child = value->right;
     value->right = child->left;
     if (child->left != NIL) {
@@ -118,11 +113,10 @@ void RBTree<T>::left_rotation(Node<T> *&value)
 }
 
 template<class T>
-void RBTree<T>::right_rotation(Node<T> *&value)
-{
+void RBTree<T>::right_rotation(Node<T> *&value) {
     Node<T> *left_child = value->left;
+    value->left = left_child->right;
     if (left_child->right != NIL) {
-        value->left = left_child->right;
         left_child->right->parent = value;
     }
     if (value->parent == NIL) {
@@ -154,5 +148,5 @@ Node<T> *RBTree<T>::search_value_rb(Node<T> *&node, T value) {
 }
 
 
-
-template class cpstl::RBTree<int>;
+template
+class cpstl::RBTree<int>;
