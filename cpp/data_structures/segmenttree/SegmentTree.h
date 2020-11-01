@@ -16,21 +16,21 @@ namespace cpst
         std::vector<T> origin;
         std::vector<T> structure;
 
-        void build_structure(std::vector<T> const &inputs, int left_index, int right_index);
+        void build_structure(int left_index, int right_index);
 
-        void build_structure_procedure(const std::vector<T> &inputs, int start_index, int left_index, int right_index);
+        void build_structure_procedure(int start_index, int left_index, int right_index);
 
         int range_query_subroutine(int start_index, int left_index_now, int right_index_now, int i, int y);
 
         inline int left_child_index(const int index)
         {
-            // (2 * index) + 1
-            return index << 1;
+            //return (2 * index) + 1;
+            return (index << 1);
         }
 
         inline int right_child_index(const int index)
         {
-            //(2 * index) + 2;
+            //return (2 * index) + 2;
             return (index << 1) + 1;
         }
     public:
@@ -44,7 +44,7 @@ namespace cpst
             int size = inputs.size();
             structure = std::vector<T>(size * 4);
             origin = inputs;
-            build_structure(inputs, 0, size);
+            build_structure(0, size);
         }
 
         /**
