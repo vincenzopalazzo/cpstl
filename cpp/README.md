@@ -11,4 +11,5 @@ Competitive programming standard library (CPSTL) is a repository with a
     - [ ] Red and Black Tree
     - [X] Binary Index Tree
     - [ ] Segment Tree
-       - [ ] Advanced Segment Tree
+        - [X] Binary Heap implementation
+        - [ ] Advanced Segment Tree
