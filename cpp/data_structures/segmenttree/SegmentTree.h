@@ -13,13 +13,14 @@ namespace cpst
     class SegmentTree
     {
     private:
+        std::vector<T> origin;
         std::vector<T> structure;
 
         void build_structure(std::vector<T> const &inputs, int left_index, int right_index);
 
         void build_structure_procedure(const std::vector<T> &inputs, int start_index, int left_index, int right_index);
 
-        int range_query_subroutine(int start_index, int end_index);
+        int range_query_subroutine(int start_index, int left_index_now, int right_index_now, int i, int y);
 
         inline int left_child_index(const int index)
         {
@@ -42,6 +43,7 @@ namespace cpst
         SegmentTree(std::vector<T> const &inputs){
             int size = inputs.size();
             structure = std::vector<T>(size * 4);
+            origin = inputs;
             build_structure(inputs, 0, size);
         }
 

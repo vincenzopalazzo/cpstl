@@ -44,16 +44,24 @@ void SegmentTree<T>::build_structure_procedure(const std::vector<T> &inputs, int
 
 template<class T>
 int SegmentTree<T>::range_query(int start_index, int end_index) {
-    //TODO implement this function
-    assert(false);
-    return 0;
+    return range_query_subroutine(start_index, 1, origin.size() - 1, start_index, end_index);
 }
 
 template<class T>
-int SegmentTree<T>::range_query_subroutine(int start_index, int end_index) {
-    //TODO implement this function
-    assert(false);
-    return 0;
+int SegmentTree<T>::range_query_subroutine(int start_index, int left_index_now, int right_index_now, int query_left, int query_right)
+{
+    if (query_left > right_index_now || query_right < left_index_now)  return -1;
+    if (left_index_now >= query_left || right_index_now <= query_right)  return structure[start_index];
+    int middle_point = (left_index_now + right_index_now) / 2;
+    int left_child = left_child_index(start_index);
+    int right_child = right_child_index(start_index);
+    int left_segment = range_query_subroutine(left_child, left_index_now, middle_point, query_left, query_right);
+    int right_segment = range_query_subroutine(right_child, middle_point + 1, right_child, query_left, query_right);
+    if (left_segment == -1 || right_segment == -1) {
+        return left_segment == -1 ? right_segment : left_segment;
+    }
+
+    return  (origin[left_segment] <= origin[right_segment]) ? left_segment : right_segment;
 }
 
 

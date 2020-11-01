@@ -14,11 +14,8 @@ int main()
     std::cout << "============== TEST CASE 1 ==============" << "\n";
     vector<int> inputs = {18, 17, 13, 19, 15, 11, 20};
     auto segment_tree = SegmentTree<int>(inputs);
-
-    for (int i = 0; i < inputs.size(); i++) {
-        cout << "Left of " << inputs[i] << " is " << segment_tree.left_child(i) << "\n";
-        cout << "Right of " << inputs[i] << " is " << segment_tree.right_child(i) << "\n";
-    }
+    cout << segment_tree.range_query(1, 2);
+    assert(segment_tree.range_query(1, 2) == 35);
 
 
     std::cout << "=========== TEST CASES PASSED ==========" << "\n";
