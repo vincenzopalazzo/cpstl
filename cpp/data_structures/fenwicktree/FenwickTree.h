@@ -13,7 +13,7 @@ namespace cpstl {
     class BTreeIndex {
 
     private:
-        std::vector<T> structure; // TODO require n + 1
+        std::vector<T> structure;
 
         int indexing(int index);
 

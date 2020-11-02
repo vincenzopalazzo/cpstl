@@ -7,9 +7,7 @@
 template<class T>
 void cpstl::BTreeIndex<T>::update(const T &value, int at)
 {
-    assert(at < structure.size());
-    //start to the next elem
-    at++;
+    assert(at > 0 && "The position inside the array should be greater than 0");
     while (at < structure.size()) {
         structure[at] += value;
         at += indexing(at);
@@ -20,11 +18,12 @@ template<class T>
 T cpstl::BTreeIndex<T>::sum(int begin, int end)
 {
     assert(begin >= 0 && end >= 0);
-    T sum;
+    T sum = 0;
     int at = end;
     while (at > begin) {
         sum += structure[at];
-        at -= indexing(at);
+        at &= at - 1;
+        //at -= indexing(at);
     }
     return sum;
 }
@@ -37,7 +36,8 @@ T cpstl::BTreeIndex<T>::sum(int end)
     int at = end;
     while (at > 0) {
         sum += structure[at];
-        at -= indexing(at);
+        at &= at -1;
+        //at -= indexing(at);
     }
     return sum;
 }
@@ -55,7 +55,7 @@ int cpstl::BTreeIndex<T>::max(T const value) {
 template<class T>
 int cpstl::BTreeIndex<T>::indexing(int index)
 {
-    return index& - index;
+    return index& -index;
 }
 
 template<class T>

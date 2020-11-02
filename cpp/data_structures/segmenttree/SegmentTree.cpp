@@ -1,7 +1,6 @@
 //
 // Created by vincent on 10/27/20.
 //
-#include <cassert>
 #include "SegmentTree.h"
 
 using namespace cpst;
