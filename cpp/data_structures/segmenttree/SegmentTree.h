@@ -16,7 +16,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 #ifndef RBTREE_SEGMENTTREE_H
 #define RBTREE_SEGMENTTREE_H
 
@@ -28,12 +27,6 @@ namespace cpstl
     class SegmentTree
     {
     private:
-        /**
-         * This store the reference of the origin array to managed the update operation
-         * and maintain the array in sync.
-         *
-         * ALERT this is correct for a c++ idea? it look like yes?
-         */
         std::vector<T> &origin;
         std::vector<T> structure;
 
@@ -83,7 +76,6 @@ namespace cpstl
             if (left_segment == -1 || right_segment == -1) {
                 return left_segment == -1 ? right_segment : left_segment;
             }
-
             return  (origin[left_segment] <= origin[right_segment]) ? left_segment : right_segment;
         }
 

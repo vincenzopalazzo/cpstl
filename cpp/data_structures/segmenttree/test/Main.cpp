@@ -28,16 +28,17 @@ using namespace cpstl;
 void TEST_CASE_ONE()
 {
     vector<int> inputs = {18, 17, 13, 19, 15, 11, 20};
+    print_vector(inputs);
     auto segment_tree = SegmentTree<int>(inputs);
     int index = segment_tree.range_query(4, 6);
-    assert_equal("RANGE(4, 6)", 11, index);
+    assert_equal("RANGE(4, 6)", 11, inputs[index]);
 
     index = segment_tree.range_query(1, 3);
-    assert_equal("RANGE(1, 3)", 13, index);
+    assert_equal("RANGE(1, 3)", 13, inputs[index]);
 
     segment_tree.update(5, 12);
     index = segment_tree.range_query(4, 6);
-    assert_equal("RANGE(4, 6)", 12, index);
+    assert_equal("RANGE(4, 6)", 12, inputs[index]);
 }
 
 int main()
