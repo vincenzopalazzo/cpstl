@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_executable(
         ${PROJECT_NAME}
-        Main.cpp
-        SegmentTree.cpp)
+        test/Main.cpp
+)
