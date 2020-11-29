@@ -21,6 +21,7 @@
 
 #include <vector>
 
+//Reference implementation https://www.hackerearth.com/practice/notes/segment-tree-and-lazy-propagation/
 namespace cpstl
 {
     template <class T>
@@ -51,6 +52,7 @@ namespace cpstl
         void build_structure_procedure(int start_index, int left_index, int right_index)
         {
             if (left_index == right_index) {
+                // Leaf node will have a single element
                 structure[start_index] = left_index;
                 return;
             }
@@ -59,6 +61,7 @@ namespace cpstl
             int right_child = right_child_index(start_index);
             build_structure_procedure(left_child, left_index, middle_point);
             build_structure_procedure(right_child, middle_point + 1, right_index);
+            // Internal node will have the sum of both of its children
             int segment_left = structure[left_child];
             int segment_right = structure[right_child];
             structure[start_index] = (origin[segment_left] <= origin[segment_right]) ? segment_left : segment_right;
@@ -66,16 +69,18 @@ namespace cpstl
 
         int range_query_subroutine(int start_index, int left_index_now, int right_index_now, int query_left, int query_right)
         {
-            if (query_left > right_index_now || query_right < left_index_now)  return -1;
-            if (left_index_now >= query_left || right_index_now <= query_right)  return structure[start_index];
+            if (query_left > right_index_now || query_right < left_index_now)  return -1; // outside the range
+            if (left_index_now >= query_left && right_index_now <= query_right)  return structure[start_index]; // range represented by a node is completely inside the given range
+            // range represented by a node is partially inside and partially outside the given range
             int middle_point = (left_index_now + right_index_now) / 2;
             int left_child = left_child_index(start_index);
             int right_child = right_child_index(start_index);
-            int left_segment = range_query_subroutine(left_child, left_index_now, middle_point, query_left, query_right);
-            int right_segment = range_query_subroutine(right_child, middle_point + 1, right_index_now, query_left, query_right);
-            if (left_segment == -1 || right_segment == -1) {
-                return left_segment == -1 ? right_segment : left_segment;
-            }
+            int left_segment = range_query_subroutine(left_child, left_index_now, middle_point,
+                                                      query_left, query_right);
+            int right_segment = range_query_subroutine(right_child, middle_point + 1, right_index_now,
+                                                       query_left, query_right);
+            if (left_segment == -1) return right_segment;
+            if (right_segment == -1) return left_segment;
             return  (origin[left_segment] <= origin[right_segment]) ? left_segment : right_segment;
         }
 
@@ -101,12 +106,14 @@ namespace cpstl
 
         inline int left_child_index(const int index)
         {
-            return index << 1;
+            //return index << 1;
+            return index * 2;
         }
 
         inline int right_child_index(const int index)
         {
-            return (index << 1) + 1;
+            //return (index << 1) + 1;
+            return (index * 2) + 1;
         }
     public:
 
@@ -148,6 +155,11 @@ namespace cpstl
         {
             int left = right_child_index(x);
             return structure[left];
+        }
+
+        inline T get_elem(int at)
+        {
+            return origin[at];
         }
 
     };
