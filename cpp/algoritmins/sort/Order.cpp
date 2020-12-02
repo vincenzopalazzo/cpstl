@@ -10,19 +10,19 @@ using namespace std;
 
 namespace cpstl {
 
-/**
- * The procedure is called inside the main function merge_sort,
- * this permitted to subdivide the function inside the procedure and
- * is easy change the function with somethings else to resolve some competitive programming problem.
- *
- * P.S: The source of this code is the teorical book on algorithms
- * @tparam T is a generic type, can be all type numeric that we want, by default is supported only the int (for the moment)
- * but your can extend it.
- * @param inputs Is a array or sequence of number that we want sort.
- * @param p an array index <= of q
- * @param q an array index < of r but >= or p
- * @param r an array index < of p and q.
- */
+    /**
+     * The procedure is called inside the main function merge_sort,
+     * this permitted to subdivide the function inside the procedure and
+     * is easy change the function with somethings else to resolve some competitive programming problem.
+     *
+     * P.S: The source of this code is the teorical book on algorithms
+     * @tparam T is a generic type, can be all type numeric that we want, by default is supported only the int (for the moment)
+     * but your can extend it.
+     * @param inputs Is a array or sequence of number that we want sort.
+     * @param p an array index <= of q
+     * @param q an array index < of r but >= or p
+     * @param r an array index < of p and q.
+     */
     template<typename T>
     void merge(vector<T> &inputs, int p, int q, int r)
     {

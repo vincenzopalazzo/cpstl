@@ -7,7 +7,7 @@
 
 #include <memory>
 
-namespace btree {
+namespace cpstl {
 
     template<class T>
     class Node {

@@ -2,10 +2,8 @@
 // Created by vincent on 9/20/20.
 //
 #include "BTree.h"
-#include <iostream>
-#include <assert.h>
 
-using namespace btree;
+using namespace cpstl;
 
 template<class T>
 BTree<T>::BTree(Node<T> *&root) {
@@ -17,7 +15,7 @@ BTree<T>::BTree() {
 }
 
 template<class T>
-bool btree::BTree<T>::insert_node(T value) {
+bool cpstl::BTree<T>::insert_node(T value) {
     this->root = insert_recursive(this->root, value);
     return true;
 }
@@ -105,7 +103,7 @@ T BTree<T>::min() {
 }
 
 template
-class btree::Node<int>;
+class cpstl::Node<int>;
 
 template
-class btree::BTree<int>;
+class cpstl::BTree<int>;
