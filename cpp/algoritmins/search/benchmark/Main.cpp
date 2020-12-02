@@ -1,10 +1,13 @@
 //
 // Created by vincent on 9/18/20.
 //
+#include <cmath>
 #include <benchmark/benchmark.h>
 #include "../Search.h"
 
 using namespace cpstl;
+
+static void custom_arguments(benchmark::internal::Benchmark* b);
 
 static void BM_BS(benchmark::State& state)
 {
@@ -62,10 +65,15 @@ static void BM_EX_CLOSE_TO_START(benchmark::State& state)
     }
 }
 
-BENCHMARK(BM_BS)->Range(1<<14, 1<<18);
-BENCHMARK(BM_BS_CLOSE_TO_START)->Range(1<<14, 1<<18);
-BENCHMARK(BM_EX)->Range(1<<14, 1<<18);
-BENCHMARK(BM_EX_CLOSE_TO_START)->Range(1<<14, 1<<18);
+BENCHMARK(BM_BS)->Apply(custom_arguments);
+BENCHMARK(BM_BS_CLOSE_TO_START)->Apply(custom_arguments);
+BENCHMARK(BM_EX)->Apply(custom_arguments);
+BENCHMARK(BM_EX_CLOSE_TO_START)->Apply(custom_arguments);
 
 BENCHMARK_MAIN();
 
+static void custom_arguments(benchmark::internal::Benchmark* b)
+{
+    for (int i = 2; i <= 30; i++)
+        b->Args({static_cast<long>(std::pow(2, i))});
+}
