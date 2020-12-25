@@ -28,6 +28,7 @@ namespace cpstl
     private:
         std::vector<T> &origin;
         std::vector<T> structure;
+        std::vector<T> lazy;
 
         /**
          * This function is used build the segment tree with a binary heap
@@ -84,22 +85,28 @@ namespace cpstl
 
         void update_subroutine(int start_index, int left_index, int right_index, int pos, T new_value)
         {
+            if (lazy[start_index] != 0) {
+                // the lazy array is populate from all the vector with 0 value
+                // if the value in position start is different from 0 this mean that we need to apply
+                // lazy propagation
+                seg
+            }
+            // Old code
             if (left_index == right_index) {
                 origin[pos] = new_value;
                 structure[start_index] = pos;
-            } else {
-                int middle_point = (left_index + right_index) / 2;
-                int left_child = left_child_index(start_index);
-                int right_child = right_child_index(start_index);
-                if (pos <= middle_point) {
-                    update_subroutine(left_child, left_index, middle_point, pos, new_value);
-                }else {
-                    update_subroutine(right_child, middle_point + 1, right_index, pos, new_value);
-                }
-                int segment_left = structure[left_child];
-                int segment_right = structure[right_child];
-                structure[start_index] = (origin[segment_left] <= origin[segment_right]) ? segment_left : segment_right;
             }
+            int middle_point = (left_index + right_index) / 2;
+            int left_child = left_child_index(start_index);
+            int right_child = right_child_index(start_index);
+            if (pos <= middle_point) {
+                update_subroutine(left_child, left_index, middle_point, pos, new_value);
+            }else {
+                update_subroutine(right_child, middle_point + 1, right_index, pos, new_value);
+            }
+            int segment_left = structure[left_child];
+            int segment_right = structure[right_child];
+            structure[start_index] = (origin[segment_left] <= origin[segment_right]) ? segment_left : segment_right;
         }
 
         inline int left_child_index(const int index)
@@ -119,6 +126,7 @@ namespace cpstl
         {
             int size = origin.size();
             structure = std::vector<T>(size * 4);
+            lazy = std::vector<T>(size * 4);
             origin = origin;
             build_structure(0, size);
         }
@@ -126,6 +134,7 @@ namespace cpstl
         virtual ~SegmentTree()
         {
             structure.clear();
+            lazy.clear();
         }
 
         int range_query(int start_index, int end_index)
