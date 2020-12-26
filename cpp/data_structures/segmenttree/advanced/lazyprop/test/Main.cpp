@@ -32,23 +32,23 @@ void TEST_CASE_ONE()
     int index = segment_tree.range_query(4, 6);
     cout << segment_tree.get_elem(6);
     std::cout << index << "\n";
-    assert_equal("RANGE(4, 6)", 11, inputs[index]);
+    assert_equal("RANGE(4, 6)", 11, index);
 
     index = segment_tree.range_query(1, 3);
-    assert_equal("RANGE(1, 3)", 13, inputs[index]);
+    assert_equal("RANGE(1, 3)", 13, index);
 
-    segment_tree.update(5, 12);
+    segment_tree.update_range(5, 6, 12);
     index = segment_tree.range_query(4, 6);
-    assert_equal("RANGE(4, 6)", 12, inputs[index]);
+    assert_equal("UPDATE RANGE(4, 6)", 15, index);
 
     index = segment_tree.range_query(5, 6);
-    assert_equal("RANGE(6, 7)", 12, inputs[index]);
+    assert_equal("RANGE(6, 7)", 23, index);
 
     index = segment_tree.range_query(1, 3);
-    assert_equal("RANGE(1, 3)", 13, inputs[index]);
+    assert_equal("RANGE(1, 3)", 13, index);
 
     index = segment_tree.range_query(0, 1);
-    assert_equal("RANGE(0, 1)", 17, inputs[index]);
+    assert_equal("RANGE(0, 1)", 17, index);
 }
 
 int main()

@@ -14,11 +14,22 @@ static void RangeUpdateSegmentTreeBM(benchmark::State& state)
         for (size_t i = 0; i < state.range(1); i++)
             input.push_back(rand() % state.range(1));
         std::vector<Query<int>> queries;
-        for (size_t i = 0; i < state.range(0); i++)
-            queries.emplace_back(false, rand() % state.range(1), rand() % state.range(1));
+        for (size_t i = 0; i < state.range(0); i++) {
+            auto seed = rand() % state.range(0);
+            auto diff = state.range(0) - seed;
+            queries.emplace_back(false, seed, seed + (rand() % diff));
+        }
         state.ResumeTiming();
         auto segment_tree = cpstl::SegmentTree<int>(input);
-        std::vector<int> result = range_minimum_query_segment_tree(segment_tree, queries);
+        for (auto &query : queries) {
+            if (query.update) {
+                for (int i = query.start - 1; i <= query.end; i++) {
+                    segment_tree.update(i, 1);
+                }
+                segment_tree.range_query(query.start, query.end);
+                continue;
+            }
+        }
     }
 }
 
@@ -31,11 +42,20 @@ static void RangeUpdateLazySegmentTreeBM(benchmark::State& state)
         for (size_t i = 0; i < state.range(1); i++)
             input.push_back(rand() % state.range(1));
         std::vector<Query<int>> queries;
-        for (size_t i = 0; i < state.range(0); i++)
-            queries.emplace_back(false, rand() % state.range(1), rand() % state.range(1));
+        for (size_t i = 0; i < state.range(0); i++) {
+            auto seed = rand() % state.range(0);
+            auto diff = state.range(0) - seed;
+            queries.emplace_back(false, seed, seed + (rand() % diff));
+        }
         state.ResumeTiming();
         auto segment_tree = cpstl::LazySegmentTree<int>(input);
-        std::vector<int> result = range_minimum_query_lazy_segment_tree(segment_tree, queries);
+        for (auto &query : queries) {
+            if (query.update) {
+                segment_tree.update_range(query.start - 1, query.end, 1);
+                segment_tree.range_query(query.start - 1, query.end);
+                continue;
+            }
+        }
     }
 }
 
