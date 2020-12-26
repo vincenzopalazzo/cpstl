@@ -62,17 +62,17 @@ namespace cpstl
             return std::make_shared<Node<T>>(node_left, node_right);
         }
 
-        int range_query_subroutine(std::shared_ptr<Node<T>> &node, int left_index_now, int right_index_now, int query_left, int query_right)
+        int range_query_subroutine(std::shared_ptr<Node<T>> &node, int left_index, int right_index, int query_left, int query_right)
         {
             // outside the range
-            if (query_left > right_index_now || query_right < left_index_now)  return -1;
+            if (query_left > query_right)  return -1;
             // range represented by a node is completely inside the given range
-            if (left_index_now == query_left && right_index_now == query_right)  return node->value;
+            if (left_index == query_left && right_index == query_right)  return node->value;
             // range represented by a node is partially inside and partially outside the given range
-            int middle_point = (left_index_now + right_index_now) / 2;
-            int left_segment = range_query_subroutine(node->left, left_index_now, middle_point,
+            int middle_point = (left_index + right_index) / 2;
+            int left_segment = range_query_subroutine(node->left, left_index, middle_point,
                                                       query_left, std::min(query_right, middle_point));
-            int right_segment = range_query_subroutine(node->right, middle_point + 1, right_index_now,
+            int right_segment = range_query_subroutine(node->right, middle_point + 1, right_index,
                                                        std::max(query_left, middle_point + 1), query_right);
             if (left_segment == -1) return right_segment;
             if (right_segment == -1) return left_segment;
