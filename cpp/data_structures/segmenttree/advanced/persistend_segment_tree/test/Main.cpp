@@ -20,6 +20,7 @@
 #include <vector>
 #include "../PersistentSegmentTree.h"
 #include "TestTool.hpp"
+#include "Utils.hpp"
 
 using namespace std;
 
@@ -35,7 +36,7 @@ void TEST_CASE_ONE()
     index = segment_tree.range_query(1, 3);
     cpstl::assert_equal("RANGE(1, 3)", 13, index);
 
-    segment_tree.update(5, 12);
+    //segment_tree.update(5, 12);
     index = segment_tree.range_query(4, 6);
     cpstl::assert_equal("UPDATE RANGE(4, 6)", 15, index);
 
