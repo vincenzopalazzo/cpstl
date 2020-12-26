@@ -15,10 +15,7 @@ static void RangeUpdateSegmentTreeBM(benchmark::State& state)
             input.push_back(rand() % state.range(1));
         std::vector<Query<int>> queries;
         for (size_t i = 0; i < state.range(0); i++)
-            if (i % 2 == 0)
-                queries.emplace_back(false, rand() % state.range(1), rand() % state.range(1));
-            else
-                queries.emplace_back(false, rand() % state.range(1), rand() % state.range(1));
+            queries.emplace_back(false, rand() % state.range(1), rand() % state.range(1));
         state.ResumeTiming();
         auto segment_tree = cpstl::SegmentTree<int>(input);
         std::vector<int> result = range_minimum_query_segment_tree(segment_tree, queries);
@@ -35,10 +32,7 @@ static void RangeUpdateLazySegmentTreeBM(benchmark::State& state)
             input.push_back(rand() % state.range(1));
         std::vector<Query<int>> queries;
         for (size_t i = 0; i < state.range(0); i++)
-            if (i % 2 == 0)
-                queries.emplace_back(false, rand() % state.range(1), rand() % state.range(1));
-            else
-                queries.emplace_back(false, rand() % state.range(1), rand() % state.range(1));
+            queries.emplace_back(false, rand() % state.range(1), rand() % state.range(1));
         state.ResumeTiming();
         auto segment_tree = cpstl::LazySegmentTree<int>(input);
         std::vector<int> result = range_minimum_query_lazy_segment_tree(segment_tree, queries);

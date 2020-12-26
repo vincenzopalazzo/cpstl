@@ -33,7 +33,7 @@ namespace cpstl {
     }
     **/
     template<typename T>
-    void assert_equal(std::string name_test, T aspected, T actual)
+    inline void assert_equal(std::string name_test, T aspected, T actual)
     {
         std::cout << BOLDWHITE << "|------------ TEST " << name_test << " -------------------|" << RESET << "\n";
         if (aspected == actual) {
@@ -46,7 +46,7 @@ namespace cpstl {
     }
 
     template<typename T>
-    void assert_equal(std::string name_test, std::vector<T> const &aspected, std::vector<T> const &actual)
+    inline void assert_equal(std::string name_test, std::vector<T> const &aspected, std::vector<T> const &actual)
     {
         std::cout << BOLDWHITE << "|------------ TEST " << name_test << " -------------------|" << RESET << "\n";
         if (aspected.size() != actual.size()) {

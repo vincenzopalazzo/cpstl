@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 #include <vector>
+#include <iostream>
+#include "test/Utils.hpp"
 
 // Reference implementation https://www.hackerearth.com/practice/notes/segment-tree-and-lazy-propagation/
 // TODO introduce the lazy propagation, look the Competitive programming book on version 4
@@ -91,7 +93,8 @@ namespace cpstl
             propagate(start_index, left_index, right_index);
             if (left_index == right_index) {
                 origin[pos] = new_value;
-                structure[start_index] = pos;
+                lazy[start_index] = pos;
+                propagate(start_index, left_index, right_index);
             } else {
                 int middle_point = (left_index + right_index) / 2;
                 int left_child = left_child_index(start_index);
@@ -101,8 +104,8 @@ namespace cpstl
                 }else {
                     update_subroutine(right_child, middle_point + 1, right_index, pos, new_value);
                 }
-                int segment_left = (lazy[left_index] != -1) ? lazy[left_index] : structure[left_child];
-                int segment_right = (lazy[right_index] != -1) ? lazy[right_index] : structure[right_child];
+                int segment_left = (lazy[left_child] != -1) ? lazy[left_child] : structure[left_child];
+                int segment_right = (lazy[right_child] != -1) ? lazy[right_child] : structure[right_child];
                 structure[start_index] = (origin[segment_left] <= origin[segment_right]) ? segment_left : segment_right;
             }
         }
@@ -118,7 +121,7 @@ namespace cpstl
                     lazy[left_child] = lazy[right_child] = lazy[start_index];
                 } else {
                     // left_index = right_index is the time to update the origin array
-                    origin[left_index] = lazy[start_index];
+                    origin[left_index] = origin[lazy[start_index]];
                 }
                 // mark as the node as not lazy
                 lazy[start_index] = -1;
@@ -155,7 +158,6 @@ namespace cpstl
 
         int range_query(int start_index, int end_index)
         {
-            propagate(1, 0, origin.size() - 1);
             return range_query_subroutine(1, 0, origin.size() - 1, start_index, end_index);
         }
 
