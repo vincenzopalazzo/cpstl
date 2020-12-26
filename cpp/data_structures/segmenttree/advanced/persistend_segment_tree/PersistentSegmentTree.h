@@ -65,7 +65,7 @@ namespace cpstl
         int range_query_subroutine(std::shared_ptr<Node<T>> &node, int left_index, int right_index, int query_left, int query_right)
         {
             // outside the range
-            if (query_left > query_right)  return -1;
+            if (query_left > query_right || !node)  return -1;
             // range represented by a node is completely inside the given range
             if (left_index == query_left && right_index == query_right)  return node->value;
             // range represented by a node is partially inside and partially outside the given range
@@ -81,7 +81,7 @@ namespace cpstl
 
         std::shared_ptr<Node<T>> update_range_subroutine(std::shared_ptr<Node<T>> &node, int left_index, int right_index, int pos, T new_val)
         {
-            if(left_index == right_index) {
+            if(left_index == right_index || !node) {
                 return std::make_shared<Node<T>>(new_val);
             }
             int middle_point = (left_index + right_index) / 2;
@@ -95,7 +95,7 @@ namespace cpstl
 
     public:
         PersistentSegmentTree(std::vector<T> &origin) : origin(origin) {
-            int size = origin.size() - 1;
+            int size = origin.size();
             origin = origin;
             root = build_structure(0, size);
             history = std::vector<std::shared_ptr<Node<T>>>();

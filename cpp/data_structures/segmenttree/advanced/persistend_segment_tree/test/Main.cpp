@@ -30,24 +30,30 @@ void TEST_CASE_ONE()
     cpstl::print_vector(inputs);
     auto segment_tree = cpstl::PersistentSegmentTree<int>(inputs);
     int index = segment_tree.range_query(4, 6);
-    std::cout << index << "\n";
     cpstl::assert_equal("RANGE(4, 6)", 11, index);
 
     index = segment_tree.range_query(1, 3);
     cpstl::assert_equal("RANGE(1, 3)", 13, index);
 
-    //segment_tree.update(5, 12);
+    segment_tree.update(5, 16);
     index = segment_tree.range_query(4, 6);
     cpstl::assert_equal("UPDATE RANGE(4, 6)", 15, index);
 
     index = segment_tree.range_query(5, 6);
-    cpstl::assert_equal("RANGE(6, 7)", 23, index);
+    cpstl::assert_equal("RANGE(6, 7)", 16, index);
+
+    index = segment_tree.range_query(6, 6);
+    cpstl::assert_equal("RANGE(7, 7)", 20, index);
 
     index = segment_tree.range_query(1, 3);
     cpstl::assert_equal("RANGE(1, 3)", 13, index);
 
     index = segment_tree.range_query(0, 1);
     cpstl::assert_equal("RANGE(0, 1)", 17, index);
+
+    segment_tree.update(6, 8);
+    index = segment_tree.range_query(5, 6);
+    cpstl::assert_equal("UPDATE RANGE(7, 7)", 8, index);
 }
 
 int main()
