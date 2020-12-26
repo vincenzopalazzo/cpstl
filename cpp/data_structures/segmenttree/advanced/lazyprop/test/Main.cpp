@@ -29,9 +29,10 @@ void TEST_CASE_ONE()
 {
     vector<int> inputs = {18, 17, 13, 19, 15, 11, 20};
     print_vector(inputs);
-    auto segment_tree = SegmentTree<int>(inputs);
+    auto segment_tree = LazySegmentTree<int>(inputs);
     int index = segment_tree.range_query(4, 6);
     cout << segment_tree.get_elem(6);
+    std::cout << index << "\n";
     assert_equal("RANGE(4, 6)", 11, inputs[index]);
 
     index = segment_tree.range_query(1, 3);

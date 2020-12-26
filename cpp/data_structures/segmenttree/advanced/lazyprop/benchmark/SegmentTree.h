@@ -16,19 +16,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+#ifndef RBTREE_SEGMENTTREE_H
+#define RBTREE_SEGMENTTREE_H
+
 #include <vector>
 
-// Reference implementation https://www.hackerearth.com/practice/notes/segment-tree-and-lazy-propagation/
-// TODO introduce the lazy propagation, look the Competitive programming book on version 4
+//Reference implementation https://www.hackerearth.com/practice/notes/segment-tree-and-lazy-propagation/
 namespace cpstl
 {
     template <class T>
-    class LazySegmentTree
+    class SegmentTree
     {
     private:
         std::vector<T> &origin;
         std::vector<T> structure;
-        std::vector<T> lazy;
 
         /**
          * This function is used build the segment tree with a binary heap
@@ -68,11 +69,8 @@ namespace cpstl
 
         int range_query_subroutine(int start_index, int left_index_now, int right_index_now, int query_left, int query_right)
         {
-            propagate(start_index, left_index_now, right_index_now);
-            // outside the range
-            if (query_left > right_index_now || query_right < left_index_now)  return -1;
-            // range represented by a node is completely inside the given range
-            if (left_index_now >= query_left && right_index_now <= query_right)  return structure[start_index];
+            if (query_left > right_index_now || query_right < left_index_now)  return -1; // outside the range
+            if (left_index_now >= query_left && right_index_now <= query_right)  return structure[start_index]; // range represented by a node is completely inside the given range
             // range represented by a node is partially inside and partially outside the given range
             int middle_point = (left_index_now + right_index_now) / 2;
             int left_child = left_child_index(start_index);
@@ -83,12 +81,11 @@ namespace cpstl
                                                        query_left, query_right);
             if (left_segment == -1) return right_segment;
             if (right_segment == -1) return left_segment;
-            return (origin[left_segment] <= origin[right_segment]) ? left_segment : right_segment;
+            return  (origin[left_segment] <= origin[right_segment]) ? left_segment : right_segment;
         }
 
         void update_subroutine(int start_index, int left_index, int right_index, int pos, T new_value)
         {
-            propagate(start_index, left_index, right_index);
             if (left_index == right_index) {
                 origin[pos] = new_value;
                 structure[start_index] = pos;
@@ -101,27 +98,9 @@ namespace cpstl
                 }else {
                     update_subroutine(right_child, middle_point + 1, right_index, pos, new_value);
                 }
-                int segment_left = (lazy[left_index] != -1) ? lazy[left_index] : structure[left_child];
-                int segment_right = (lazy[right_index] != -1) ? lazy[right_index] : structure[right_child];
+                int segment_left = structure[left_child];
+                int segment_right = structure[right_child];
                 structure[start_index] = (origin[segment_left] <= origin[segment_right]) ? segment_left : segment_right;
-            }
-        }
-
-        void propagate(int start_index, int left_index, int right_index)
-        {
-            if (lazy[start_index] != -1) {
-                // The node in position start_index was marked as lazy
-                structure[start_index] = lazy[start_index];
-                if (left_index != right_index) {
-                    auto left_child = left_child_index(start_index);
-                    auto right_child = right_child_index(start_index);
-                    lazy[left_child] = lazy[right_child] = lazy[start_index];
-                } else {
-                    // left_index = right_index is the time to update the origin array
-                    origin[left_index] = lazy[start_index];
-                }
-                // mark as the node as not lazy
-                lazy[start_index] = -1;
             }
         }
 
@@ -138,24 +117,21 @@ namespace cpstl
         }
     public:
 
-        LazySegmentTree(std::vector<T> &origin): origin(origin)
+        SegmentTree(std::vector<T> &origin): origin(origin)
         {
             int size = origin.size();
             structure = std::vector<T>(size * 4);
-            lazy = std::vector<T>(size * 4, -1);
             origin = origin;
             build_structure(0, size);
         }
 
-        virtual ~LazySegmentTree()
+        virtual ~SegmentTree()
         {
             structure.clear();
-            lazy.clear();
         }
 
         int range_query(int start_index, int end_index)
         {
-            propagate(1, 0, origin.size() - 1);
             return range_query_subroutine(1, 0, origin.size() - 1, start_index, end_index);
         }
 
@@ -193,3 +169,5 @@ namespace cpstl
 
     };
 };
+
+#endif //RBTREE_SEGMENTTREE_H
