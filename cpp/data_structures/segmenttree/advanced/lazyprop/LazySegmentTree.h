@@ -87,28 +87,6 @@ namespace cpstl
             return (left_segment <= right_segment) ? left_segment : right_segment;
         }
 
-        void update_subroutine(int start_index, int left_index, int right_index, int pos, T new_value)
-        {
-            propagate(start_index, left_index, right_index);
-            if (left_index == right_index) {
-                origin[pos] = new_value;
-                lazy[start_index] = pos;
-                propagate(start_index, left_index, right_index);
-            } else {
-                int middle_point = (left_index + right_index) / 2;
-                int left_child = left_child_index(start_index);
-                int right_child = right_child_index(start_index);
-                if (pos <= middle_point) {
-                    update_subroutine(left_child, left_index, middle_point, pos, new_value);
-                }else {
-                    update_subroutine(right_child, middle_point + 1, right_index, pos, new_value);
-                }
-                int segment_left = (lazy[left_child] != -1) ? lazy[left_child] : structure[left_child];
-                int segment_right = (lazy[right_child] != -1) ? lazy[right_child] : structure[right_child];
-                structure[start_index] = (origin[segment_left] <= origin[segment_right]) ? segment_left : segment_right;
-            }
-        }
-
         /**
          * Perform the real update of the update_range operation,
          * @param start_index: Start index, at the starting point this is 1
@@ -133,7 +111,7 @@ namespace cpstl
                 update_range_subroutine(right_child, middle_point + 1, right_index,
                                         std::max(from, middle_point + 1), to, new_val);
                 auto left_subtree = (lazy[left_child] != -1) ? lazy[left_child] : structure[left_child];
-                auto right_subtree = (lazy[right_index] != -1) ? lazy[right_child] : structure[right_child];
+                auto right_subtree = (lazy[right_child] != -1) ? lazy[right_child] : structure[right_child];
                 structure[start_index] = (left_subtree <= right_subtree) ? left_subtree : right_subtree;
             }
         }
@@ -190,13 +168,14 @@ namespace cpstl
         }
 
         /**
-         * This is the sub procedure that help the build_structure procedure to make the logic inside the segment tree
+         * This procedure update the value stored inside the structure in one single position, this use the
+         * update_range_subroutine with from == to == at; to run the procedure update
          * @param at: it is the position in the original array, the function change the value also in the original array
          * @param new_value the value that we want override in position at.
          */
         void update(int at, T value)
         {
-            update_subroutine(1, 0, origin.size() - 1, at, value);
+            update_range_subroutine(1, 0, origin.size() - 1, at, at, value);
         }
 
         /**
