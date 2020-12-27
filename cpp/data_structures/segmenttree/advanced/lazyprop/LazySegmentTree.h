@@ -79,9 +79,9 @@ namespace cpstl
             int left_child = left_child_index(start_index);
             int right_child = right_child_index(start_index);
             int left_segment = range_query_subroutine(left_child, left_index_now, middle_point,
-                                                      query_left, query_right);
+                                                      query_left, std::min(middle_point, query_right));
             int right_segment = range_query_subroutine(right_child, middle_point + 1, right_index_now,
-                                                       query_left, query_right);
+                                                       std::max(query_left, middle_point + 1), query_right);
             if (left_segment == -1) return right_segment;
             if (right_segment == -1) return left_segment;
             return (left_segment <= right_segment) ? left_segment : right_segment;
