@@ -18,7 +18,6 @@
  */
 #include <vector>
 #include <iostream>
-#include "test/Utils.hpp"
 
 namespace cpstl
 {
@@ -67,20 +66,20 @@ namespace cpstl
             structure[start_index] = (segment_left <= segment_right) ? segment_left : segment_right;
         }
 
-        int range_query_subroutine(int start_index, int left_index_now, int right_index_now, int query_left, int query_right)
+        int range_query_subroutine(int start_index, int left_index, int right_index, int query_left, int query_right)
         {
-            propagate(start_index, left_index_now, right_index_now);
+            propagate(start_index, left_index, right_index);
             // outside the range
-            if (query_left > right_index_now || query_right < left_index_now)  return -1;
+            if (query_left > query_right)  return -1;
             // range represented by a node is completely inside the given range
-            if (left_index_now >= query_left && right_index_now <= query_right)  return structure[start_index];
+            if (left_index >= query_left && right_index <= query_right)  return structure[start_index];
             // range represented by a node is partially inside and partially outside the given range
-            int middle_point = (left_index_now + right_index_now) / 2;
+            int middle_point = (left_index + right_index) / 2;
             int left_child = left_child_index(start_index);
             int right_child = right_child_index(start_index);
-            int left_segment = range_query_subroutine(left_child, left_index_now, middle_point,
+            int left_segment = range_query_subroutine(left_child, left_index, middle_point,
                                                       query_left, std::min(middle_point, query_right));
-            int right_segment = range_query_subroutine(right_child, middle_point + 1, right_index_now,
+            int right_segment = range_query_subroutine(right_child, middle_point + 1, right_index,
                                                        std::max(query_left, middle_point + 1), query_right);
             if (left_segment == -1) return right_segment;
             if (right_segment == -1) return left_segment;
@@ -112,7 +111,7 @@ namespace cpstl
                                         std::max(from, middle_point + 1), to, new_val);
                 auto left_subtree = (lazy[left_child] != -1) ? lazy[left_child] : structure[left_child];
                 auto right_subtree = (lazy[right_child] != -1) ? lazy[right_child] : structure[right_child];
-                structure[start_index] = (left_subtree <= right_subtree) ? left_subtree : right_subtree;
+                structure[start_index] = (left_subtree <= right_subtree) ? structure[left_child] : structure[right_child];
             }
         }
 
@@ -136,13 +135,11 @@ namespace cpstl
 
         inline int left_child_index(const int index)
         {
-            //return index << 1;
             return index * 2;
         }
 
         inline int right_child_index(const int index)
         {
-            //return (index << 1) + 1;
             return (index * 2) + 1;
         }
     public:
