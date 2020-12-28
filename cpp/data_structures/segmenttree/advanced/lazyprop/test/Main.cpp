@@ -20,6 +20,7 @@
 #include <vector>
 #include "../LazySegmentTree.h"
 #include "TestTool.hpp"
+#include "Utils.hpp"
 
 using namespace std;
 using namespace cpstl;
