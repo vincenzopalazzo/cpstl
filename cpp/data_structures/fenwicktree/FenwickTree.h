@@ -1,35 +1,44 @@
-//
-// Created by vincent on 10/17/20.
-//
-
-#ifndef FENWICKTREE_FENWICKTREE_H
-#define FENWICKTREE_FENWICKTREE_H
-
+/**
+ * Binary index tree data structure implementation
+ * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 #include <vector>
 
 namespace cpstl {
 
     template<class T>
     class BTreeIndex {
-
     private:
         std::vector<T> structure;
 
-        int indexing(int index)
+        inline std::size_t indexing(std::size_t index)
         {
             return index& -index;
         }
-
     public:
-        BTreeIndex(const std::vector<T> &structure)
+        BTreeIndex(std::vector<T> const &structure)
         {
             this->structure.reserve(structure.size() + 1);
             this->structure[0] = 0;
-            for (int i = 0; i < structure.size(); i++) {
+            for (std::size_t i = 0; i < structure.size(); i++) {
                 this->structure[i + 1] = structure[i];
             }
 
-            int at = 1;
+            std::size_t at = 1;
             while (at < this->structure.size()) {
                 int at_tree = indexing(at);
                 this->structure[at_tree] += this->structure[at];
@@ -37,7 +46,7 @@ namespace cpstl {
             }
         }
 
-        BTreeIndex(int size)
+        BTreeIndex(std::size_t size)
         {
             structure = std::vector<T>(size + 1);
         }
@@ -49,9 +58,8 @@ namespace cpstl {
          *
          * This function override the previous value inside the tree
          */
-        void update(T const &value, int at)
+        inline void update(std::size_t at, T const value)
         {
-            assert(at > 0 && "The position inside the array should be greater than 0");
             while (at < structure.size()) {
                 structure[at] += value;
                 at += indexing(at);
@@ -64,11 +72,10 @@ namespace cpstl {
          * @param end Last element that I want calculate the prefix sum
          * @return return the prefix sum of the array A[begin, end]
          */
-        T sum(int begin, int end)
+        inline T sum(std::size_t begin, std::size_t end)
         {
-            assert(begin >= 0 && end >= 0);
             T sum = 0;
-            int at = end;
+            auto at = end;
             while (at > begin) {
                 sum += structure[at];
                 at &= at - 1;
@@ -82,11 +89,10 @@ namespace cpstl {
          * @param end: is the final value that you want calculate the "sum" (it is included)
          * @return the sum of the subarray A[0, end]
          */
-        T sum(int end)
+        inline T sum(std::size_t end)
         {
-            assert(end >= 0);
             T sum = 0;
-            int at = end;
+            auto at = end;
             while (at > 0) {
                 sum += structure[at];
                 at &= at -1;
@@ -98,20 +104,18 @@ namespace cpstl {
         /**
          * @return return the position of the minimum element
          */
-        int min(T const value)
+        inline std::size_t min(T const value)
         {
-            assert(false && "Not implemented yet");
+            return -1;
         }
 
         /**
          * @return return the position of the maximum element;
          */
-        int max(T const value)
+        inline std::size_t max(T const value)
         {
-            assert(false && "Not implemented yet");
+            return -1;
         }
 
     };
 }
-
-#endif //FENWICKTREE_FENWICKTREE_H
