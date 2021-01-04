@@ -17,7 +17,7 @@
  *
  */
 #include <vector>
-#include <math.h>
+#include <cmath>
 #include "../Search.h"
 #include "TestTool.hpp"
 #include "Utils.hpp"
@@ -30,7 +30,7 @@ void TEST_CASE_ONE_BINARY_SEARCH()
     for (int i = 1; i <= 10000; i++) {
       inputs.push_back(pow(2, i));
     }
-    auto index = cpstl::binary_search<int, int>(inputs, inputs[99], 0, inputs.size() - 1);
+    auto index = cpstl::Search<int, int>::binary_search(inputs, inputs[99]);
     cpstl::assert_equal("TEST_CASE_ONE_BINARY_SEARCH", inputs[index], inputs[99]);
 }
 
@@ -40,7 +40,7 @@ void TEST_CASE_ONE_EXPONENTIAL_SEARCH()
   for (int i = 1; i < 10000; i++) {
     inputs.push_back(pow(2, i));
   }
-  auto index = cpstl::exponential_search<int, int>(inputs, inputs[9999]);
+  auto index = cpstl::Search<int, int>::exponential_search(inputs, inputs[9999]);
   cpstl::assert_equal("TEST_CASE_ONE_EXPONENTIAL_SEARCH", inputs[index], inputs[9999]);
 }
 
