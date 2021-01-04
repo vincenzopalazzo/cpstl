@@ -5,9 +5,10 @@ Competitive programming standard library (CPSTL) is a repository with a
  ## Algorithms
  
 - Algorithms
-    - [X] Binary Search
+    - [X] [Binary Search](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/search)
+    - [X] [Exponential Search](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/search)
 - Sort
-    - [X] Merge Sort
+    - [X] [Merge Sort](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/sort)
 - Data Structure
     - [ ] Binary Tree
     - [ ] Red and Black Tree
