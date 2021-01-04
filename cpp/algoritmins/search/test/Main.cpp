@@ -18,7 +18,7 @@
  */
 #include <vector>
 #include <cmath>
-#include "../Search.h"
+#include "../Search.hpp"
 #include "TestTool.hpp"
 #include "Utils.hpp"
 

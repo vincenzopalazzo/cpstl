@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "Search.h"
+#include "Search.hpp"
 
 int main()
 {

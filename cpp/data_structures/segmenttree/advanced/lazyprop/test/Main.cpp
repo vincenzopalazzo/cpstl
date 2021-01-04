@@ -18,7 +18,7 @@
  */
 #include <cstdlib>
 #include <vector>
-#include "../LazySegmentTree.h"
+#include "../LazySegmentTree.hpp"
 #include "TestTool.hpp"
 #include "Utils.hpp"
 

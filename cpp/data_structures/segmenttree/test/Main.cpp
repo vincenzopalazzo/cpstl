@@ -18,7 +18,7 @@
  */
 #include <cstdlib>
 #include <vector>
-#include "../SegmentTree.h"
+#include "../SegmentTree.hpp"
 #include "Utils.hpp"
 #include "TestTool.hpp"
 

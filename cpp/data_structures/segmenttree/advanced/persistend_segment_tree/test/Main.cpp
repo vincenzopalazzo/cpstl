@@ -18,7 +18,7 @@
  */
 #include <cstdlib>
 #include <vector>
-#include "../PersistentSegmentTree.h"
+#include "../PersistentSegmentTree.hpp"
 #include "TestTool.hpp"
 #include "Utils.hpp"
 

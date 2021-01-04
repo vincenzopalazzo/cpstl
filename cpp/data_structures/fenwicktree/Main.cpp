@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <iostream>
-#include "FenwickTree.h"
+#include "FenwickTree.hpp"
 
 using namespace cpstl;
 

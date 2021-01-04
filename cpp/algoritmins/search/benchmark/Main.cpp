@@ -3,7 +3,7 @@
 //
 #include <cmath>
 #include <benchmark/benchmark.h>
-#include "../Search.h"
+#include "../Search.hpp"
 
 using namespace cpstl;
 
