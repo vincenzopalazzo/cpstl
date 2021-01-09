@@ -1,12 +1,26 @@
-//
-// Created by vincent on 9/14/20.
-//
+/**
+ * CPSTL demo to use the TestTool method to make simple test unit
+ * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 #include <cstdlib>
 #include <vector>
 #include <fstream>
-#include "../core/SolTest.h"
-#include "../Utils.cpp"
-#include "TestTool.cpp"
+#include "Utils.hpp"
+#include "TestTool.hpp"
 
 using namespace std;
 using namespace cpstl;
@@ -14,30 +28,18 @@ using namespace cpstl;
 void TEST_CASE_ONE()
 {
     vector<int> inputs = {20, 90, 40, 90};
-    int maximum_house = get_maximum_number_of_house<int, int>(inputs, 100);
-    assert_equal("TEST_CASE_ONE", 2, maximum_house);
+    assert_equal("TEST_CASE_ONE", {20, 90, 40, 90}, inputs);
 }
 
 void TEST_CASE_TWO()
 {
-    vector<int> inputs = {30, 30, 10, 10};
-    int maximum_house = get_maximum_number_of_house<int, int>(inputs, 50);
-    assert_equal("TEST_CASE_TWO", 3, maximum_house);
-}
-
-
-void TEST_CASE_TREE()
-{
-    vector<int> inputs = {999, 999, 999};
-    int maximum_house = get_maximum_number_of_house<int, int>(inputs, 300);
-    assert_equal("TEST_CASE_TREE", 0, maximum_house);
+    vector<int> inputs = {30, 30, 10};
+    assert_equal("TEST_CASE_TWO", {30, 10, 10}, inputs);
 }
 
 int main()
 {
     TEST_CASE_ONE();
     TEST_CASE_TWO();
-    TEST_CASE_TREE();
-
     return EXIT_SUCCESS;
 }
