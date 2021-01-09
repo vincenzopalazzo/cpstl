@@ -1,6 +1,6 @@
 /**
  * Segment tree data structure implementation
- * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ * Copyright (C) 2020-2021  Vincenzo Palazzo vincenzopalazzodev@gmail.com
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,3 +41,4 @@ namespace cpstl {
         cout << RESET;
     }
 }
+// Last update 9/1/2021

@@ -1,6 +1,6 @@
 /**
  * Segment tree data structure implementation
- * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ * Copyright (C) 2020-2021  Vincenzo Palazzo vincenzopalazzodev@gmail.com
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 #include <vector>
-#include <iostream>
+#include <algorithm>
 
 namespace cpstl
 {
@@ -83,7 +83,7 @@ namespace cpstl
                                                        std::max(query_left, middle_point + 1), query_right);
             if (left_segment == -1) return right_segment;
             if (right_segment == -1) return left_segment;
-            return std::min(left_child, right_segment);
+            return std::min(left_segment, right_segment);
         }
 
         /**
@@ -194,3 +194,4 @@ namespace cpstl
         }
     };
 };
+// Last update 9/1/2021

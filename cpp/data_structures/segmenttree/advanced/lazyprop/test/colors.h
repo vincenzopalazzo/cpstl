@@ -1,6 +1,6 @@
 /**
  * Segment tree data structure implementation
- * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ * Copyright (C) 2020-2021  Vincenzo Palazzo vincenzopalazzodev@gmail.com
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,3 +39,4 @@
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
 #endif //INVERSIONCOUNTING_COLORS_H
+// Last update 9/1/2021

@@ -1,6 +1,6 @@
 /**
  * Segment tree data structure implementation
- * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ * Copyright (C) 2020-2021  Vincenzo Palazzo vincenzopalazzodev@gmail.com
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,6 +32,7 @@ namespace cpstl {
         std::cout << BOLDRED << name_test  << " FAILED" << RESET << "\n";
     }
     **/
+
     template<typename T>
     inline void assert_equal(std::string name_test, T aspected, T actual)
     {
@@ -42,7 +43,7 @@ namespace cpstl {
         }
         std::cout << BOLDRED;
         std::cout << name_test  << " FAILED" << "\n";
-        std::cout << "Aspected " << aspected << " but received " << actual << "\n";
+        std::cout << "Expected " << aspected << " but received " << actual << "\n";
     }
 
     template<typename T>
@@ -52,7 +53,7 @@ namespace cpstl {
         if (aspected.size() != actual.size()) {
             std::cout << BOLDRED;
             std::cout << name_test  << " FAILED" << "\n";
-            std::cout << "Aspected size is " << aspected.size() << " but it is different from how I received " << actual.size() << "\n";
+            std::cout << "Expected size is " << aspected.size() << " but it is different from how I received " << actual.size() << "\n";
             std::cout << RESET;
             return;
         }
@@ -60,8 +61,8 @@ namespace cpstl {
             if (aspected.at(i) != actual.at(i)) {
                 std::cout << BOLDRED;
                 std::cout << name_test  << " FAILED" << "\n";
-                std::cout << "Aspected vector at postion " << i << " has different value from the actual vector" << "\n";
-                std::cout << "Asspected value is: " << aspected.at(i) << " and the actual value is " << actual.at(i) << "\n";
+                std::cout << "Expected vector at postion " << i << " has different value from the actual vector" << "\n";
+                std::cout << "Expected value is: " << aspected.at(i) << " and the actual value is " << actual.at(i) << "\n";
                 std::cout << RESET;
                 return;
             }
@@ -69,3 +70,4 @@ namespace cpstl {
         std::cout << BOLDGREEN << name_test  << " PASSED" << RESET << "\n";
     }
 }
+// Last update 9/1/2021
