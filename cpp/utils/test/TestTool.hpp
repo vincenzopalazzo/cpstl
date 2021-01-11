@@ -18,7 +18,7 @@
  */
 #include <iostream>
 #include <vector>
-#include "../colors.h"
+#include "colors.h"
 
 namespace cpstl {
 
@@ -41,8 +41,7 @@ namespace cpstl {
         }
         std::cout << BOLDRED;
         std::cout << name_test  << " FAILED" << "\n";
-        std::cout << "Expected " << aspected << " but received " << actual << "\n";
-        std::cout << BOLDWHITE << "\n|------------ END " << name_test << " -------------------|" << RESET << "\n\n";
+        std::cout << "Expected " << aspected << " but received " << actual << RESET << "\n";
     }
 
     template<typename T>
@@ -67,6 +66,5 @@ namespace cpstl {
             }
         }
         std::cout << BOLDGREEN << name_test  << " PASSED" << RESET << "\n";
-        std::cout << BOLDWHITE << "\n|------------ END " << name_test << " -------------------|" << RESET << "\n";
     }
 }
