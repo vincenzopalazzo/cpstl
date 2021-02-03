@@ -14,10 +14,12 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
  */
 #include <cstdlib>
 #include <vector>
+
 #include "../LazySegmentTree.hpp"
 #include "TestTool.hpp"
 #include "Utils.hpp"
@@ -25,37 +27,35 @@
 using namespace std;
 using namespace cpstl;
 
-void TEST_CASE_ONE()
-{
-    vector<int> inputs = {18, 17, 13, 19, 15, 11, 20};
-    print_vector(inputs);
-    auto segment_tree = LazySegmentTree<int>(inputs);
-    int index = segment_tree.range_query(4, 6);
-    cout << segment_tree.get_elem(6);
-    std::cout << index << "\n";
-    assert_equal("RANGE(4, 6)", 11, index);
+void TEST_CASE_ONE() {
+  vector<int> inputs = {18, 17, 13, 19, 15, 11, 20};
+  print_vector(inputs);
+  auto segment_tree = LazySegmentTree<int>(inputs);
+  int index = segment_tree.range_query(4, 6);
+  cout << segment_tree.get_elem(6);
+  std::cout << index << "\n";
+  assert_equal("RANGE(4, 6)", 11, index);
 
-    index = segment_tree.range_query(1, 3);
-    assert_equal("RANGE(1, 3)", 13, index);
+  index = segment_tree.range_query(1, 3);
+  assert_equal("RANGE(1, 3)", 13, index);
 
-    segment_tree.update_range(5, 6, 12);
-    index = segment_tree.range_query(4, 6);
-    assert_equal("UPDATE RANGE(4, 6)", 15, index);
+  segment_tree.update_range(5, 6, 12);
+  index = segment_tree.range_query(4, 6);
+  assert_equal("UPDATE RANGE(4, 6)", 15, index);
 
-    index = segment_tree.range_query(5, 6);
-    assert_equal("RANGE(6, 7)", 23, index);
+  index = segment_tree.range_query(5, 6);
+  assert_equal("RANGE(6, 7)", 23, index);
 
-    index = segment_tree.range_query(1, 3);
-    assert_equal("RANGE(1, 3)", 13, index);
+  index = segment_tree.range_query(1, 3);
+  assert_equal("RANGE(1, 3)", 13, index);
 
-    index = segment_tree.range_query(0, 1);
-    assert_equal("RANGE(0, 1)", 17, index);
+  index = segment_tree.range_query(0, 1);
+  assert_equal("RANGE(0, 1)", 17, index);
 }
 
-int main()
-{
-    TEST_CASE_ONE();
-    return EXIT_SUCCESS;
+int main() {
+  TEST_CASE_ONE();
+  return EXIT_SUCCESS;
 }
 
 // Last update 9/1/2021

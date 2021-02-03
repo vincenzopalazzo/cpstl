@@ -1,5 +1,5 @@
 /**
- * CPSTL demo to use the TestTool method to make simple test unit
+ * Sort algorithm's C++ implementation
  * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
  *
  * This program is free software; you can redistribute it and/or
@@ -17,28 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
-#include <cstdlib>
-#include <fstream>
 #include <vector>
 
-#include "TestTool.hpp"
-#include "Utils.hpp"
+namespace cpstl {
 
-using namespace std;
-using namespace cpstl;
+/**
+ * This method implement the merge sort algorithm, and the list below describe
+ * the parameters
+ *
+ * @param inputs: inputs element to sort
+ * @param p: start index, the first value should be 0
+ * @param r end index, the first value should be a inputs.size() - 1
+ */
+template <typename T>
+void merge_sort(std::vector<T> &inputs, int p, int r);
 
-void TEST_CASE_ONE() {
-  vector<int> inputs = {20, 90, 40, 90};
-  assert_equal("TEST_CASE_ONE", {20, 90, 40, 90}, inputs);
-}
-
-void TEST_CASE_TWO() {
-  vector<int> inputs = {30, 30, 10};
-  assert_equal("TEST_CASE_TWO", {30, 10, 10}, inputs);
-}
-
-int main() {
-  TEST_CASE_ONE();
-  TEST_CASE_TWO();
-  return EXIT_SUCCESS;
-}
+}  // namespace cpstl
