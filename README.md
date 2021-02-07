@@ -1,5 +1,6 @@
 # Competitive programming standard library
 
+![Website](https://img.shields.io/website?style=for-the-badge&up_message=online&url=https%3A%2F%2Fvincenzopalazzo.github.io%2Fcpstl%2F)
 ![GitHub language count](https://img.shields.io/github/languages/count/vincenzopalazzo/cpstl?style=for-the-badge)
 ![GitHub top language](https://img.shields.io/github/languages/top/vincenzopalazzo/cpstl?style=for-the-badge)
 
