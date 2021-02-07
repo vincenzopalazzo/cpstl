@@ -17,13 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
-#ifndef RBTREE_SEGMENTTREE_H
-#define RBTREE_SEGMENTTREE_H
 
 #include <vector>
 
-// Reference implementation
-// https://www.hackerearth.com/practice/notes/segment-tree-and-lazy-propagation/
 namespace cpstl {
 template <class T>
 class SegmentTree {
@@ -51,29 +47,29 @@ class SegmentTree {
    * @param left_index
    * @param right_index
    */
-  void build_structure_procedure(int start_index, int left_index,
-                                 int right_index) {
+  void build_structure_procedure(std::size_t start_index, std::size_t left_index,
+                                 std::size_t right_index) {
     if (left_index == right_index) {
       // Leaf node will have a single element
       structure[start_index] = left_index;
       return;
     }
-    int middle_point = (left_index + right_index) / 2;
-    int left_child = left_child_index(start_index);
-    int right_child = right_child_index(start_index);
+    auto middle_point = (left_index + right_index) / 2;
+    auto left_child = left_child_index(start_index);
+    auto right_child = right_child_index(start_index);
     build_structure_procedure(left_child, left_index, middle_point);
     build_structure_procedure(right_child, middle_point + 1, right_index);
     // Internal node will have the sum of both of its children
-    int segment_left = structure[left_child];
-    int segment_right = structure[right_child];
+    auto segment_left = structure[left_child];
+    auto segment_right = structure[right_child];
     structure[start_index] = (origin[segment_left] <= origin[segment_right])
                                  ? segment_left
                                  : segment_right;
   }
 
-  int range_query_subroutine(int start_index, int left_index_now,
-                             int right_index_now, int query_left,
-                             int query_right) {
+  std::size_t range_query_subroutine(std::size_t start_index, std::size_t left_index_now,
+                             std::size_t right_index_now, std::size_t query_left,
+                             std::size_t query_right) {
     if (query_left > right_index_now || query_right < left_index_now)
       return -1;  // outside the range
     if (left_index_now >= query_left && right_index_now <= query_right)
@@ -81,12 +77,12 @@ class SegmentTree {
                                       // completely inside the given range
     // range represented by a node is partially inside and partially outside the
     // given range
-    int middle_point = (left_index_now + right_index_now) / 2;
-    int left_child = left_child_index(start_index);
-    int right_child = right_child_index(start_index);
-    int left_segment = range_query_subroutine(
+    auto middle_point = (left_index_now + right_index_now) / 2;
+    auto left_child = left_child_index(start_index);
+    auto right_child = right_child_index(start_index);
+    auto left_segment = range_query_subroutine(
         left_child, left_index_now, middle_point, query_left, query_right);
-    int right_segment =
+    auto right_segment =
         range_query_subroutine(right_child, middle_point + 1, right_index_now,
                                query_left, query_right);
     if (left_segment == -1) return right_segment;
@@ -95,42 +91,42 @@ class SegmentTree {
                                                            : right_segment;
   }
 
-  void update_subroutine(int start_index, int left_index, int right_index,
-                         int pos, T new_value) {
+  void update_subroutine(std::size_t start_index, std::size_t left_index, std::size_t right_index,
+                         std::size_t pos, T new_value) {
     if (left_index == right_index) {
       origin[pos] = new_value;
       structure[start_index] = pos;
     } else {
-      int middle_point = (left_index + right_index) / 2;
-      int left_child = left_child_index(start_index);
-      int right_child = right_child_index(start_index);
+      auto middle_point = (left_index + right_index) / 2;
+      auto left_child = left_child_index(start_index);
+      auto right_child = right_child_index(start_index);
       if (pos <= middle_point) {
         update_subroutine(left_child, left_index, middle_point, pos, new_value);
       } else {
         update_subroutine(right_child, middle_point + 1, right_index, pos,
                           new_value);
       }
-      int segment_left = structure[left_child];
-      int segment_right = structure[right_child];
+      auto segment_left = structure[left_child];
+      auto segment_right = structure[right_child];
       structure[start_index] = (origin[segment_left] <= origin[segment_right])
                                    ? segment_left
                                    : segment_right;
     }
   }
 
-  inline int left_child_index(const int index) {
+  inline std::size_t left_child_index(std::size_t const index) {
     // return index << 1;
     return index * 2;
   }
 
-  inline int right_child_index(const int index) {
+  inline std::size_t right_child_index(std::size_t const index) {
     // return (index << 1) + 1;
     return (index * 2) + 1;
   }
 
  public:
   SegmentTree(std::vector<T> &origin) : origin(origin) {
-    int size = origin.size();
+    auto size = origin.size();
     structure = std::vector<T>(size * 4);
     origin = origin;
     build_structure(0, size);
@@ -138,7 +134,7 @@ class SegmentTree {
 
   virtual ~SegmentTree() { structure.clear(); }
 
-  int range_query(int start_index, int end_index) {
+  std::size_t range_query(std::size_t start_index, std::size_t end_index) {
     return range_query_subroutine(1, 0, origin.size() - 1, start_index,
                                   end_index);
   }
@@ -150,22 +146,10 @@ class SegmentTree {
    * the value also in the original array
    * @param new_value the value that we want override in position at.
    */
-  void update(int at, T value) {
+  void update(std::size_t const at, T value) {
     update_subroutine(1, 0, origin.size() - 1, at, value);
   }
 
-  inline int left_child(int x) {
-    int left = left_child_index(x);
-    return structure[left];
-  }
-
-  inline int right_child(int x) {
-    int left = right_child_index(x);
-    return structure[left];
-  }
-
-  inline T get_elem(int at) { return origin[at]; }
+  inline T get_elem(std::size_t const at) { return origin[at]; }
 };
 };  // namespace cpstl
-
-#endif  // RBTREE_SEGMENTTREE_H
