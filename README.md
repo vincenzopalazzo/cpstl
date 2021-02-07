@@ -1,4 +1,8 @@
 # Competitive programming standard library
+
+![GitHub language count](https://img.shields.io/github/languages/count/vincenzopalazzo/cpstl?style=for-the-badge)
+![GitHub top language](https://img.shields.io/github/languages/top/vincenzopalazzo/cpstl?style=for-the-badge)
+
 Competitive programming standard library (CPSTL) is a repository with a
 collection of data structure and algorithms in many different languages.
 The object of this library (copy and past code) is to offer and complete tested
@@ -16,9 +20,20 @@ simple to prepare code interview in some company.
 
 ## Language supported 
  
-- [X] [C++14](https://vincenzopalazzo.github.io/cpstl/cpp)
+- [X] C++14
+  - [Algorithms and Data structure](https://vincenzopalazzo.github.io/cpstl/cpp)
+  - [Test tools](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/utils/test)
+
 
 ## Contribute
+The repository is open to receive contribution to improve solutions or the quality of the repository, there are only a few rules to respect that are reported below.
+
+- Each code that is inside the repository need to follow the good formatted code guide lines, so if the solution uses the C++ classes the Google code style need to be included in the solution. clang-format file available at the following link, otherwise is the C++ is without classes a Linux Kernel guide lines need to be included clang-format file available at the following link.
+New implementation of datastructure need to be push also in repository cpstl.
+
+- Each solution, need to contains a Readme with some details about the implementation and the time execution on the online Judge, one example can be the following solution
+
+- The support of new programming languages need to be discussed with a new issue in this repository to discuss the line guide about the code style.
 
 ## License
 
