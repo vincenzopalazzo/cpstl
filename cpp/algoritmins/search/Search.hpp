@@ -24,8 +24,8 @@ namespace cpstl {
 template <class T, typename R>
 class Search {
  protected:
-  inline static R _binary_search(std::vector<T> const &inputs, T key, R start,
-                                 R end) {
+  static R _binary_search(std::vector<T> const &inputs, T key,
+                          std::size_t start, std::size_t end) {
     if (start > end) return -1;
     // We go to te middle of algorithm
     auto middle_pos = start + (end - start) / 2;
@@ -40,12 +40,16 @@ class Search {
   }
 
  public:
-  inline static R binary_search(std::vector<T> const &inputs, T key) {
-    return _binary_search(inputs, key, static_cast<T>(0),
-                          static_cast<T>(inputs.size() - 1));
+  static R binary_search(std::vector<T> const &inputs, T key) {
+    return _binary_search(inputs, key, 0, inputs.size() - 1);
   }
 
-  inline static R exponential_search(std::vector<T> const &inputs, T key) {
+  static R binary_search(std::vector<T> const &inputs, T key,
+                         std::size_t start, std::size_t end) {
+    return _binary_search(inputs, key, start, end);
+  }
+
+  static R exponential_search(std::vector<T> const &inputs, T key) {
     if (inputs[0] == key) return 0;
     R size_sub_array = 1;
     while (size_sub_array < inputs.size() && inputs[size_sub_array] < key) {
