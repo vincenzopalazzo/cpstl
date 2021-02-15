@@ -59,8 +59,24 @@ void TEST_CASE_TWO_RBTREE() {
   assert_equal("TEST_CASE_TWO_RBTREE", {2, 3, 41, 44, 345, 4343}, order_elements);
 }
 
+void TEST_CASE_TWO_RBTREE_DELETE() {
+  auto balanced_tree = RBTree<int>();
+  balanced_tree.insert(345);
+  balanced_tree.insert(3);
+  balanced_tree.insert(2);
+  balanced_tree.insert(4343);
+  balanced_tree.insert(44);
+  balanced_tree.insert(41);
+  assert_equal("TEST_CASE_TWO_RBTREE_SIZE_DELETE", 6, (int)balanced_tree.size());
+  assert_equal("TEST_CASE_TWO_RBTREE_MAX_DELETE", 4343, balanced_tree.max());
+  assert_equal("TEST_CASE_TWO_RBTREE_MIN_DELETE", 2, balanced_tree.min());
+  auto order_elements = balanced_tree.visit_in_order();
+  assert_equal("TEST_CASE_TWO_RBTREE_DELETE", {2, 3, 41, 44, 345, 4343}, order_elements);
+}
+
 int main() {
   TEST_CASE_ONE_RBTREE();
   TEST_CASE_TWO_RBTREE();
+  TEST_CASE_TWO_RBTREE_DELETE();
   return EXIT_SUCCESS;
 }

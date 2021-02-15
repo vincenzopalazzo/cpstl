@@ -32,7 +32,7 @@ int main() {
   tree.update(3, 3);
   tree.update(4, 4);
   tree.update(5, 5);
-  std::cout << "------------- insert finisced -----------\n";
+  std::cout << "------------- insert Finish -----------\n";
   assert(tree.sum(1) == 1);
   assert(tree.sum(2) == 3);
   assert(tree.sum(3) == 6);

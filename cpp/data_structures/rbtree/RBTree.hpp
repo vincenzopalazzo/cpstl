@@ -98,9 +98,6 @@ class RBTree {
     }
   }
 
-  /**
-   * Left left rotation
-   */
   void ll_rotation(Node<T> *parent, Node<T> *gran_pa) {
     auto fom_gran_pa = gran_pa;
     right_rotation(parent);
@@ -121,8 +118,8 @@ class RBTree {
   }
 
   void rl_rotation(Node<T> *parent) {
-    right_rotation( parent);
-    rr_rotation( parent, parent->parent);
+    right_rotation(parent);
+    rr_rotation(parent, parent->parent);
   }
 
   void left_rotation(Node<T> *node) {
@@ -174,13 +171,33 @@ class RBTree {
   }
 
   Node<T> *find_procedure(Node<T> *node, T value) {
-    if (!node || node->key == value)
-      return node;
+    if (!node || node->key == value) return node;
     if (node->key > value) {
       return find_procedure(node->left, value);
     } else {
       return find_procedure(node->right, value);
     }
+  }
+
+  Node<T> *minimum(Node<T> *node) {
+    auto visit_node = node;
+    while (visit_node->left) {
+      visit_node = visit_node->left;
+    }
+    return visit_node;
+  }
+
+  Node<T> *successor(Node<T> *node) {
+    if (node->right) {
+      return minimum(node->right);
+    }
+    auto x = node;
+    auto y = node->parent;
+    while (y && x == y->right) {
+      x = y;
+      y = y->parent;
+    }
+    return y;
   }
 
  public:
@@ -197,7 +214,6 @@ class RBTree {
     _size++;
   }
 
-
   std::size_t size() { return _size; }
 
   T max() {
@@ -209,10 +225,7 @@ class RBTree {
   }
 
   T min() {
-    auto node = root;
-    while (node->left) {
-      node = node->left;
-    }
+    auto node = minimum(this->root);
     return node->key;
   }
 

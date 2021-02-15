@@ -1,6 +1,6 @@
 /**
  * Binary index tree data structure implementation
- * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ * Copyright (C) 2020-2021  Vincenzo Palazzo vincenzopalazzodev@gmail.com
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 namespace cpstl {
 
-template <class T>
+template<class T>
 class BTreeIndex {
  private:
   std::vector<T> structure;
@@ -53,10 +53,9 @@ class BTreeIndex {
    *
    * This function override the previous value inside the tree
    */
-  inline void update(std::size_t at, T const value) {
-    while (at < structure.size()) {
+  inline void update(std::size_t at, T value) {
+    for(at++; at < structure.size(); at += at & -at) {
       structure[at] += value;
-      at += indexing(at);
     }
   }
 
@@ -69,11 +68,8 @@ class BTreeIndex {
    */
   inline T sum(std::size_t begin, std::size_t end) {
     T sum = 0;
-    auto at = end;
-    while (at > begin) {
-      sum += structure[at];
-      at &= at - 1;
-      // at -= indexing(at);
+    for (end++; end > begin; end -= end & -end) {
+      sum += structure[end];
     }
     return sum;
   }
@@ -86,23 +82,10 @@ class BTreeIndex {
    */
   inline T sum(std::size_t end) {
     T sum = 0;
-    auto at = end;
-    while (at > 0) {
-      sum += structure[at];
-      at &= at - 1;
-      // at -= indexing(at);
+    for (end++; end > 0; end -= end & -end) {
+      sum += structure[end];
     }
     return sum;
   }
-
-  /**
-   * @return return the position of the minimum element
-   */
-  inline std::size_t min(T const value) { return -1; }
-
-  /**
-   * @return return the position of the maximum element;
-   */
-  inline std::size_t max(T const value) { return -1; }
 };
 }  // namespace cpstl

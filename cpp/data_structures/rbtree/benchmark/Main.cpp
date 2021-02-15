@@ -33,6 +33,20 @@ static void BM_RBTREE_INSERT(benchmark::State& state) {
   }
 }
 
+static void BM_RBTREE_DELETE(benchmark::State& state) {
+  RBTree<long> tree;
+  for (auto _ : state) {
+    state.PauseTiming();
+    for (int i = 3; i < state.range(0); i++) {
+      tree.insert(i);
+    }
+    state.ResumeTiming();
+    for (int i = state.range(0); i >= 0 ; i--) {
+      //tree.erase(i);
+    }
+  }
+}
+
 static void BM_CPP_STL_SET(benchmark::State& state) {
   std::set<int> tree;
   for (auto _ : state) {
@@ -42,7 +56,23 @@ static void BM_CPP_STL_SET(benchmark::State& state) {
   }
 }
 
+static void BM_CPP_STL_DELETE(benchmark::State& state) {
+  std::set<int> tree;
+  for (auto _ : state) {
+    state.PauseTiming();
+    for (int i = 0; i < state.range(0); i++) {
+      tree.insert(i);
+    }
+    state.ResumeTiming();
+    for (int i = state.range(0); i >= 0 ; i--) {
+      tree.erase(i);
+    }
+  }
+}
+
 BENCHMARK(BM_RBTREE_INSERT)->DenseRange(20, 1024, 128);
 BENCHMARK(BM_CPP_STL_SET)->DenseRange(20, 1024, 128);
+//BENCHMARK(BM_RBTREE_DELETE)->DenseRange(20, 1024, 128);
+//BENCHMARK(BM_CPP_STL_DELETE)->DenseRange(20, 1024, 128);
 
 BENCHMARK_MAIN();
