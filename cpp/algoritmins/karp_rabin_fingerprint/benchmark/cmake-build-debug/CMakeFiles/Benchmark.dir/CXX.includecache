@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/RBTree.hpp
+memory
+-
+
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/benchmark/Main.cpp
+cmath
+-
+benchmark/benchmark.h
+-
+../RBTree.hpp
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/RBTree.hpp
+
