@@ -7,6 +7,7 @@ Competitive programming standard library (CPSTL) is a repository with a
 - Algorithms
     - [X] [Binary Search](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/search)
     - [X] [Exponential Search](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/search)
+    - [ ] [Karp Rabin fingerprint ]()
 - Sort
     - [X] [Merge Sort](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/sort)
 - Data Structure
@@ -17,3 +18,6 @@ Competitive programming standard library (CPSTL) is a repository with a
         - [X] [Binary Heap implementation](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/data_structures/segmenttree)
         - [X] [Segment Tree with Lazy Propagation](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/data_structures/segmenttree/advanced/lazyprop)
         - [X] [Persistent Segment Tree](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/data_structures/segmenttree/advanced/persistend_segment_tree)
+    - [ ] Graph
+        - [ ] [Adjacency lists]()
+        - [ ] [Matrix]()
