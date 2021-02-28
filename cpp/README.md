@@ -10,6 +10,8 @@ Competitive programming standard library (CPSTL) is a repository with a
     - [ ] [Karp Rabin fingerprint ]()
 - Sort
     - [X] [Merge Sort](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/sort)
+    - [X] [Quick Sort](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/sort)
+    - [X] [Randomized Quick Sort](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/sort)
 - Data Structure
     - [ ] Binary Tree
     - [ ] Red and Black Tree

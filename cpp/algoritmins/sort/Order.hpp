@@ -32,4 +32,17 @@ namespace cpstl {
 template <typename T>
 void merge_sort(std::vector<T> &inputs, int p, int r);
 
+/**
+ * This procedure sort the input array with a standard quick sort
+ * implementation.
+ *
+ * @tparam T type of element in the input
+ * @param inputs input array
+ */
+template <typename T>
+void quick_sort(std::vector<T> &inputs, int p, int r);
+
+template <typename T>
+void randomize_quick_sort(std::vector<T> &inputs, int p, int r);
+
 }  // namespace cpstl

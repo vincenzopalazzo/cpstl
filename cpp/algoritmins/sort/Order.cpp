@@ -21,6 +21,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <random>
 
 using namespace std;
 
@@ -47,8 +48,8 @@ void merge(vector<T> &inputs, int p, int q, int r) {
   assert(r >= 0);
   assert(q >= 0);
 
-  int n1 = q - p + 1;
-  int n2 = r - q;
+  auto n1 = q - p + 1;
+  auto n2 = r - q;
   vector<T> sub_arr_left;
   sub_arr_left.reserve(n1);
   vector<T> sub_arr_right;
@@ -61,9 +62,9 @@ void merge(vector<T> &inputs, int p, int q, int r) {
     sub_arr_right.push_back(inputs.at(q + i + 1));
   }
 
-  int i = 0;
-  int j = 0;
-  int k = p;
+  auto i = 0;
+  auto j = 0;
+  auto k = p;
   while (i < n1 && j < n2) {
     if (sub_arr_left[i] < sub_arr_right[j] && sub_arr_left.size() >= i) {
       inputs[k] = sub_arr_left[i];
@@ -98,7 +99,53 @@ void merge_sort(vector<T> &inputs, int p, int r) {
     merge(inputs, p, q, r);
   }
 }
+
+template <typename T>
+std::size_t partition(vector<T> &inputs, int p, int r) {
+  auto pivot = inputs[r];
+  auto i = p - 1;
+  for (auto j = p; j <= r - 1; j++) {
+    if (inputs[j] <= pivot) {
+      i++;
+      std::swap(inputs[i], inputs[j]);
+    }
+  }
+  i++;
+  std::swap(inputs[i], inputs[r]);
+  return i;
+}
+
+template <typename T>
+void quick_sort(std::vector<T> &inputs, int p, int r) {
+  if (p < r) {
+    auto middle = partition(inputs, p, r);
+    quick_sort(inputs, p, middle - 1);
+    quick_sort(inputs, middle + 1, r);
+  }
+}
+
+template <typename T>
+std::size_t randomize_partition(vector<T> &inputs, int p, int r) {
+  std::random_device rd;
+  std::mt19937 mt(rd());
+  auto generator = std::uniform_int_distribution<int>(0, inputs.size() - 1);
+  auto pivot = generator(mt);
+  std::swap(inputs[pivot], inputs[r]);
+  return partition(inputs, p, r);
+}
+
+template <typename T>
+void randomize_quick_sort(std::vector<T> &inputs, int p, int r) {
+  if (p < r) {
+    auto middle = randomize_partition(inputs, p, r);
+    quick_sort(inputs, p, middle - 1);
+    quick_sort(inputs, middle + 1, r);
+  }
+}
 }  // namespace cpstl
 
 // Type declaration
 template void cpstl::merge_sort<int>(vector<int> &inputs, int p, int r);
+template void cpstl::quick_sort<int>(std::vector<int> &inputs, int p, int r);
+template void cpstl::randomize_quick_sort<int>(std::vector<int> &inputs, int p,
+                                               int r);
