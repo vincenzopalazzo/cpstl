@@ -26,7 +26,6 @@
 using namespace std;
 using namespace cpstl;
 
-
 void TEST_CASE_ONE_RBTREE() {
   auto balanced_tree = RBTree<int>();
   balanced_tree.insert(2);
@@ -41,7 +40,8 @@ void TEST_CASE_ONE_RBTREE() {
   assert_equal("TEST_CASE_ONE_RBTREE_MAX", 35, balanced_tree.max());
   assert_equal("TEST_CASE_ONE_RBTREE_MIN", 1, balanced_tree.min());
   auto order_elements = balanced_tree.visit_in_order();
-  assert_equal("TEST_CASE_ONE_RBTREE", {1, 2, 3, 4, 22, 24, 32, 35}, order_elements);
+  assert_equal("TEST_CASE_ONE_RBTREE", {1, 2, 3, 4, 22, 24, 32, 35},
+               order_elements);
 }
 
 void TEST_CASE_TWO_RBTREE() {
@@ -56,7 +56,8 @@ void TEST_CASE_TWO_RBTREE() {
   assert_equal("TEST_CASE_TWO_RBTREE_MAX", 4343, balanced_tree.max());
   assert_equal("TEST_CASE_TWO_RBTREE_MIN", 2, balanced_tree.min());
   auto order_elements = balanced_tree.visit_in_order();
-  assert_equal("TEST_CASE_TWO_RBTREE", {2, 3, 41, 44, 345, 4343}, order_elements);
+  assert_equal("TEST_CASE_TWO_RBTREE", {2, 3, 41, 44, 345, 4343},
+               order_elements);
 }
 
 void TEST_CASE_TWO_RBTREE_DELETE() {
@@ -67,11 +68,13 @@ void TEST_CASE_TWO_RBTREE_DELETE() {
   balanced_tree.insert(4343);
   balanced_tree.insert(44);
   balanced_tree.insert(41);
-  assert_equal("TEST_CASE_TWO_RBTREE_SIZE_DELETE", 6, (int)balanced_tree.size());
+  assert_equal("TEST_CASE_TWO_RBTREE_SIZE_DELETE", 6,
+               (int)balanced_tree.size());
   assert_equal("TEST_CASE_TWO_RBTREE_MAX_DELETE", 4343, balanced_tree.max());
   assert_equal("TEST_CASE_TWO_RBTREE_MIN_DELETE", 2, balanced_tree.min());
   auto order_elements = balanced_tree.visit_in_order();
-  assert_equal("TEST_CASE_TWO_RBTREE_DELETE", {2, 3, 41, 44, 345, 4343}, order_elements);
+  assert_equal("TEST_CASE_TWO_RBTREE_DELETE", {2, 3, 41, 44, 345, 4343},
+               order_elements);
 }
 
 int main() {

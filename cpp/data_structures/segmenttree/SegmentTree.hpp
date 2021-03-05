@@ -47,7 +47,8 @@ class SegmentTree {
    * @param left_index
    * @param right_index
    */
-  void build_structure_procedure(std::size_t start_index, std::size_t left_index,
+  void build_structure_procedure(std::size_t start_index,
+                                 std::size_t left_index,
                                  std::size_t right_index) {
     if (left_index == right_index) {
       // Leaf node will have a single element
@@ -67,9 +68,11 @@ class SegmentTree {
                                  : segment_right;
   }
 
-  std::size_t range_query_subroutine(std::size_t start_index, std::size_t left_index_now,
-                             std::size_t right_index_now, std::size_t query_left,
-                             std::size_t query_right) {
+  std::size_t range_query_subroutine(std::size_t start_index,
+                                     std::size_t left_index_now,
+                                     std::size_t right_index_now,
+                                     std::size_t query_left,
+                                     std::size_t query_right) {
     if (query_left > right_index_now || query_right < left_index_now)
       return -1;  // outside the range
     if (left_index_now >= query_left && right_index_now <= query_right)
@@ -91,8 +94,9 @@ class SegmentTree {
                                                            : right_segment;
   }
 
-  void update_subroutine(std::size_t start_index, std::size_t left_index, std::size_t right_index,
-                         std::size_t pos, T new_value) {
+  void update_subroutine(std::size_t start_index, std::size_t left_index,
+                         std::size_t right_index, std::size_t pos,
+                         T new_value) {
     if (left_index == right_index) {
       origin[pos] = new_value;
       structure[start_index] = pos;

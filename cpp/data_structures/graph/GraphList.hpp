@@ -21,13 +21,13 @@
 
 namespace cpstl {
 
-  template<class T>
-  class GraphList {
-  public:
-    void add_edge();
+template <class T>
+class GraphList {
+ public:
+  void add_edge();
 
-    std::vector<T> dfs();
+  std::vector<T> dfs();
 
-    std::vector<T> bfs();
-  };
+  std::vector<T> bfs();
+};
 };  // namespace cpstl

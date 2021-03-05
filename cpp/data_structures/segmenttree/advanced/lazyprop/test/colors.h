@@ -40,4 +40,4 @@
 #define BOLDWHITE "\033[1m\033[37m"   /* Bold White */
 
 #endif  // INVERSIONCOUNTING_COLORS_H
-// Last update 9/1/2021
+        // Last update 9/1/2021

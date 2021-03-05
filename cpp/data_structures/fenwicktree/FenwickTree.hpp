@@ -20,7 +20,7 @@
 
 namespace cpstl {
 
-template<class T>
+template <class T>
 class BTreeIndex {
  private:
   std::vector<T> structure;
@@ -54,7 +54,7 @@ class BTreeIndex {
    * This function override the previous value inside the tree
    */
   inline void update(std::size_t at, T value) {
-    for(at++; at < structure.size(); at += at & -at) {
+    for (at++; at < structure.size(); at += at & -at) {
       structure[at] += value;
     }
   }

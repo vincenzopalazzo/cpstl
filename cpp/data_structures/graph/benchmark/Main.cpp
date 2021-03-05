@@ -17,9 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
+#include <benchmark/benchmark.h>
+
 #include <cmath>
 
-#include <benchmark/benchmark.h>
 #include "../RBTree.hpp"
 
 using namespace cpstl;
@@ -41,8 +42,8 @@ static void BM_RBTREE_DELETE(benchmark::State& state) {
       tree.insert(i);
     }
     state.ResumeTiming();
-    for (int i = state.range(0); i >= 0 ; i--) {
-      //tree.erase(i);
+    for (int i = state.range(0); i >= 0; i--) {
+      // tree.erase(i);
     }
   }
 }
@@ -64,7 +65,7 @@ static void BM_CPP_STL_DELETE(benchmark::State& state) {
       tree.insert(i);
     }
     state.ResumeTiming();
-    for (int i = state.range(0); i >= 0 ; i--) {
+    for (int i = state.range(0); i >= 0; i--) {
       tree.erase(i);
     }
   }
@@ -72,7 +73,7 @@ static void BM_CPP_STL_DELETE(benchmark::State& state) {
 
 BENCHMARK(BM_RBTREE_INSERT)->DenseRange(20, 1024, 128);
 BENCHMARK(BM_CPP_STL_SET)->DenseRange(20, 1024, 128);
-//BENCHMARK(BM_RBTREE_DELETE)->DenseRange(20, 1024, 128);
-//BENCHMARK(BM_CPP_STL_DELETE)->DenseRange(20, 1024, 128);
+// BENCHMARK(BM_RBTREE_DELETE)->DenseRange(20, 1024, 128);
+// BENCHMARK(BM_CPP_STL_DELETE)->DenseRange(20, 1024, 128);
 
 BENCHMARK_MAIN();

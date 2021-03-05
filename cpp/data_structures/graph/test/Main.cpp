@@ -26,12 +26,11 @@
 using namespace std;
 using namespace cpstl;
 
+void TEST_CASE_ONE_BUILD() {}
 
-void TEST_CASE_ONE_BUILD() { }
+void TEST_CASE_TWO_BFS() {}
 
-void TEST_CASE_TWO_BFS() { }
-
-void TEST_CAS_THREE_DFS() { }
+void TEST_CAS_THREE_DFS() {}
 
 int main() {
   TEST_CASE_ONE_BUILD();
