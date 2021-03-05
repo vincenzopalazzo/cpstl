@@ -29,42 +29,49 @@ template <class T>
 class UniversalHash {
  private:
   std::random_device rd;
-  long value_a;
-  long value_b;
+  T value_a;
+  T value_b;
   std::size_t size;
-  long prime;
+  long long prime;
 
   void make_random_choice() {
-    std::mt19937 mt(rd());
-    // TODO: It is really necessary use two make the function uniform_int_distribution?
-    auto generator = std::uniform_int_distribution<int>(1, this->prime - 1);
+    std::mt19937_64 mt(rd());
+    auto generator = std::uniform_int_distribution<T>(1, this->prime - 1);
     this->value_a = generator(mt);
-    generator = std::uniform_int_distribution<int>(0, this->prime - 1);
+    generator = std::uniform_int_distribution<T>(0, this->prime - 1);
     this->value_b = generator(mt);
   }
+
   /**
-   * Naive method to chose the random number from m to 2m
+   * Naive method to chose the random number from m to 2m.
+   *
+   * Move this logic out of this class and also implement this algorithm
+   * to find the prime number in ad efficient way https://en.wikipedia.org/wiki/Sieve_of_Atkin
    * @return -1 if there are any random number of the first prime number
    */
   T generate_prime_number(T number) {
     assert(number > 0);
-    for (auto p = number + 1; p <= (2 * number); p++) {
-      for (auto i = 2; i < std::sqrt(p); i++) {
-        if (i % 2 == 0) return p;
+    for (T p = number + 1; p <= (2 * number) + 1; p++) {
+      auto isPrime = true;
+      for (T i = 2; i < std::sqrt(p); i++) {
+        if (p % i == 0) {
+          isPrime = false;
+          break;
+        }
       }
+      if (isPrime) return p;
     }
     return -1;
   }
 
  public:
-  UniversalHash(size_t size) : size(size) {
-    this->prime = generate_prime_number(size);
+  UniversalHash(std::size_t size) : size(2 * size) {
+    this->prime = generate_prime_number(2 * size);
     make_random_choice();
   }
 
-  T universal_hashing(long to_hash) {
-    return (((this->value_a * to_hash) + this->value_b) % this->prime) %
-           this->size;
+  T universal_hashing(T to_hash) {
+    return ((this->value_a * to_hash + this->value_b) % this->prime) % this->size;
   }
 };
 };  // namespace cpstl
