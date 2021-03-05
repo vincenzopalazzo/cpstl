@@ -1,5 +1,5 @@
 /**
- * Red and Black Tree data structure C++ implementation
+ * Universal Hash function C++ implementation
  * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
  *
  * This program is free software; you can redistribute it and/or
@@ -28,13 +28,13 @@ namespace cpstl {
 template <class T>
 class UniversalHash {
  private:
-  std::random_device rd;
-  T value_a;
-  T value_b;
+  T value_a = -1;
+  T value_b = -1;
   std::size_t size;
   long long prime;
 
   void make_random_choice() {
+    std::random_device rd;
     std::mt19937_64 mt(rd());
     auto generator = std::uniform_int_distribution<T>(1, this->prime - 1);
     this->value_a = generator(mt);
@@ -46,7 +46,8 @@ class UniversalHash {
    * Naive method to chose the random number from m to 2m.
    *
    * Move this logic out of this class and also implement this algorithm
-   * to find the prime number in ad efficient way https://en.wikipedia.org/wiki/Sieve_of_Atkin
+   * to find the prime number in ad efficient way
+   * https://en.wikipedia.org/wiki/Sieve_of_Atkin
    * @return -1 if there are any random number of the first prime number
    */
   T generate_prime_number(T number) {
@@ -65,13 +66,18 @@ class UniversalHash {
   }
 
  public:
-  UniversalHash(std::size_t size) : size(2 * size) {
-    this->prime = generate_prime_number(2 * size);
+  UniversalHash() {}
+  UniversalHash(std::size_t size) : size(size) {
+    this->prime = generate_prime_number(size);
     make_random_choice();
+    std::cout << "---------------------\n";
+    std::cout << this->value_a << " " << this->value_b << " " << this->prime
+              << " " << this->size << "\n";
   }
 
   T universal_hashing(T to_hash) {
-    return ((this->value_a * to_hash + this->value_b) % this->prime) % this->size;
+    return ((this->value_a * to_hash + this->value_b) % this->prime) %
+           this->size;
   }
 };
 };  // namespace cpstl

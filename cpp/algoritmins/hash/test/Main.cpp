@@ -19,7 +19,8 @@
  */
 #include <cstdlib>
 
-#include "../UniversalHash.hpp"
+//#include "../UniversalHash.hpp"
+#include "../PerfectHash.hpp"
 #include "TestTool.hpp"
 #include "Utils.hpp"
 
@@ -27,6 +28,14 @@ using namespace std;
 
 const cpstl::Log LOG(true);
 
+/**
+ * This test work on probability that the UniversalHash function
+ * choosen work well for the input array, but this is not true for
+ * each iteration. It can happen that sometime we can have a collision.
+ *
+ * This could be problem an it is managed with an implementation called
+ * perferc hasing.
+ */
 void TEST_CASE_ONE() {
   std::vector<int> inputs = {11, 25, 36, 41, 57, 66, 73, 89, 95};
   cpstl::UniversalHash<long> universal_hash(inputs.size());
@@ -34,27 +43,39 @@ void TEST_CASE_ONE() {
   for (auto elem : inputs) {
     auto hash = universal_hash.universal_hashing(elem);
     if (set.find(hash) != set.end()) {
-      auto list = set.at(hash);
+      auto& list = set.at(hash);
       list.push_back(hash);
-      set.insert(std::pair<long, std::vector<long>>(hash, list));
-      continue;
+    } else {
+      std::vector<long> new_vector;
+      new_vector.push_back(hash);
+      set.insert(std::pair<long, std::vector<long>>(hash, new_vector));
     }
-    std::vector<long> new_vector = {hash};
-    set.insert(std::pair<long, std::vector<long>>(hash, new_vector));
   }
-  auto collision = false;
+  auto collision = set.size() == inputs.size();
   for (auto elem : inputs) {
     auto hash = universal_hash.universal_hashing(elem);
     auto list = set.at(hash);
-    if (list.size() > 1)
-      collision = true;
-    cpstl::cp_log(LOG, "Value " + std::to_string(elem) + " with hash " + std::to_string(hash));
+    if (list.size() > 1) cpstl::cp_log(LOG, "\t --- Collision detected ---");
+    cpstl::cp_log(LOG, "\tValue " + std::to_string(elem) + " with hash " +
+                           std::to_string(hash));
     cpstl::cp_log(LOG, list);
   }
-  cpstl::assert_is_true("TEST_CASE_ONE", collision == false);
+  cpstl::assert_is_true("TEST_CASE_ONE", !collision);
+}
+
+void TEST_CASE_ONE_PERFECT_HASH() {
+  std::vector<int> inputs = {11, 25, 36, 41, 57, 66, 73, 89, 95};
+  cpstl::PerfectHash<int> perfect_map(inputs.size());
+  perfect_map.insert_list(inputs);
+  auto bucket = perfect_map.get_bucket();
+  for (auto elem : bucket)
+    cpstl::cp_log(LOG, "With Hash -> " + std::to_string(elem.first) +
+                           " Value " + std::to_string(elem.second));
+  cpstl::assert_is_true("TEST_CASE_ONE_PERFECT_HASH", true);
 }
 
 int main() {
   TEST_CASE_ONE();
+  TEST_CASE_ONE_PERFECT_HASH();
   return EXIT_SUCCESS;
 }
