@@ -20,13 +20,14 @@
 #include <cstdlib>
 
 //#include "../UniversalHash.hpp"
+#include "../CuckooHashing.hpp"
 #include "../PerfectHash.hpp"
 #include "TestTool.hpp"
 #include "Utils.hpp"
 
 using namespace std;
 
-const cpstl::Log LOG(true);
+const cpstl::Log LOG(false);
 
 /**
  * This test work on probability that the UniversalHash function
@@ -74,8 +75,27 @@ void TEST_CASE_ONE_PERFECT_HASH() {
   cpstl::assert_is_true("TEST_CASE_ONE_PERFECT_HASH", true);
 }
 
+void TEST_CASE_ONE_CUCKOO_HASHING() {
+  std::vector<int> inputs = {11, 25, 36, 41, 57, 66, 73, 89, 95};
+  cpstl::CuckooHashing<int> cuckoo_map(inputs.size());
+  for (auto elem : inputs) {
+    cuckoo_map.insert(elem);
+  }
+  auto correct = true;
+  for (auto elem : inputs) {
+    auto find = cuckoo_map.at(elem);
+    if (!find) {
+      cpstl::cp_log(LOG, "Key is not present: " + std::to_string(elem));
+      correct = false;
+      break;
+    }
+  }
+  cpstl::assert_is_true("TEST_CASE_ONE_CUCKOO_HASHING", correct);
+}
+
 int main() {
   TEST_CASE_ONE();
   TEST_CASE_ONE_PERFECT_HASH();
+  TEST_CASE_ONE_CUCKOO_HASHING();
   return EXIT_SUCCESS;
 }

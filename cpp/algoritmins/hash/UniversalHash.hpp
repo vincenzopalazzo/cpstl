@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
+#ifndef UNIVERSALHASHING_H
+#define UNIVERSALHASHING_H
+
 #include <cassert>
 #include <cmath>
 #include <cstring>
@@ -77,6 +80,11 @@ class UniversalHash {
     //          << " " << this->size << "\n";
   }
 
+  void new_hash_function(std::size_t size) {
+    this->prime = generate_prime_number(size);
+    make_random_choice();
+  }
+
   T universal_hashing(T to_hash) {
     assert(this->value_a >= 0 && this->value_b >= 0);
     return ((this->value_a * to_hash + this->value_b) % this->prime) %
@@ -84,3 +92,4 @@ class UniversalHash {
   }
 };
 };  // namespace cpstl
+#endif

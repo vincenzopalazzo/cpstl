@@ -1,6 +1,6 @@
 /**
  * Perfect Hash function C++ implementation
- * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ * Copyright (C) 2020-2021  Vincenzo Palazzo vincenzopalazzodev@gmail.com
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
+#ifndef PERFECTHASH_T
+#define PERFECTHASH_T
+
 #include <cassert>
 #include <map>
 
@@ -90,3 +93,4 @@ class PerfectHash {
   T get_element(T key) { assert(false && "Not supported yet"); }
 };
 };  // namespace cpstl
+#endif
