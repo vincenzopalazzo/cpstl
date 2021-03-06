@@ -8,6 +8,8 @@ Competitive programming standard library (CPSTL) is a repository with a
     - [X] [Binary Search](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/search)
     - [X] [Exponential Search](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/search)
     - [ ] [Karp Rabin fingerprint ]()
+    - [X] [Perfect Hash](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/hash)
+    - [X] [Cuckoo Hashing](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/hash)
 - Sort
     - [X] [Merge Sort](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/sort)
     - [X] [Quick Sort](https://github.com/vincenzopalazzo/cpstl/tree/master/cpp/algoritmins/sort)
