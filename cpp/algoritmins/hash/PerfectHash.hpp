@@ -50,7 +50,7 @@ class PerfectHash {
    *
    * FIXME(vincenzopalazzo): This method is buggy
    */
-  void rebalance_bucket() {
+  bool rebalance_bucket() {
     for (auto buck_elem : this->first_level) {
       if (buck_elem.second.size() > 1) {
         auto size_collision = buck_elem.second.size();
@@ -58,24 +58,20 @@ class PerfectHash {
                                                    size_collision);
         for (auto elem : buck_elem.second) {
           auto fix_hash_value = fix_universal_hash.universal_hashing(elem);
-          std::cout << fix_hash_value << "\n";
+          std::cout << "Hash value to fix: "<< fix_hash_value << "\n";
           if (this->fix_bucket.find(fix_hash_value) != this->fix_bucket.end()) {
             // assert(false && "Collision detected");
             // a possible operation can be
             std::cout << "******** Collision detected *******\n";
             this->fix_bucket.clear();
-            rebalance_bucket();
+            return false;
           }
           this->fix_bucket.emplace(fix_hash_value, elem);
         }
-      } /* else if (!buck_elem.second.empty()) {
-         // I'm sure that there is only one element
-         auto elem = buck_elem.second[0];
-         auto hash_value = this->fix_universal_hash.universal_hashing(elem);
-         this->fix_bucket.emplace(hash_value, elem);
-         }*/
+      }
     }
-  }
+    return true;
+   }
 
  public:
   PerfectHash(std::size_t size) : size(2 * size), universal_hash(2 * size) {}
@@ -84,7 +80,9 @@ class PerfectHash {
     for (auto elem : to_insert) {
       this->perfect_hash(elem);
     }
-    this->rebalance_bucket();
+    auto finish = this->rebalance_bucket();
+    while(!finish)
+      finish = this->rebalance_bucket();
   }
 
   std::map<T, T> get_bucket() { return this->fix_bucket; }
