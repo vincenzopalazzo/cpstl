@@ -43,8 +43,8 @@ class UniversalHash {
     this->value_a = generator(mt);
     generator = std::uniform_int_distribution<T>(0, this->prime - 1);
     this->value_b = generator(mt);
-    std::cout << "Value A " << this->value_a << "\n";
-    std::cout << "Value B " << this->value_b << "\n";
+    //std::cout << "Value A " << this->value_a << "\n";
+    //std::cout << "Value B " << this->value_b << "\n";
   }
 
   /**
@@ -75,8 +75,8 @@ class UniversalHash {
   UniversalHash(std::size_t size) : size(size) {
     this->prime = generate_prime_number(size);
     make_random_choice();
-    //std::cout << "---------------------\n";
-    //std::cout << this->value_a << " " << this->value_b << " " << this->prime
+    // std::cout << "---------------------\n";
+    // std::cout << this->value_a << " " << this->value_b << " " << this->prime
     //          << " " << this->size << "\n";
   }
 

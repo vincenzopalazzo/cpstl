@@ -44,7 +44,8 @@ void TEST_CASE_QUICK_SORT() {
 void TEST_CASE_RANDOMIZED_QUICK_SORT() {
   vector<int> inputs = {20, 90, 40, 1, 32};
   cpstl::randomize_quick_sort(inputs, 0, inputs.size() - 1);
-  cpstl::assert_equal("TEST_CASE_RANDOMIZED_QUICK_SORT", {1, 20, 32, 40, 90}, inputs);
+  cpstl::assert_equal("TEST_CASE_RANDOMIZED_QUICK_SORT", {1, 20, 32, 40, 90},
+                      inputs);
   cpstl::cp_log(LOG, inputs);
 }
 

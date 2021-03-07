@@ -26,7 +26,6 @@
 using namespace std;
 using namespace cpstl;
 
-
 void TEST_CASE_ONE() {
   std::string string_one = "one";
   std::string string_two = "two";

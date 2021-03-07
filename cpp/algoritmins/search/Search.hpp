@@ -44,8 +44,8 @@ class Search {
     return _binary_search(inputs, key, 0, inputs.size() - 1);
   }
 
-  static R binary_search(std::vector<T> const &inputs, T key,
-                         std::size_t start, std::size_t end) {
+  static R binary_search(std::vector<T> const &inputs, T key, std::size_t start,
+                         std::size_t end) {
     return _binary_search(inputs, key, start, end);
   }
 
