@@ -43,8 +43,8 @@ class UniversalHash {
     this->value_a = generator(mt);
     generator = std::uniform_int_distribution<T>(0, this->prime - 1);
     this->value_b = generator(mt);
-    //std::cout << "Value A " << this->value_a << "\n";
-    //std::cout << "Value B " << this->value_b << "\n";
+    // std::cout << "Value A " << this->value_a << "\n";
+    // std::cout << "Value B " << this->value_b << "\n";
   }
 
   /**
@@ -59,7 +59,7 @@ class UniversalHash {
     assert(number > 0);
     for (T p = number + 1; p <= (2 * number) + 1; p++) {
       auto isPrime = true;
-      for (T i = 2; i < std::sqrt(p); i++) {
+      for (T i = std::sqrt(p) - 1; i > 2; i--) {
         if (p % i == 0) {
           isPrime = false;
           break;

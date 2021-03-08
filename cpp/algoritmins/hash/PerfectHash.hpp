@@ -46,7 +46,7 @@ class PerfectHash {
       list.push_back(to_hash);
       return;
     }
-    std::vector<T> values {to_hash};
+    std::vector<T> values{to_hash};
     first_level.emplace(hash_value, values);
   }
 
@@ -60,8 +60,8 @@ class PerfectHash {
    * in the worst case.
    *
    * Question: The rebuild operation how is write now create a lot of collision,
-   * also with the python code, can be the problem the algorithm to choose the prime
-   * number?.
+   * also with the python code, can be the problem the algorithm to choose the
+   * prime number?.
    *
    * FIXME(vincenzopalazzo): This method is buggy
    */
@@ -71,7 +71,8 @@ class PerfectHash {
       auto size_new_bucket = size_collision * size_collision;
       this->second_universal_hash.new_hash_function(size_new_bucket);
       for (auto in_bucket : buck_elem.second) {
-        auto new_hash = this->second_universal_hash.universal_hashing(in_bucket);
+        auto new_hash =
+            this->second_universal_hash.universal_hashing(in_bucket);
         auto prev_hash = buck_elem.first;
         auto fixet_at = this->fix_bucket.find(prev_hash);
         if (fixet_at != this->fix_bucket.end()) {
@@ -84,8 +85,9 @@ class PerfectHash {
           }
         } else {
           std::cout << new_hash << "\n";
-          std::vector<T> new_bucket(size_new_bucket + 2, std::numeric_limits<T>::min());
-          auto& elem = new_bucket.at(new_hash);
+          std::vector<T> new_bucket(size_new_bucket + 2,
+                                    std::numeric_limits<T>::min());
+          auto &elem = new_bucket.at(new_hash);
           elem = in_bucket;
           this->fix_bucket.emplace(prev_hash, new_bucket);
         }

@@ -19,15 +19,15 @@
  */
 #include <cstdlib>
 
-#include "../UniversalHash.hpp"
 #include "../CuckooHashing.hpp"
 #include "../PerfectHash.hpp"
+#include "../UniversalHash.hpp"
 #include "TestTool.hpp"
 #include "Utils.hpp"
 
 using namespace std;
 
-const cpstl::Log LOG(true);
+const cpstl::Log LOG(false);
 
 /**
  * This test work on probability that the UniversalHash function
@@ -75,11 +75,11 @@ void TEST_CASE_ONE_PERFECT_HASH() {
     cpstl::cp_log(LOG, "With Hash -> " + std::to_string(elem.first));
     cpstl::cp_log(LOG, elem.second);
     for (auto e : elem.second) {
-      if (e != std::numeric_limits<int>::min())
-        in_buckets.push_back(e);
+      if (e != std::numeric_limits<int>::min()) in_buckets.push_back(e);
     }
   }
-  cpstl::assert_is_true("TEST_CASE_ONE_PERFECT_HASH", in_buckets.size() == inputs.size());
+  cpstl::assert_is_true("TEST_CASE_ONE_PERFECT_HASH",
+                        in_buckets.size() == inputs.size());
   std::sort(inputs.begin(), inputs.end());
   std::sort(in_buckets.begin(), in_buckets.end());
   cpstl::cp_log(LOG, inputs);
@@ -103,7 +103,6 @@ void TEST_CASE_ONE_CUCKOO_HASHING() {
   }
   cpstl::assert_is_true("TEST_CASE_ONE_CUCKOO_HASHING", correct);
   cpstl::cp_log(LOG, inputs);
-
 }
 
 int main() {
