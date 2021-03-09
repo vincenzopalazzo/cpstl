@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/RBTree.hpp
+iostream
+-
+memory
+-
+vector
+-
+
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/test/Main.cpp
+cstdlib
+-
+../RBTree.hpp
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/RBTree.hpp
+TestTool.hpp
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/test/TestTool.hpp
+Utils.hpp
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/test/Utils.hpp
+
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/test/TestTool.hpp
+iostream
+-
+vector
+-
+colors.h
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/test/colors.h
+
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/test/Utils.hpp
+bits/stdc++.h
+-
+iostream
+-
+vector
+-
+colors.h
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/test/colors.h
+
+/home/vincent/Github/cpstl/cpp/data_structures/rbtree/test/colors.h
+
