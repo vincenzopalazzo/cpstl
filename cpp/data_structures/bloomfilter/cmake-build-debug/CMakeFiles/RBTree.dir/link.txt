@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/RBTree.dir/test/Main.cpp.o  -o RBTree 
