@@ -24,16 +24,44 @@
 #include "Utils.hpp"
 
 using namespace std;
-using namespace cpstl;
 
-void TEST_CASE_ONE_BUILD() {}
+void TEST_CASE_TWO_BFS() {
+  //      2 -> 3 -> 4
+  // 1 ->
+  //      5 -> 6 -> 7
 
-void TEST_CASE_TWO_BFS() {}
+  cpstl::GraphList<int> graph(true);
+  graph.add_edge(1, 2);
+  graph.add_edge(2, 3);
+  graph.add_edge(3, 4);
+  graph.add_edge(1, 5);
+  graph.add_edge(5, 6);
+  graph.add_edge(6, 7);
 
-void TEST_CAS_THREE_DFS() {}
+  auto result = graph.bfs();
+  cpstl::assert_equal("TEST_CASE_BFS", 1, static_cast<int>(result.size()));
+  cpstl::assert_equal("TEST_CASE_BFS", {1, 2, 5, 3, 6, 4, 7}, result[0]);
+  cpstl::cp_log(LOG, result[0]);
+}
+
+void TEST_CAS_THREE_DFS() {
+  //      2 -> 4 -> 5
+  // 1 ->
+  //      3 -> NULL
+  //
+  cpstl::GraphList<int> graph(true);
+  graph.add_edge(1, 2);
+  graph.add_edge(1, 3);
+  graph.add_edge(2, 4);
+  graph.add_edge(4, 5);
+
+  auto result = graph.dfs();
+  cpstl::assert_equal("TEST_CASE_DFS", 1, static_cast<int>(result.size()));
+  cpstl::assert_equal("TEST_CASE_DFS", {1, 2, 4, 5, 3}, result[0]);
+  cpstl::cp_log(LOG, result[0]);
+}
 
 int main() {
-  TEST_CASE_ONE_BUILD();
   TEST_CASE_TWO_BFS();
   TEST_CAS_THREE_DFS();
   return EXIT_SUCCESS;

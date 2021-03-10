@@ -26,7 +26,6 @@
 using namespace std;
 
 void TEST_BLOOM_FILTER_ONE() {
-
   std::vector<int> inputs = {11, 25, 36, 41, 57, 66, 73, 89, 95};
   cpstl::BloomFilter<int> bloomFilter(inputs.size());
   for (auto elem : inputs) {

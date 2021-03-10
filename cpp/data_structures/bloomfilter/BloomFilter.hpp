@@ -45,8 +45,7 @@ class BloomFilter {
   }
 
  public:
-  BloomFilter(std::size_t size, std::size_t factor) :
-    filter(factor * size, 0) {
+  BloomFilter(std::size_t size, std::size_t factor) : filter(factor * size, 0) {
     this->size = size;
     auto optimal_hash_size =
         this->calculate_number_of_hash_function(factor, size);
@@ -54,9 +53,7 @@ class BloomFilter {
         optimal_hash_size, cpstl::UniversalHash<T>(factor * this->size));
   }
 
-  BloomFilter(std::size_t size) {
-    BloomFilter(size, filter_factor);
-  }
+  BloomFilter(std::size_t size) { BloomFilter(size, filter_factor); }
 
   void insert(T value) {
     for (auto hash : hash_functions) {

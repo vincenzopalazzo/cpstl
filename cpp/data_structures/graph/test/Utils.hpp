@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <bits/stdc++.h>
 
 #include <iostream>
@@ -34,6 +37,23 @@ struct Log {
   Log(bool enable) : enable(enable) {}
 };
 
+
+  template <typename T>
+  inline void print_vector(std::vector<T> const &inputs) {
+    std::cout << BOLDYELLOW;
+    std::cout << "Vector: [";
+    for (int i = 0; i < inputs.size(); i++) {
+      if (i == inputs.size() - 1) {
+        std::cout << inputs[i] << "]";
+        continue;
+      }
+      cout << inputs[i] << ", ";
+    }
+    cout << "\n";
+    cout << RESET;
+  }
+
+
 inline void cp_log(Log log, std::string message) {
   if (!log.enable) return;
   std::cout << BOLDYELLOW;
@@ -47,23 +67,7 @@ inline void cp_log(Log log, std::vector<T> const &inputs) {
   if (!log.enable) return;
   std::cout << BOLDYELLOW;
   print_vector(inputs);
-  std::cout << "\n";
   std::cout << RESET;
-}
-
-template <typename T>
-inline void print_vector(std::vector<T> const &inputs) {
-  std::cout << BOLDYELLOW;
-  std::cout << "Vector: [";
-  for (int i = 0; i < inputs.size(); i++) {
-    if (i == inputs.size() - 1) {
-      std::cout << inputs[i] << "]";
-      continue;
-    }
-    cout << inputs[i] << ", ";
-  }
-  cout << "\n";
-  cout << RESET;
 }
 
 /**
@@ -103,3 +107,4 @@ inline std::vector<T> load_input_from_string(std::string &input_string) {
   return splits;
 }
 }  // namespace cpstl
+#endif

@@ -37,7 +37,7 @@ void assert_equal(std::string name_test, T aspected, T actual) {
   std::cout << BOLDWHITE << "|------------ TEST " << name_test
             << " -------------------|" << RESET << "\n";
   if (aspected == actual) {
-    std::cout << BOLDGREEN << name_test << " PASSED" << RESET << "\n";
+    std::cout << BOLDGREEN << name_test << " PASSED" << RESET;
     return;
   }
   std::cout << BOLDRED;

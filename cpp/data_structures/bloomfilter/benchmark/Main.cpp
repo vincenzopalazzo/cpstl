@@ -31,8 +31,10 @@ static void CustomArguments(benchmark::internal::Benchmark* b);
 static void BM_BLOOM_FILTER_REPORT(benchmark::State& state) {
   for (auto _ : state) {
     state.PauseTiming();
-    auto inputGenerator = std::uniform_int_distribution<long>(0, state.range(0));
-    auto notInsideGen = std::uniform_int_distribution<long>(state.range(0) + 1, 2 * state.range(0));
+    auto inputGenerator =
+        std::uniform_int_distribution<long>(0, state.range(0));
+    auto notInsideGen = std::uniform_int_distribution<long>(state.range(0) + 1,
+                                                            2 * state.range(0));
     std::vector<long> inputs;
     std::vector<long> notInside;
 
@@ -42,13 +44,11 @@ static void BM_BLOOM_FILTER_REPORT(benchmark::State& state) {
     }
     state.ResumeTiming();
     cpstl::BloomFilter<long> bloomFilter(state.range(0), state.range(1));
-    for (auto elem : inputs)
-      bloomFilter.insert(elem);
+    for (auto elem : inputs) bloomFilter.insert(elem);
     auto countFalsePositive = 0;
     for (auto elem : notInside) {
       auto result = bloomFilter.contains(elem);
-      if (result == true)
-        countFalsePositive++;
+      if (result == true) countFalsePositive++;
     }
     state.counters["FalsePositive"] = countFalsePositive;
   }
@@ -61,7 +61,8 @@ static void CustomArguments(benchmark::internal::Benchmark* b) {
   long j = 1;
   for (int i = 4; i <= 21; i++) {
     // in the formula the probability to have an false positive is (log2)^(m/n)
-    //where m is the size of the filter and n is the size of the inputs array and in the following args the value are
+    // where m is the size of the filter and n is the size of the inputs array
+    // and in the following args the value are
     // <n, factor to calculate the size of the filter>
     b->Args({static_cast<long>(std::pow(2, i)), static_cast<long>(j)});
     j++;

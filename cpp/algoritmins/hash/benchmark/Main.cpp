@@ -25,7 +25,6 @@
 
 using namespace cpstl;
 
-
 static void BM_CPP_PERFECT_HASHING(benchmark::State& state) {
   for (auto _ : state) {
     state.PauseTiming();
