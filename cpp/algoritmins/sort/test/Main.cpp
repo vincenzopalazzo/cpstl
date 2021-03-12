@@ -49,9 +49,18 @@ void TEST_CASE_RANDOMIZED_QUICK_SORT() {
   cpstl::cp_log(LOG, inputs);
 }
 
+void TEST_CASE_ODD_EVEN_SORT() {
+  vector<int> inputs = {20, 90, 40, 1, 32};
+  cpstl::odd_even_sort(inputs, 0, inputs.size());
+
+  cpstl::assert_equal("TEST_CASE_ODD_EVEN_SORT", {1, 20, 32, 40, 90}, inputs);
+  cpstl::cp_log(LOG, inputs);
+}
+
 int main() {
   TEST_CASE_MERGE_SORT();
   TEST_CASE_QUICK_SORT();
   TEST_CASE_RANDOMIZED_QUICK_SORT();
+  TEST_CASE_ODD_EVEN_SORT();
   return EXIT_SUCCESS;
 }

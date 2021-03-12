@@ -142,6 +142,39 @@ void randomize_quick_sort(std::vector<T> &inputs, int p, int r) {
     quick_sort(inputs, middle + 1, r);
   }
 }
+
+template <typename T>
+void odd_even_sort(std::vector<T> &inputs, int p, int r) {
+  auto is_sorted = false;
+  while(!is_sorted) {
+    is_sorted = true;
+
+    int start_odd;
+    int start_even;
+    if (p % 2 == 0) {
+      start_odd = p + 1;
+      start_even = p;
+    } else {
+      start_odd = p;
+      start_even = p + 1;
+    }
+    // Bubble sort on odd element
+    for (int i = start_odd; i < r - 1; i += 2) {
+      if (inputs[i] > inputs[i + 1]) {
+        std::swap(inputs[i], inputs[i + 1]);
+        is_sorted = false;
+      }
+    }
+
+    // Bubble Sort on even element
+    for (int i = start_even; i < r - 1; i += 2) {
+      if (inputs[i] > inputs[i + 1]) {
+        std::swap(inputs[i], inputs[i + 1]);
+        is_sorted = false;
+      }
+    }
+  }
+}
 }  // namespace cpstl
 
 // Type declaration
@@ -149,3 +182,4 @@ template void cpstl::merge_sort<int>(vector<int> &inputs, int p, int r);
 template void cpstl::quick_sort<int>(std::vector<int> &inputs, int p, int r);
 template void cpstl::randomize_quick_sort<int>(std::vector<int> &inputs, int p,
                                                int r);
+template void cpstl::odd_even_sort<int>(std::vector<int> &inputs, int p, int r);

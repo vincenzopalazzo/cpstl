@@ -93,6 +93,20 @@ static void BM_CPSTL_SORTED_RANDOMIZED_QUICK_SORT(benchmark::State& state) {
   }
 }
 
+static void BM_CPST_ODD_EVEN_SORT(benchmark::State& state) {
+  for (auto _ : state) {
+    state.PauseTiming();
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    auto generator = std::uniform_int_distribution<int>(0, state.range(0));
+    std::vector<int> random_array;
+    random_array.reserve(state.range(0));
+    for (int i = 0; i < state.range(0); i++) random_array.push_back(generator(mt));
+    state.ResumeTiming();
+    odd_even_sort(random_array, 0, random_array.size() - 1);
+  }
+}
+
 static void BM_STL(benchmark::State& state) {
   for (auto _ : state) {
     state.PauseTiming();
@@ -130,5 +144,6 @@ BENCHMARK(BM_CPSTL_SORTED_QUICK_SORT)->Range(1 << 14, 1 << 18);
 BENCHMARK(BM_CPSTL_SORTED_RANDOMIZED_QUICK_SORT)->Range(1 << 14, 1 << 18);
 BENCHMARK(BM_SORTED_STL)->Range(1 << 14, 1 << 18);
 BENCHMARK(BM_STL)->Range(1 << 14, 1 << 18);
+BENCHMARK(BM_CPST_ODD_EVEN_SORT)->Range(1 << 14, 1 << 18);
 
 BENCHMARK_MAIN();
