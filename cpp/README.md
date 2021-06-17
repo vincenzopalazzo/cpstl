@@ -26,7 +26,7 @@ Competitive programming standard library (CPSTL) is a repository with a
         - [ ] [Adjacency lists]()
         - [ ] [Matrix]()
 - Concurrency
-  - [X] [Stack]()
-  - [X] [Queue]()
-  - [X] [HashMap]()
+  - [X] [Stack](https://github.com/vincenzopalazzo/cpstl/blob/master/cpp/concurrency/thread_safe/Stack.hpp)
+  - [X] [Queue](https://github.com/vincenzopalazzo/cpstl/blob/master/cpp/concurrency/thread_safe/Queue.hpp)
+  - [X] [HashMap](https://github.com/vincenzopalazzo/cpstl/blob/master/cpp/concurrency/thread_safe/HashMap.hpp)
   - [ ] [List]()
