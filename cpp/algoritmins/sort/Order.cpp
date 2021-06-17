@@ -146,7 +146,7 @@ void randomize_quick_sort(std::vector<T> &inputs, int p, int r) {
 template <typename T>
 void odd_even_sort(std::vector<T> &inputs, int p, int r) {
   auto is_sorted = false;
-  while(!is_sorted) {
+  while (!is_sorted) {
     is_sorted = true;
 
     int start_odd;

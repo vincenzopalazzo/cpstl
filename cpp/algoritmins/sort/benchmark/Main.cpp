@@ -101,7 +101,8 @@ static void BM_CPST_ODD_EVEN_SORT(benchmark::State& state) {
     auto generator = std::uniform_int_distribution<int>(0, state.range(0));
     std::vector<int> random_array;
     random_array.reserve(state.range(0));
-    for (int i = 0; i < state.range(0); i++) random_array.push_back(generator(mt));
+    for (int i = 0; i < state.range(0); i++)
+      random_array.push_back(generator(mt));
     state.ResumeTiming();
     odd_even_sort(random_array, 0, random_array.size() - 1);
   }

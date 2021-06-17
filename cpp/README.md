@@ -25,3 +25,8 @@ Competitive programming standard library (CPSTL) is a repository with a
     - [ ] Graph
         - [ ] [Adjacency lists]()
         - [ ] [Matrix]()
+- Concurrency
+  - [X] [Stack]()
+  - [X] [Queue]()
+  - [X] [HashMap]()
+  - [ ] [List]()

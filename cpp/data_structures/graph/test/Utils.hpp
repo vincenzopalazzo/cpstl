@@ -37,22 +37,20 @@ struct Log {
   Log(bool enable) : enable(enable) {}
 };
 
-
-  template <typename T>
-  inline void print_vector(std::vector<T> const &inputs) {
-    std::cout << BOLDYELLOW;
-    std::cout << "Vector: [";
-    for (int i = 0; i < inputs.size(); i++) {
-      if (i == inputs.size() - 1) {
-        std::cout << inputs[i] << "]";
-        continue;
-      }
-      cout << inputs[i] << ", ";
+template <typename T>
+inline void print_vector(std::vector<T> const &inputs) {
+  std::cout << BOLDYELLOW;
+  std::cout << "Vector: [";
+  for (int i = 0; i < inputs.size(); i++) {
+    if (i == inputs.size() - 1) {
+      std::cout << inputs[i] << "]";
+      continue;
     }
-    cout << "\n";
-    cout << RESET;
+    cout << inputs[i] << ", ";
   }
-
+  cout << "\n";
+  cout << RESET;
+}
 
 inline void cp_log(Log log, std::string message) {
   if (!log.enable) return;
