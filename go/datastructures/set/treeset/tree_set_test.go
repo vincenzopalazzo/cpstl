@@ -8,5 +8,5 @@ import (
 
 func TestTreeSetInt(t *testing.T) {
 	set := NewTreeSet()
-	assert.Equal(t, uint64(0), set.Size())
+	assert.Equal(t, 0, set.Size())
 }

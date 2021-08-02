@@ -24,28 +24,28 @@ import (
 )
 
 type TreeSet struct {
-	size uint64
+	size int
 	// TODO adding a tree datastructures.
 }
 
 func NewTreeSet() set.Set {
-	return &TreeSet {size: uint64(0)}
+	return &TreeSet{size: 0}
 }
 
-func (instance *TreeSet) Put(element *set.ElemToHash) {}
+func (instance *TreeSet) Put(element set.ElemToHash) {}
 
-func (instance *TreeSet) Has(element *set.ElemToHash) bool {
+func (instance *TreeSet) Has(element set.ElemToHash) bool {
 	return true
 }
 
-func (instance *TreeSet) Size() uint64 {
+func (instance *TreeSet) Size() int {
 	return instance.size
 }
 
-func (instance *TreeSet) Next() (*set.ElemToHash, bool) {
+func (instance *TreeSet) Next() (set.ElemToHash, bool) {
 	return nil, false
 }
 
-func (instance *TreeSet) ToList() []*set.ElemToHash {
-	return make([]*set.ElemToHash, 0)
+func (instance *TreeSet) ToList() []set.ElemToHash {
+	return make([]set.ElemToHash, 0)
 }

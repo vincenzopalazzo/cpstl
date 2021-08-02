@@ -24,12 +24,9 @@ type ElemToHash interface {
 }
 
 type Set interface {
-	Put(element *ElemToHash)
-	Has(element *ElemToHash) bool
-	Size() uint64
-	// Iterator over the set
-	Next() (*ElemToHash, bool)
+	Put(element ElemToHash)
+	Has(element ElemToHash) bool
+	Size() int
 	// To List
-	ToList() []*ElemToHash
+	ToList() []ElemToHash
 }
-
