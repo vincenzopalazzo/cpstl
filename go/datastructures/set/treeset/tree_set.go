@@ -17,30 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
-package datastructures
+package treeset
 
-type ElemToHash interface {
-	Hash() int64
-}
-
-type Set interface {
-	Put(element *ElemToHash)
-	Has(element *ElemToHash) bool
-	Size() uint64
-	Next() (ElemToHash, bool)
-}
+import (
+	"github.com/vincenzopalazzo/cpstl/go/datastructures/set"
+)
 
 type TreeSet struct {
 	size uint64
+	// TODO adding a tree datastructures.
 }
 
-func NewTreeSet() Set {
+func NewTreeSet() set.Set {
 	return &TreeSet {size: uint64(0)}
 }
 
-func (instance *TreeSet) Put(element *ElemToHash) {}
+func (instance *TreeSet) Put(element *set.ElemToHash) {}
 
-func (instance *TreeSet) Has(element *ElemToHash) bool {
+func (instance *TreeSet) Has(element *set.ElemToHash) bool {
 	return true
 }
 
@@ -48,6 +42,10 @@ func (instance *TreeSet) Size() uint64 {
 	return instance.size
 }
 
-func (instance *TreeSet) Next() (ElemToHash, bool) {
+func (instance *TreeSet) Next() (*set.ElemToHash, bool) {
 	return nil, false
+}
+
+func (instance *TreeSet) ToList() []*set.ElemToHash {
+	return make([]*set.ElemToHash, 0)
 }

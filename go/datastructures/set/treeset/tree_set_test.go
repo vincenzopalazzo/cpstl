@@ -1,4 +1,4 @@
-package datastructures
+package treeset
 
 import (
 	"testing"
