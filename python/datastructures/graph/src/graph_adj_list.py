@@ -102,7 +102,7 @@ class GraphList:
             node.add_node(v)
             self.nodes.append(node)
         else:
-            raise RuntimeError("Not directed graph unsupported")
+            raise RuntimeError("unsupported undirected graph")
 
     def dfs(self) -> list:
         paths = []
