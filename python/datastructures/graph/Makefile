@@ -3,7 +3,7 @@ CHECK_SYNTAX=black
 PIP=pip3
 
 default: fmt
-	$(CC) -m pytest -v tests
+	$(CC) -m pytest tests
 
 fmt:
 	$(CHECK_SYNTAX) .

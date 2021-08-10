@@ -17,6 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 USA.
 """
+from queue import Queue
 
 
 class Node:
@@ -45,16 +46,85 @@ class GraphList:
         self.nodes = []
 
     def __dfs_helper(self, target: Node, path: list) -> None:
-        pass
+        path.append(target.value)
+        for node in target.children:
+            self.__dfs_helper(node, path)
 
     def __bsf_helper(self, target: Node, path: list) -> None:
-        pass
+        to_visit = Queue()
+        to_visit.put(target)
+        while not to_visit.empty():
+            node = to_visit.get()
+            path.append(node.value)
+            for child in node.children:
+                to_visit.put(child)
+
+    def __find_node(self, node: Node, value) -> Node:
+        """
+        Find the node with the value in the node
+        if it exist return the node, otherwise return None
+        """
+        if node.value == value:
+            return node
+        for child in node.children:
+            found = self.__find_node(child, value)
+            if found is not None:
+                return found
+        return None
+
+    def __find_node_add(self, node: Node, value, to_add) -> bool:
+        """
+        Find the node with the value in the node
+        if it exist return the node, otherwise return None
+        """
+        if node.value == value:
+            node.add_node(to_add)
+            return True
+        for child in node.children:
+            found = self.__find_node(child, value)
+            if found is True:
+                return True
+        return False
 
     def add_edge(self, u, v) -> None:
-        pass
+        """
+        Adding a edge to graph, if directed is true
+        add the edge from u -> v, otherwise adding a
+        edge u -> v and v -> u.
+        """
+        if self.directed:
+            if len(self.nodes) != 0:
+                for node in self.nodes:
+                    found = self.__find_node_add(node, u, v)
+                    if found is True:
+                        return
+            node = Node(u)
+            node.add_node(v)
+            self.nodes.append(node)
+        else:
+            raise RuntimeError("Not directed graph unsupported")
 
     def dfs(self) -> list:
-        pass
+        paths = []
+        for node in self.nodes:
+            path = []
+            self.__dfs_helper(node, path)
+            paths.append(path)
+        return paths
 
-    def bsf(self) -> list:
-        pass
+    def bfs(self) -> list:
+        paths = []
+        for node in self.nodes:
+            path = []
+            self.__bsf_helper(node, path)
+            print(path)
+            paths.append(path)
+        return paths
+
+    def size(self) -> int:
+        uniques = set()
+        for node in self.nodes:
+            uniques.add(node.value)
+            for child in node.children:
+                uniques.add(child.value)
+        return len(uniques)
