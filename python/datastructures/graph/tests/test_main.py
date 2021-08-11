@@ -60,4 +60,40 @@ def test_bfs():
     graph.add_edge(1, 2)
     graph.add_edge(2, 3)
     graph.add_edge(2, 4)
-    assert graph.bfs() != [[1, 2], [2, 3, 4]]
+    assert graph.bfs() == [[1, 2], [2, 3, 4]]
+
+
+def test_find_cliques_directed_empty():
+    """
+    Simple test to make sure that the clique algorithm works
+    as best it can.
+    """
+    graph = GraphList(directed=True)
+    graph.add_edge(1, 2)
+    graph.add_edge(1, 3)
+    graph.add_edge(1, 5)
+    graph.add_edge(2, 3)
+    graph.add_edge(2, 4)
+    graph.add_edge(2, 6)
+    graph.add_edge(3, 4)
+    graph.add_edge(3, 6)
+    graph.add_edge(4, 5)
+    graph.add_edge(4, 6)
+
+    # Find triangles in the graph (stupid algorithm)
+    cliques = graph.cliques(min_size=3, max_size=3)
+    assert len(cliques) == 0
+
+
+def test_find_cliques_directed():
+    """
+    Simple test to make sure that the clique algorithm works
+    as best it can
+    """
+    graph = GraphList(directed=True)
+    graph.add_edge(1, 2)
+    graph.add_edge(2, 3)
+    graph.add_edge(3, 1)
+
+    cliques = graph.cliques(min_size=3, max_size=3)
+    assert len(cliques) == 1

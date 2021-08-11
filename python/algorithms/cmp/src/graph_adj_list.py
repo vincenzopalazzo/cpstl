@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 USA.
 """
 from queue import Queue
-from itertools import product
 
 
 class Node:
@@ -34,23 +33,6 @@ class Node:
     def add_node(self, value) -> None:
         node = Node(value)
         self.children.append(node)
-
-    def __str__(self):
-        return "{}: ".format(self.value).join([str(node) for node in self.children])
-
-
-class Edge:
-    """
-    Edge implementation that constains two node, in the literature it is known as
-    (u, v).
-    """
-
-    def __init__(self, u: Node, v: Node):
-        self.u = u
-        self.v = v
-
-    def __str__(self):
-        return "({}, {})".format(self.u.value, self.v.value)
 
 
 class GraphList:
@@ -90,29 +72,19 @@ class GraphList:
                 return found
         return None
 
-    def __find_node_add(self, node: Node, value, to_add, directed=True) -> bool:
+    def __find_node_add(self, node: Node, value, to_add) -> bool:
         """
         Find the node with the value in the node
         if it exist return the node, otherwise return None
         """
         if node.value == value:
             node.add_node(to_add)
-            if directed is False:
-                result = self.__find_node_add(node, to_add, node.value, directed)
-                assert result == True
             return True
         for child in node.children:
             found = self.__find_node(child, value)
             if found is True:
                 return True
         return False
-
-    def __cartesian_product(self) -> list:
-        edges = list()
-        for node in self.nodes:
-            for child in node.children:
-                edges.append(Edge(node, child))
-        return edges
 
     def add_edge(self, u, v) -> None:
         """
@@ -130,15 +102,7 @@ class GraphList:
             node.add_node(v)
             self.nodes.append(node)
         else:
-            if len(self.nodes) != 0:
-                for node in self.nodes:
-                    found = self.__find_node_add(node, u, v)
-                    if found is True:
-                        return
-            node = Node(u)
-            node.add_node(v)
-            node.children[0].add_node(node)
-            self.nodes.append(node)
+            raise RuntimeError("unsupported undirected graph")
 
     def dfs(self) -> list:
         paths = []
@@ -165,55 +129,12 @@ class GraphList:
                 uniques.add(child.value)
         return len(uniques)
 
-    def edges(self) -> list:
-        edges = list()
-        for node in self.nodes:
-            for child in node.children:
-                edges.append((node, child))
-        return edges
-
-    def to_undirected(self):
-        """
-        Convert a directed graph to undirected graph
-        """
-        if self.directed is False:
-            raise ValueError("The graph is already undirected")
-
-        graph = GraphList(directed=False)
-        for node in self.nodes:
-            for child in node.children:
-                graph.add_edge(node.value, child.value)
-        return graph
-
     def cliques(self, min_size: int, max_size: int) -> list:
         """
         Find the cliques in the graph, and return a list of nodes.
         min_size: Minimum size of a clique
         max_size: Max size of a clique
         """
-        if self.size() < min_size:
-            return []
+        print("Not implemented yet")
+        return []
 
-        # TODO: Move the graph in a undirectd graph
-
-        graph = self
-        if self.directed is True:
-            graph = self.to_undirected()
-
-        cliques = []
-        # Make the cartesian product of the list of edges
-        cartesian = graph.__cartesian_product()
-        print("".join([str(edge) for edge in cartesian]))
-        for i in range(0, len(cartesian)):
-            element = cartesian[i].u  # first element
-            clique = [element]
-            fail = False
-            for j in range(i, len(cartesian)):
-                to_check = cartesian[j].v
-                if element != to_check:
-                    fail = True
-                if fail is False:
-                    clique.append(to_check)
-            if len(clique) >= min_size and len(clique) <= max_size:
-                cliques.append(clique)
-        return cliques
