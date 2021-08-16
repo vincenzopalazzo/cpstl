@@ -63,6 +63,26 @@ def test_bfs():
     assert graph.bfs() == [[1, 2], [2, 3, 4]]
 
 
+def test_mutate_from_directed_to_undirected_small():
+    """"""
+    graph = GraphList(directed=True)
+    graph.add_edge(1, 2)
+
+    undirected = graph.to_undirected()
+    assert len(graph.edges()) * 2 == len(undirected.edges())
+
+
+def test_mutate_from_directed_to_undirected_big():
+    """"""
+    graph = GraphList(directed=True)
+    graph.add_edge(1, 2)
+    graph.add_edge(2, 3)
+    graph.add_edge(4, 5)
+
+    undirected = graph.to_undirected()
+    assert (len(graph.edges()) - 1) * 2 == len(undirected.edges()) - 1
+
+
 def test_find_cliques_directed_empty():
     """
     Simple test to make sure that the clique algorithm works
@@ -95,5 +115,5 @@ def test_find_cliques_directed():
     graph.add_edge(2, 3)
     graph.add_edge(3, 1)
 
-    cliques = graph.cliques(min_size=3, max_size=3)
+    cliques = graph.cliques()
     assert len(cliques) == 1

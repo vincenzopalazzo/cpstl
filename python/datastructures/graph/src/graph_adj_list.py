@@ -36,7 +36,9 @@ class Node:
         self.children.append(node)
 
     def __str__(self):
-        return "{}: ".format(self.value).join([str(node) for node in self.children])
+        if len(self.children) == 0:
+            return "{}".format(self.value)
+        return "{}: with {} edges".format(self.value, len(self.children))
 
 
 class Edge:
@@ -98,8 +100,7 @@ class GraphList:
         if node.value == value:
             node.add_node(to_add)
             if directed is False:
-                result = self.__find_node_add(node, to_add, node.value, directed)
-                assert result == True
+                node.children[len(node.children) - 1].add_node(node.value)
             return True
         for child in node.children:
             found = self.__find_node(child, value)
@@ -123,7 +124,7 @@ class GraphList:
         if self.directed:
             if len(self.nodes) != 0:
                 for node in self.nodes:
-                    found = self.__find_node_add(node, u, v)
+                    found = self.__find_node_add(node, u, v, self.directed)
                     if found is True:
                         return
             node = Node(u)
@@ -132,13 +133,17 @@ class GraphList:
         else:
             if len(self.nodes) != 0:
                 for node in self.nodes:
-                    found = self.__find_node_add(node, u, v)
+                    found = self.__find_node_add(node, u, v, self.directed)
                     if found is True:
                         return
-            node = Node(u)
-            node.add_node(v)
-            node.children[0].add_node(node)
-            self.nodes.append(node)
+            node_u = Node(u)
+            node_u.add_node(v)
+
+            node_v = Node(v)
+            node_v.add_node(u)
+
+            self.nodes.append(node_u)
+            self.nodes.append(node_v)
 
     def dfs(self) -> list:
         paths = []
@@ -178,14 +183,13 @@ class GraphList:
         """
         if self.directed is False:
             raise ValueError("The graph is already undirected")
-
         graph = GraphList(directed=False)
         for node in self.nodes:
             for child in node.children:
                 graph.add_edge(node.value, child.value)
         return graph
 
-    def cliques(self, min_size: int, max_size: int) -> list:
+    def cliques(self, min_size: int = 3, max_size: int = 3) -> list:
         """
         Find the cliques in the graph, and return a list of nodes.
         min_size: Minimum size of a clique
@@ -194,26 +198,42 @@ class GraphList:
         if self.size() < min_size:
             return []
 
-        # TODO: Move the graph in a undirectd graph
-
         graph = self
         if self.directed is True:
             graph = self.to_undirected()
 
         cliques = []
-        # Make the cartesian product of the list of edges
-        cartesian = graph.__cartesian_product()
-        print("".join([str(edge) for edge in cartesian]))
-        for i in range(0, len(cartesian)):
-            element = cartesian[i].u  # first element
-            clique = [element]
-            fail = False
-            for j in range(i, len(cartesian)):
-                to_check = cartesian[j].v
-                if element != to_check:
-                    fail = True
-                if fail is False:
-                    clique.append(to_check)
-            if len(clique) >= min_size and len(clique) <= max_size:
+
+        # This is a dictionary of node value that contains an adjacent set
+        # of nodes that are of the node that the key of the dictionary is connected
+        # with.
+        map_node = dict()
+
+        for node in graph.nodes:
+            if node.value in map_node:
+                adj_set = map_node[node.value]
+            else:
+                adj_set = set()
+            for child in node.children:
+                adj_set.add(child.value)
+                if child.value in map_node:
+                    child_adj = map_node[child.value]
+                    child_adj.add(node.value)
+                    map_node[child.value] = child_adj
+                else:
+                    child_adj = set()
+                    child_adj.add(node.value)
+                    map_node[child.value] = child_adj
+            map_node[node.value] = adj_set
+
+        for node in graph.nodes:
+            clique = [node.value]
+            for child in node.children:
+                child_adj = map_node[child.value]
+                if node.value in child_adj:
+                    clique.append(child.value)
+
+            clique_size = len(clique)
+            if clique_size >= min_size and clique_size <= max_size:
                 cliques.append(clique)
         return cliques
