@@ -100,8 +100,7 @@ def test_find_cliques_directed_empty():
     graph.add_edge(4, 5)
     graph.add_edge(4, 6)
 
-    # Find triangles in the graph (stupid algorithm)
-    cliques = graph.cliques(min_size=3, max_size=3)
+    cliques = graph.cliques()
     assert len(cliques) == 0
 
 

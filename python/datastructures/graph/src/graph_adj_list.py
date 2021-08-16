@@ -108,12 +108,38 @@ class GraphList:
                 return True
         return False
 
-    def __cartesian_product(self) -> list:
-        edges = list()
+    def __to_adj_map(self) -> dict:
+        """
+        Convert the graph into a adj map, where the key of the map
+        if the value of the node and the set of value is the children
+        where the node is connected with.
+
+        An graphical example is the following one:
+        1 -> [2, 3]
+        2 -> [1, 2]
+        """
+        # This is a dictionary of node value that contains an adjacent set
+        # of nodes that are of the node that the key of the dictionary is connected
+        # with.
+        map_node = dict()
+
         for node in self.nodes:
+            if node.value in map_node:
+                adj_set = map_node[node.value]
+            else:
+                adj_set = set()
             for child in node.children:
-                edges.append(Edge(node, child))
-        return edges
+                adj_set.add(child.value)
+                if child.value in map_node:
+                    child_adj = map_node[child.value]
+                    child_adj.add(node.value)
+                    map_node[child.value] = child_adj
+                else:
+                    child_adj = set()
+                    child_adj.add(node.value)
+                    map_node[child.value] = child_adj
+            map_node[node.value] = adj_set
+        return map_node
 
     def add_edge(self, u, v) -> None:
         """
@@ -189,15 +215,29 @@ class GraphList:
                 graph.add_edge(node.value, child.value)
         return graph
 
-    def cliques(self, min_size: int = 3, max_size: int = 3) -> list:
+    def max_cliques(self):
+        """
+        Calculate the maximum cliques in the graph.
+        The maximum cliques in a graph is the biggest subgraph that these cliques
+        will form.
+        """
+        pass
+
+    def k_cliques(self, min_size: int = 3, max_size: int = 3) -> list:
+        """
+        Solve the kclique problem with the following parameters.
+        The k-cliques problem is a clique problem where the valid distance between
+        two nodes is equal to k.
+
+        min_size: The minimum distance accept between two nodes.
+        max_size: The maximum distance accept between two nodes.
+        """
+        pass
+
+    def cliques(self) -> list:
         """
         Find the cliques in the graph, and return a list of nodes.
-        min_size: Minimum size of a clique
-        max_size: Max size of a clique
         """
-        if self.size() < min_size:
-            return []
-
         graph = self
         if self.directed is True:
             graph = self.to_undirected()
@@ -207,24 +247,7 @@ class GraphList:
         # This is a dictionary of node value that contains an adjacent set
         # of nodes that are of the node that the key of the dictionary is connected
         # with.
-        map_node = dict()
-
-        for node in graph.nodes:
-            if node.value in map_node:
-                adj_set = map_node[node.value]
-            else:
-                adj_set = set()
-            for child in node.children:
-                adj_set.add(child.value)
-                if child.value in map_node:
-                    child_adj = map_node[child.value]
-                    child_adj.add(node.value)
-                    map_node[child.value] = child_adj
-                else:
-                    child_adj = set()
-                    child_adj.add(node.value)
-                    map_node[child.value] = child_adj
-            map_node[node.value] = adj_set
+        map_node = graph.__to_adj_map()
 
         for node in graph.nodes:
             clique = [node.value]
@@ -232,8 +255,5 @@ class GraphList:
                 child_adj = map_node[child.value]
                 if node.value in child_adj:
                     clique.append(child.value)
-
-            clique_size = len(clique)
-            if clique_size >= min_size and clique_size <= max_size:
-                cliques.append(clique)
+            cliques.append(clique)
         return cliques
