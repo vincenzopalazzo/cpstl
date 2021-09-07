@@ -83,36 +83,35 @@ def test_mutate_from_directed_to_undirected_big():
     assert (len(graph.edges()) - 1) * 2 == len(undirected.edges()) - 1
 
 
-def test_find_cliques_directed_empty():
+def test_find_kcliques_undirected():
     """
-    Simple test to make sure that the clique algorithm works
-    as best it can.
+    Simple test to make sure that the cliques algorithm make the
+    job on an undirected graph.
     """
-    graph = GraphList(directed=True)
+    graph = GraphList()
     graph.add_edge(1, 2)
-    graph.add_edge(1, 3)
-    graph.add_edge(1, 5)
     graph.add_edge(2, 3)
-    graph.add_edge(2, 4)
-    graph.add_edge(2, 6)
-    graph.add_edge(3, 4)
-    graph.add_edge(3, 6)
-    graph.add_edge(4, 5)
-    graph.add_edge(4, 6)
-
-    cliques = graph.cliques()
-    assert len(cliques) == 0
+    graph.add_edge(3, 1)
+    cliques = graph.k_cliques()
+    assert len(cliques) == 1
 
 
-def test_find_cliques_directed():
+def test_find_kcliques_directed():
     """
-    Simple test to make sure that the clique algorithm works
-    as best it can
+    Simple test to make sure that the cliques algorithm make the
+    job on an undirected graph.
     """
     graph = GraphList(directed=True)
     graph.add_edge(1, 2)
     graph.add_edge(2, 3)
     graph.add_edge(3, 1)
-
-    cliques = graph.cliques()
+    cliques = graph.k_cliques()
     assert len(cliques) == 1
+
+
+def test_connected_component():
+    """
+    Test to check if the algorithm to check the
+    connected component, make the right job.
+    """
+    pass

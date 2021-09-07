@@ -17,8 +17,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 USA.
 """
+import itertools
+import logging
 from queue import Queue
 from itertools import product
+
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class Node:
@@ -34,6 +39,9 @@ class Node:
     def add_node(self, value) -> None:
         node = Node(value)
         self.children.append(node)
+
+    def __hash__(self):
+        return hash((self.value, "{}".format(self.children)))
 
     def __str__(self):
         if len(self.children) == 0:
@@ -64,6 +72,7 @@ class GraphList:
     def __init__(self, directed=False) -> None:
         self.directed = directed
         self.nodes = []
+        self.logger = logging.getLogger()
 
     def __dfs_helper(self, target: Node, path: list) -> None:
         path.append(target.value)
@@ -105,6 +114,7 @@ class GraphList:
         for child in node.children:
             found = self.__find_node(child, value)
             if found is True:
+                self.__find_node_add(found, value, to_add, directed)
                 return True
         return False
 
@@ -170,6 +180,7 @@ class GraphList:
 
             self.nodes.append(node_u)
             self.nodes.append(node_v)
+        self.logger.debug("Screenshot graph {}".format(self.__to_adj_map()))
 
     def dfs(self) -> list:
         paths = []
@@ -215,45 +226,46 @@ class GraphList:
                 graph.add_edge(node.value, child.value)
         return graph
 
-    def max_cliques(self):
+    def __get_clique(self, node, k, B) -> list:
         """
-        Calculate the maximum cliques in the graph.
-        The maximum cliques in a graph is the biggest subgraph that these cliques
-        will form.
-        """
-        pass
+        Get a clique in the graph that start from the {node}.
+        P.S: We assume that the graph where this method is called is without loops.
 
-    def k_cliques(self, min_size: int = 3, max_size: int = 3) -> list:
+        k: Clique size
+        node: is the target node
+        B: neighbours of the {node}
+        """
+        A = set()
+        A.add(node)
+        while len(B) > 0:
+            n = B.pop(0)
+            A.add(n)
+            B = list(set(B).intersection(n.children))
+            if k == len(A):
+                self.logger("K cliques found {}".format(A))
+                return sorted(A)
+        return []
+
+    def k_cliques(self, min_size: int = 3, max_size: int = 3, k=3) -> list:
         """
         Solve the kclique problem with the following parameters.
         The k-cliques problem is a clique problem where the valid distance between
         two nodes is equal to k.
-
-        min_size: The minimum distance accept between two nodes.
-        max_size: The maximum distance accept between two nodes.
         """
-        pass
 
-    def cliques(self) -> list:
+        # A is a bad name of variable, however it is more easy follo the algorithm
+        # shows at the lessons.
+        kcliques = []
+
+        for node in self.nodes:
+            B = node.children
+            for subset in itertools.permutations(B, k - 1):
+                kcliques.append(self.__get_clique(node, k, list(subset)))
+        return kcliques
+
+    def connected_component(self) -> list:
         """
-        Find the cliques in the graph, and return a list of nodes.
+        Find the connected component in a graph.
+        This use the kcliques algorithm with k = 2
         """
-        graph = self
-        if self.directed is True:
-            graph = self.to_undirected()
-
-        cliques = []
-
-        # This is a dictionary of node value that contains an adjacent set
-        # of nodes that are of the node that the key of the dictionary is connected
-        # with.
-        map_node = graph.__to_adj_map()
-
-        for node in graph.nodes:
-            clique = [node.value]
-            for child in node.children:
-                child_adj = map_node[child.value]
-                if node.value in child_adj:
-                    clique.append(child.value)
-            cliques.append(clique)
-        return cliques
+        return self.k_cliques(self, min_size=2, max_size=2)
