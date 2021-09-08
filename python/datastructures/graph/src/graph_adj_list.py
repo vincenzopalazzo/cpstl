@@ -101,21 +101,22 @@ class GraphList:
                 return found
         return None
 
-    def __find_node_add(self, node: Node, value, to_add, directed=True) -> bool:
+    def __find_node_add(self, node: Node, value, to_add) -> bool:
         """
         Find the node with the value in the node
         if it exist return the node, otherwise return None
         """
         if node.value == value:
             node.add_node(to_add)
-            if directed is False:
+            self.logger.info("Adding arc ({}, {})".format(node.value, to_add))
+            if self.directed is False:
+                self.logger.info("Adding arch ({}, {})".format(to_add, node.value))
                 node.children[len(node.children) - 1].add_node(node.value)
             return True
         for child in node.children:
             found = self.__find_node(child, value)
             if found is True:
-                self.__find_node_add(found, value, to_add, directed)
-                return True
+                return self.__find_node_add(child, value, to_add)
         return False
 
     def __to_adj_map(self) -> dict:
@@ -140,11 +141,11 @@ class GraphList:
                 adj_set = set()
             for child in node.children:
                 adj_set.add(child.value)
-                if child.value in map_node:
+                if child.value in map_node and self.directed is False:
                     child_adj = map_node[child.value]
                     child_adj.add(node.value)
                     map_node[child.value] = child_adj
-                else:
+                elif self.directed is False:
                     child_adj = set()
                     child_adj.add(node.value)
                     map_node[child.value] = child_adj
@@ -157,21 +158,25 @@ class GraphList:
         add the edge from u -> v, otherwise adding a
         edge u -> v and v -> u.
         """
-        if self.directed:
+        if self.directed is True:
             if len(self.nodes) != 0:
                 for node in self.nodes:
-                    found = self.__find_node_add(node, u, v, self.directed)
+                    found = self.__find_node_add(node, u, v)
+                    self.logger.debug("Search with result {}".format(found))
                     if found is True:
                         return
             node = Node(u)
             node.add_node(v)
+            self.logger.debug("Arc ({}, {}) mapped in the node: {}".format(u, v, node))
             self.nodes.append(node)
         else:
             if len(self.nodes) != 0:
                 for node in self.nodes:
-                    found = self.__find_node_add(node, u, v, self.directed)
+                    found = self.__find_node_add(node, u, v)
                     if found is True:
                         return
+
+            self.logger.info("Adding mutual edge")
             node_u = Node(u)
             node_u.add_node(v)
 
@@ -180,7 +185,9 @@ class GraphList:
 
             self.nodes.append(node_u)
             self.nodes.append(node_v)
-        self.logger.debug("Screenshot graph {}".format(self.__to_adj_map()))
+        self.logger.debug(
+            "Screenshot graph directed {} {}".format(self.directed, self.__to_adj_map())
+        )
 
     def dfs(self) -> list:
         paths = []
@@ -235,16 +242,16 @@ class GraphList:
         node: is the target node
         B: neighbours of the {node}
         """
-        A = set()
-        A.add(node)
+        cliques = set()
+        cliques.add(node)
         while len(B) > 0:
             n = B.pop(0)
-            A.add(n)
+            cliques.add(n)
             B = list(set(B).intersection(n.children))
-            if k == len(A):
-                self.logger("K cliques found {}".format(A))
-                return sorted(A)
-        return []
+            if k == len(cliques):
+                self.logger("K cliques found {}".format(cliques))
+                return cliques
+        return cliques
 
     def k_cliques(self, min_size: int = 3, max_size: int = 3, k=3) -> list:
         """
@@ -258,8 +265,8 @@ class GraphList:
         kcliques = []
 
         for node in self.nodes:
-            B = node.children
-            for subset in itertools.permutations(B, k - 1):
+            set_elem = node.children
+            for subset in itertools.permutations(set_elem, k - 1):
                 kcliques.append(self.__get_clique(node, k, list(subset)))
         return kcliques
 
