@@ -87,13 +87,20 @@ def test_find_kcliques_undirected():
     """
     Simple test to make sure that the cliques algorithm make the
     job on an undirected graph.
+
+    Example taken from: https://stackoverflow.com/a/59339555/14933807
     """
     graph = GraphList()
+    graph.add_edge(1, 0)
+    graph.add_edge(1, 4)
+    graph.add_edge(0, 4)
     graph.add_edge(1, 2)
     graph.add_edge(2, 3)
-    graph.add_edge(3, 1)
-    cliques = graph.k_cliques()
-    assert len(cliques) == 1
+    graph.add_edge(3, 4)
+    graph.add_edge(3, 5)
+    cliques = graph.bron_kerbosch()
+    graph.logger.debug(cliques)
+    assert len(cliques) == 5
 
 
 def test_find_kcliques_directed():
@@ -105,7 +112,7 @@ def test_find_kcliques_directed():
     graph.add_edge(1, 2)
     graph.add_edge(2, 3)
     graph.add_edge(3, 1)
-    cliques = graph.k_cliques()
+    cliques = graph.bron_kerbosch()
     assert len(cliques) == 1
 
 

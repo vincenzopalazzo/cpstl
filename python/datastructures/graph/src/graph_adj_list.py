@@ -108,9 +108,9 @@ class GraphList:
         """
         if node.value == value:
             node.add_node(to_add)
-            self.logger.info("Adding arc ({}, {})".format(node.value, to_add))
+            self.logger.debug("Adding arc ({}, {})".format(node.value, to_add))
             if self.directed is False:
-                self.logger.info("Adding arch ({}, {})".format(to_add, node.value))
+                self.logger.debug("Adding arch ({}, {})".format(to_add, node.value))
                 node.children[len(node.children) - 1].add_node(node.value)
             return True
         for child in node.children:
@@ -176,7 +176,7 @@ class GraphList:
                     if found is True:
                         return
 
-            self.logger.info("Adding mutual edge")
+            self.logger.debug("Adding mutual edge")
             node_u = Node(u)
             node_u.add_node(v)
 
@@ -248,10 +248,40 @@ class GraphList:
             n = B.pop(0)
             cliques.add(n)
             B = list(set(B).intersection(n.children))
+            self.logger.debug("Intersection result {}".format(B))
             if k == len(cliques):
-                self.logger("K cliques found {}".format(cliques))
+                self.logger.debug("K cliques found {}".format(cliques))
                 return cliques
-        return cliques
+        return None
+
+    def __bron_kerbosch(self, P, R=None, X=None):
+        """
+        Wikipedia implementation of the algorithm.
+
+        Source: https://stackoverflow.com/a/59339555/14933807
+        """
+        P = set(P)
+        R = set() if R is None else R
+        X = set() if X is None else X
+        if not P and not X:
+            yield R
+        while P:
+            v = P.pop()
+            yield from self.__bron_kerbosch(
+                P=P.intersection(self.__to_adj_map()[v]),
+                R=R.union([v]),
+                X=X.intersection(self.__to_adj_map()[v]),
+            )
+            X.add(v)
+
+    def bron_kerbosch(self):
+        """
+        TODO: move in the algorithm section.
+        """
+        graph = self
+        if self.directed is True:
+            graph = self.to_undirected()
+        return list(graph.__bron_kerbosch(graph.__to_adj_map()))
 
     def k_cliques(self, min_size: int = 3, max_size: int = 3, k=3) -> list:
         """
@@ -259,20 +289,11 @@ class GraphList:
         The k-cliques problem is a clique problem where the valid distance between
         two nodes is equal to k.
         """
-
-        # A is a bad name of variable, however it is more easy follo the algorithm
-        # shows at the lessons.
-        kcliques = []
-
-        for node in self.nodes:
-            set_elem = node.children
-            for subset in itertools.permutations(set_elem, k - 1):
-                kcliques.append(self.__get_clique(node, k, list(subset)))
-        return kcliques
+        pass
 
     def connected_component(self) -> list:
         """
         Find the connected component in a graph.
         This use the kcliques algorithm with k = 2
         """
-        return self.k_cliques(self, min_size=2, max_size=2)
+        return self.k_cliques(self, min_size=2, max_size=2, k=2)
