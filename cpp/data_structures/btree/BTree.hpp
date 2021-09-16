@@ -17,15 +17,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
-#ifndef BTREE_H
-#define BTREE_H
+#ifndef BSTREE_H
+#define BSTREE_H
 
 #include <memory>
 
 namespace cpstl {
 
   template <class T>
-  class BTree;
+  class BSTree;
 
   namespace internal {
 
@@ -39,10 +39,18 @@ namespace cpstl {
   };
 
   template <class T>
-  class BTree {
+  class BSTree {
   private:
     std::shared_ptr<internal::Node<T>> root;
-  };
+
+  public:
+
+    void insert(T const &value) { }
+
+    void remove(T const &value) { }
+
+    T get_at(std::size_t index) { }
+ };
 
 };
 

@@ -19,7 +19,7 @@
  */
 #include <cstdlib>
 
-#include "../BTree.hpp"
+#include "../BSTree.hpp"
 #include "TestTool.hpp"
 #include "Utils.hpp"
 
@@ -27,7 +27,11 @@ using namespace std;
 
 static void TEST_CRATE_BTREE() {
 
-  auto btree = cpstl::BTree<int>();
+  auto bstree = cpstl::BTree<int>();
+
+  bstree.insert(1);
+  bstree.insert(2);
+  bstree.insert(-1);
 }
 
 int main() {
