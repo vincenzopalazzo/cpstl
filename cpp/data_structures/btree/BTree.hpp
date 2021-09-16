@@ -1,6 +1,6 @@
 /**
- * CPSTL demo to use the TestTool method to make simple test unit
- * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ * Binary Tree implementation in C++ 14
+ * Copyright (C) 2021 Vincenzo Palazzo vincenzopalazzodev@gmail.com
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,19 +17,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
-#include <cstdlib>
+#ifndef BTREE_H
+#define BTREE_H
 
-#include "../BTree.hpp"
-#include "TestTool.hpp"
-#include "Utils.hpp"
+#include <memory>
 
-using namespace std;
+namespace cpstl {
 
-static void TEST_CRATE_BTREE() {
+  template <class T>
+  class BTree;
 
-  auto btree = cpstl::BTree<int>();
-}
+  namespace internal {
 
-int main() {
-  return EXIT_SUCCESS;
-}
+    template <class T>
+    class Node {
+    private:
+      std::shared_ptr<Node<T>> left;
+      std::shared_ptr<Node<T>> righ;
+      friend cpstl::BTree<T>;
+    };
+  };
+
+  template <class T>
+  class BTree {
+  private:
+    std::shared_ptr<internal::Node<T>> root;
+  };
+
+};
+
+#endif
