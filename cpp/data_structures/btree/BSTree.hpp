@@ -22,6 +22,7 @@
 
 #include <cassert>
 #include <memory>
+#include <iostream>
 
 namespace cpstl {
 
@@ -91,36 +92,50 @@ namespace cpstl {
       return get_min_to_right(node->left);
     }
 
-    void remove_helper(std::shared_ptr<internal::Node<T>> node, T const &value) {
+    void mapping_node(std::shared_ptr<internal::Node<T>> from,
+                      std::shared_ptr<internal::Node<T>> to, bool left) {
+      to->left = from->left;
+      to->right = from->right;
+      to->value = from->value;
+      // It is correct?
+      to->parent = from->parent;
+      //TODO: Add the logic to handler also the parent option
+    }
+
+    void remove_helper(std::shared_ptr<internal::Node<T>> node,
+                       bool left, T const &value) {
       assert(node);
 
       if (node->value == value) {
         if (node->left) {
           auto max_to_left = get_max_to_left(node->left);
-          node->left = max_to_left->left;
-          node->right = max_to_left->right;
-          node->value = max_to_left->value;
+          mapping_node(max_to_left, node, true);
+          auto parent = max_to_left->parent;
+          parent->right = node;
           max_to_left.reset();
-          // TODO: the parent still point to the node
         } else if (node->right){
-          auto min_to_right = get_min_to_right(node->right);
           // take the minimum to the right
-          node->left = min_to_right->left;
-          node->right = min_to_right->right;
-          node->value = min_to_right->value;
+          auto min_to_right = get_min_to_right(node->right);
+          mapping_node(min_to_right, node, false);
+          auto parent = min_to_right->parent;
+          parent->left = node;
           min_to_right.reset();
-          // TODO: the parent still point to the node
         } else {
+          auto parent = node->parent;
+          if (left)
+            parent->left = nullptr;
+          else
+            parent->right = nullptr;
           // it is a leaft
-          node = nullptr;
+          node.reset();
         }
         return;
       }
 
       if (node->value > value)
-        remove_helper(node->left, value);
+        remove_helper(node->left, true, value);
       else
-        remove_helper(node->right, value);
+        remove_helper(node->right, false, value);
     }
 
   public:
@@ -133,6 +148,14 @@ namespace cpstl {
       if (!root)
         return false;
       return root->left == nullptr && root->right == nullptr;
+    }
+
+    void clear() {
+      // We assume that it is without child
+      // the tree has only the root.
+      assert(is_root_tree());
+      root.reset();
+      root = nullptr;
     }
 
     /**
@@ -153,7 +176,7 @@ namespace cpstl {
       // It is no possible destroy a bst
       if (is_root_tree())
         return;
-      remove_helper(root, value);
+      remove_helper(root, true, value);
     }
 
     bool contains(T const &value) {

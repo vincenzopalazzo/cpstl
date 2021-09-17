@@ -39,6 +39,20 @@ static void TEST_CREATE_BTREE() {
 
   bstree.remove(-1);
   cpstl::assert_is_true("TEST_CREATE_BSTREE_REMOVE_-1", !bstree.contains(-1));
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_1", bstree.contains(1));
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_2", bstree.contains(2));
+
+  bstree.remove(2);
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_REMOVE_-1", !bstree.contains(-1));
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_1", bstree.contains(1));
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_REMOVE_2", !bstree.contains(2));
+
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_ISROOTED", bstree.is_root_tree());
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_NOT_EMPTY", !bstree.is_empty());
+
+  bstree.clear();
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_EMPTY", bstree.is_empty());
+
 }
 
 int main() {
