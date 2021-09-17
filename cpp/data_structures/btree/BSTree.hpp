@@ -21,7 +21,7 @@
 #define BTREE_H
 
 #include <cassert>
-#include <iostream>
+#include <vector>
 #include <memory>
 #include <climits>
 
@@ -156,6 +156,34 @@ class BTree {
     return true;
   }
 
+  void traverse_in_order_helper(std::shared_ptr<internal::Node<T>> node,
+                                std::vector<T> &result) {
+    if (!node)
+      return;
+
+    traverse_in_order_helper(node->left, result);
+    result.push_back(node->value);
+    traverse_in_order_helper(node->right, result);
+  }
+
+  void traverse_post_order_helper(std::shared_ptr<internal::Node<T>> node,
+                                  std::vector<T> &result) {
+    if (!node) return;
+
+    traverse_post_order_helper(node->left, result);
+    traverse_post_order_helper(node->right, result);
+    result.push_back(node->value);
+  }
+
+  void traverse_pre_order_helper(std::shared_ptr<internal::Node<T>> node,
+                                  std::vector<T> &result) {
+    if (!node) return;
+
+    result.push_back(node->value);
+    traverse_pre_order_helper(node->left, result);
+    traverse_pre_order_helper(node->right, result);
+  }
+
  public:
   bool is_empty() { return root == nullptr; }
 
@@ -201,6 +229,24 @@ class BTree {
     // It is no possible destroy a bst
     if (is_root_tree()) return;
     remove_helper(root, true, value);
+  }
+
+  std::vector<T> traverse_in_order() {
+    std::vector<T> result;
+    traverse_in_order_helper(root, result);
+    return result;
+  }
+
+  std::vector<T> traverse_post_order() {
+    std::vector<T> result;
+    traverse_post_order_helper(root, result);
+    return result;
+  }
+
+  std::vector<T> traverse_pre_order() {
+    std::vector<T> result;
+    traverse_pre_order_helper(root, result);
+    return result;
   }
 
   bool contains(T const &value) { return contains_helper(this->root, value); }
