@@ -105,6 +105,8 @@ class BTree {
     assert(node);
 
     if (node->value == value) {
+      //FIXME: In case of middle node what is the value
+      // that will go up? Left or right side?
       if (node->left) {
         auto max_to_left = get_max_to_left(node->left);
         mapping_node(max_to_left, node, true);
@@ -142,6 +144,10 @@ class BTree {
   bool is_root_tree() {
     if (!root) return false;
     return root->left == nullptr && root->right == nullptr;
+  }
+
+  T get_root() {
+    return root->value;
   }
 
   void clear() {
