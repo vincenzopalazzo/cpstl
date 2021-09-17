@@ -138,6 +138,22 @@ class BTree {
       remove_helper(node->right, false, value);
   }
 
+  bool is_valid_bst_helper(std::shared_ptr<internal::Node<T>> node, T value) {
+    if (node->left) {
+      if (node->left->value > value)
+        return false;
+      else
+        return is_valid_bst_helper(node->left, node->left->value);
+    }
+    if (node->right) {
+      if (node->right->value < value)
+        return false;
+      else
+        return is_valid_bst_helper(node->right, node->right->value);
+    }
+    return true;
+  }
+
  public:
   bool is_empty() { return root == nullptr; }
 
@@ -156,6 +172,13 @@ class BTree {
     assert(is_root_tree());
     root.reset();
     root = nullptr;
+  }
+
+  bool is_valid_bst() {
+    // A empty tree it is valid
+    if (is_empty())
+      return true;
+    return is_valid_bst_helper(root, root->value);
   }
 
   /**

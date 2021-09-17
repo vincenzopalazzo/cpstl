@@ -52,7 +52,7 @@ static void TEST_CREATE_BTREE() {
 
   bstree.clear();
   cpstl::assert_is_true("TEST_CREATE_BSTREE_EMPTY", bstree.is_empty());
-
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_VALID", bstree.is_valid_bst());
 }
 
 static void TEST_REMOVE_ROOT_BTREE() {
@@ -61,6 +61,8 @@ static void TEST_REMOVE_ROOT_BTREE() {
   bstree.insert(1);
   bstree.insert(2);
   bstree.insert(-1);
+
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_VALID", bstree.is_valid_bst());
 
   cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_1", bstree.contains(1));
   cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_2", bstree.contains(2));
