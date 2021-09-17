@@ -23,6 +23,7 @@
 #include <cassert>
 #include <iostream>
 #include <memory>
+#include <climits>
 
 namespace cpstl {
 
@@ -138,19 +139,20 @@ class BTree {
       remove_helper(node->right, false, value);
   }
 
-  bool is_valid_bst_helper(std::shared_ptr<internal::Node<T>> node, T value) {
-    if (node->left) {
-      if (node->left->value > value)
+  /**
+   * This helper it is a little bit tricky if the user don't think all the user
+   * keys like me when I wrote the first version of this code.
+   * we need to pass max and min, because we can have a subtree valid, but all the
+   * tree it is invalid because we have a wrong sequence of nodes.
+   */
+  bool is_valid_bst_helper(std::shared_ptr<internal::Node<T>> node, T min, T max) {
+    if (node->value < min || node->value >= max)
+      return true;
+    if (node->left && !is_valid_bst_helper(node->left, min, node->value))
         return false;
-      else
-        return is_valid_bst_helper(node->left, node->left->value);
-    }
-    if (node->right) {
-      if (node->right->value < value)
-        return false;
-      else
-        return is_valid_bst_helper(node->right, node->right->value);
-    }
+
+    if (node->right && !is_valid_bst_helper(node->right, node->value, max))
+      return false;
     return true;
   }
 
@@ -178,7 +180,7 @@ class BTree {
     // A empty tree it is valid
     if (is_empty())
       return true;
-    return is_valid_bst_helper(root, root->value);
+    return is_valid_bst_helper(root, INT_MIN, INT_MAX);
   }
 
   /**
