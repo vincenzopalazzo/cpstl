@@ -23,14 +23,31 @@
 #include "TestTool.hpp"
 #include "Utils.hpp"
 
-using namespace std;
-
+const cpstl::Log LOG(true);
 
 static void TEST_ONE_POSTING_LIST_CREATION() {
   auto invertedIndex = cpstl::InvertedIndex();
+
+  invertedIndex.add_file("res/small.txt");
+
+  std::string elem = invertedIndex.to_string();
+  cpstl::cp_log(LOG, "----- SMALL FILE -------");
+  cpstl::cp_log(LOG, elem);
+}
+
+static void TEST_ONE_POSTING_LIST_CREATION_TWO() {
+  auto invertedIndex = cpstl::InvertedIndex();
+
+  invertedIndex.add_file("res/sample3.txt");
+
+  std::string table = invertedIndex.to_string();
+  cpstl::cp_log(LOG, "------ BIG FILE --------");
+  cpstl::cp_log(LOG, table);
 }
 
 
 int main() {
+  TEST_ONE_POSTING_LIST_CREATION();
+  TEST_ONE_POSTING_LIST_CREATION_TWO();
   return EXIT_SUCCESS;
 }

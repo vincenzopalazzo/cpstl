@@ -1,0 +1,5 @@
+### Welcome in this small test
+
+This is only a small test to count of the inverted index.
+
+We try to increase the index count to 2.

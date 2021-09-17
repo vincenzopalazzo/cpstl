@@ -75,9 +75,9 @@ class UniversalHash {
   UniversalHash(std::size_t size) : size(size) {
     this->prime = generate_prime_number(size);
     make_random_choice();
-    // std::cout << "---------------------\n";
-    // std::cout << this->value_a << " " << this->value_b << " " << this->prime
-    //          << " " << this->size << "\n";
+    //std::cout << "---------------------\n";
+    //std::cout << this->value_a << " " << this->value_b << " " << this->prime
+    // << " " << this->size << "\n";
   }
 
   void new_hash_function(std::size_t size) {
@@ -85,7 +85,17 @@ class UniversalHash {
     make_random_choice();
   }
 
-  T universal_hashing(T to_hash) {
+  int universal_hashing(std::string const &str) {
+    unsigned char buffer[str.length()];
+    std::copy(str.begin(), str.end(), buffer);
+
+    int sum = 0;
+    for (int i = 0; i < sizeof(buffer) / sizeof(unsigned char); i++)
+      sum += universal_hashing(buffer[i]);
+    return universal_hashing(sum);
+  }
+
+  int universal_hashing(T to_hash) {
     assert(this->value_a >= 0 && this->value_b >= 0);
     return ((this->value_a * to_hash + this->value_b) % this->prime) %
            this->size;
