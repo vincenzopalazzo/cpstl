@@ -1,53 +1,61 @@
-//
-// Created by vincent on 9/14/20.
-//
+/**
+ * CPSTL demo to use the TestTool method to make simple test unit
+ * Copyright (C) 2020  Vincenzo Palazzo vincenzopalazzodev@gmail.com
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
+ */
 #include <cstdlib>
-#include <fstream>
-#include <vector>
 
-#include "../BTree.h"
-#include "TestTool.h"
-#include "Utils.h"
+#include "../BSTree.hpp"
+#include "TestTool.hpp"
+#include "Utils.hpp"
 
 using namespace std;
-using namespace cpstl;
 
-void TEST_CASE_ONE() {
-  cpstl::BTree<int> tree;
-  tree.insert_node(50);
-  tree.insert_node(102);
-  tree.insert_node(49);
+static void TEST_CREATE_BTREE() {
 
-  std::cout << "-------- Insert -----------" << std::endl;
-  cpstl::print_level_tree(tree.get_root(), "Root");
+  auto bstree = cpstl::BTree<int>();
 
-  std::cout << "-------- delete -----------" << std::endl;
-  tree.delete_node(49);
-  print_level_tree(tree.get_root(), "Root");
-  // assert_equal("TEST_CASE_ONE", 2, maximum_house);
-}
+  bstree.insert(1);
+  bstree.insert(2);
+  bstree.insert(-1);
 
-void TEST_CASE_TWO() {
-  cpstl::BTree<int> tree;
-  tree.insert_node(4);
-  tree.insert_node(2);
-  tree.insert_node(5);
-  tree.insert_node(1);
-  tree.insert_node(6);
-  tree.insert_node(3);
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_1", bstree.contains(1));
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_2", bstree.contains(2));
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_-1", bstree.contains(-1));
 
-  std::cout << "-------- Insert -----------" << std::endl;
-  cpstl::print_level_tree(tree.get_root(), "Root");
+  bstree.remove(-1);
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_REMOVE_-1", !bstree.contains(-1));
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_1", bstree.contains(1));
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_2", bstree.contains(2));
 
-  std::cout << "-------- delete -----------" << std::endl;
-  tree.delete_node(3);
-  cpstl::print_level_tree(tree.get_root(), "Root");
-  // assert_equal("TEST_CASE_ONE", 2, maximum_house);
+  bstree.remove(2);
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_REMOVE_-1", !bstree.contains(-1));
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_1", bstree.contains(1));
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_REMOVE_2", !bstree.contains(2));
+
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_ISROOTED", bstree.is_root_tree());
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_NOT_EMPTY", !bstree.is_empty());
+
+  bstree.clear();
+  cpstl::assert_is_true("TEST_CREATE_BSTREE_EMPTY", bstree.is_empty());
+
 }
 
 int main() {
-  TEST_CASE_ONE();
-  TEST_CASE_TWO();
-
+  TEST_CREATE_BTREE();
   return EXIT_SUCCESS;
 }
