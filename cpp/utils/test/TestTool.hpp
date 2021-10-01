@@ -25,7 +25,9 @@
 namespace cpstl {
 
 inline void assert_is_true(std::string name_test, bool condition) {
-  if (condition) {
+  std::cout << BOLDWHITE << "|------------ TEST " << name_test
+            << " -------------------|" << RESET << "\n";
+   if (condition) {
     std::cout << BOLDGREEN << name_test << " PASSED" << RESET << "\n";
     return;
   }
