@@ -29,31 +29,49 @@
 
 namespace cpstl {
 
+/**
+ * It is used to calculate the number of
+ * hash function to use inside the bloom filter.
+ *
+ * This number are from this chart
+ * https://freecontent.manning.com/wp-content/uploads/bloom-filters_06.png
+ */
+enum class ErrProb { HIGHT = 6, MEDIUM = 10, LOW = 14 };
+
 template <class T>
 class BloomFilter {
  private:
-  // Default value, for the motivation of this default value
-  // tale in consideration to run the benchmarks and see the result.
-  const std::size_t filter_factor = 2;
   std::size_t size;
   std::vector<uint8_t> filter;
   std::vector<cpstl::UniversalHash<T>> hash_functions;
 
-  std::size_t calculate_number_of_hash_function(std::size_t filter_factor,
+  uint16_t from_enum_to_prob(ErrProb prob) {
+    switch (prob) {
+      case ErrProb::HIGHT:
+        return 6;
+      case ErrProb::MEDIUM:
+        return 10;
+      case ErrProb::LOW:
+        return 16;
+    }
+    assert(false && "Error probability unknown");
+  }
+
+  std::size_t calculate_number_of_hash_function(uint16_t filter_factor,
                                                 std::size_t size) {
-    return (std::log(2) * ((filter_factor * size) / size));
+    return (std::log(2) * ((filter_factor * size / size)));
   }
 
  public:
-  BloomFilter(std::size_t size, std::size_t factor) : filter(factor * size, 0) {
+  BloomFilter(std::size_t size, ErrProb err_pro = ErrProb::MEDIUM) {
     this->size = size;
+    auto factor = from_enum_to_prob(err_pro);
+    filter = std::vector<uint8_t>(factor * size, 0);
     auto optimal_hash_size =
         this->calculate_number_of_hash_function(factor, size);
     this->hash_functions = std::vector<cpstl::UniversalHash<T>>(
         optimal_hash_size, cpstl::UniversalHash<T>(factor * this->size));
   }
-
-  BloomFilter(std::size_t size) { BloomFilter(size, filter_factor); }
 
   void insert(T value) {
     for (auto hash : hash_functions) {

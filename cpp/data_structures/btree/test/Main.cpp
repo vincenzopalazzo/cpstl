@@ -26,7 +26,6 @@
 using namespace std;
 
 static void TEST_CREATE_BTREE() {
-
   auto bstree = cpstl::BTree<int>();
 
   bstree.insert(1);
@@ -52,7 +51,6 @@ static void TEST_CREATE_BTREE() {
 
   bstree.clear();
   cpstl::assert_is_true("TEST_CREATE_BSTREE_EMPTY", bstree.is_empty());
-
 }
 
 int main() {

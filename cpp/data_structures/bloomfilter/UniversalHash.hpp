@@ -86,7 +86,7 @@ class UniversalHash {
   }
 
   T universal_hashing(T to_hash) {
-    assert(this->value_a >= 0 && this->value_b >= 0);
+    assert(this->value_a >= 0 && this->value_b >= 0 && "Error prime number");
     return ((this->value_a * to_hash + this->value_b) % this->prime) %
            this->size;
   }
