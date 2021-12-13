@@ -29,7 +29,7 @@ using namespace cpstl;
 void TEST_CASE_ONE() {
   std::string string_one = "one";
   std::string string_two = "two";
-  auto hash_function = cpstl::KarpRabinHash<int>();
+  auto hash_function = cpstl::KarpRabinHash();
   auto hash_one = hash_function.hash(string_one);
   auto hash_two = hash_function.hash(string_two);
   assert_is_true("TEST_CASE_ONE", hash_one != hash_two);
@@ -38,7 +38,7 @@ void TEST_CASE_ONE() {
 void TEST_CASE_TWO() {
   std::string string_one = "one";
   std::string string_two = "one";
-  auto hash_function = cpstl::KarpRabinHash<int>();
+  auto hash_function = cpstl::KarpRabinHash();
   auto hash_one = hash_function.hash(string_one);
   auto hash_two = hash_function.hash(string_two);
   cpstl::assert_equal("TEST_CASE_TWO", hash_one, hash_two);

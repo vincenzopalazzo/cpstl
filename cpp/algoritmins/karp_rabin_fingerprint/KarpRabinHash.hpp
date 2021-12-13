@@ -23,16 +23,18 @@
 
 namespace cpstl {
 
-template <class T>
 class KarpRabinHash {
  private:
-  std::vector<int> prime_numbers = {62563, 62581, 62591, 62597, 62603,
+  std::vector<uint64_t> prime_numbers = {62563, 62581, 62591, 62597, 62603,
                                     62617, 62627, 62633, 62639, 62653};
 
-  long long prime_number;
+  uint64_t prime_number;
 
-  std::vector<unsigned char> string_to_to_bytes(std::string value) {
-    return std::vector<unsigned char>(value.begin(), value.end());
+  std::vector<unsigned char> string_to_to_bytes(std::string const &value) {
+    auto bytes = std::vector<unsigned char>(value.begin(), value.end());
+    std::vector<unsigned char> result = {1};
+    result.insert(result.end(), bytes.begin(), bytes.end());
+    return result;
   }
 
  public:
@@ -41,13 +43,14 @@ class KarpRabinHash {
     prime_number = prime_numbers.at(random_pos);
   }
 
-  T hash(std::string value) {
+  uint64_t hash(std::string const &value) {
     auto vector_bytes = string_to_to_bytes(value);
     // x' = ((x « 1) + bit[i]) % p
+    uint64_t fingerprint = 0;
     for (std::size_t i = 1; i < vector_bytes.size(); i++) {
-      vector_bytes[i] = (vector_bytes[i - 1] + vector_bytes[i]) % prime_number;
+      fingerprint = ((fingerprint * 2) + vector_bytes[i]) % prime_number;
     }
-    return vector_bytes.back();
+    return fingerprint;
   }
 };
 };  // namespace cpstl
