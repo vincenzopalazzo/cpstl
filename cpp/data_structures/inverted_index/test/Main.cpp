@@ -45,7 +45,6 @@ static void TEST_ONE_POSTING_LIST_CREATION_TWO() {
   cpstl::cp_log(LOG, table);
 }
 
-
 int main() {
   TEST_ONE_POSTING_LIST_CREATION();
   TEST_ONE_POSTING_LIST_CREATION_TWO();

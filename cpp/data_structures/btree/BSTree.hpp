@@ -21,8 +21,9 @@
 #define BTREE_H
 
 #include <cassert>
-#include <iostream>
+#include <climits>
 #include <memory>
+#include <vector>
 
 namespace cpstl {
 
@@ -105,6 +106,8 @@ class BTree {
     assert(node);
 
     if (node->value == value) {
+      // FIXME: In case of middle node what is the value
+      // that will go up? Left or right side?
       if (node->left) {
         auto max_to_left = get_max_to_left(node->left);
         mapping_node(max_to_left, node, true);
@@ -136,6 +139,50 @@ class BTree {
       remove_helper(node->right, false, value);
   }
 
+  /**
+   * This helper it is a little bit tricky if the user don't think all the user
+   * keys like me when I wrote the first version of this code.
+   * we need to pass max and min, because we can have a subtree valid, but all
+   * the tree it is invalid because we have a wrong sequence of nodes.
+   */
+  bool is_valid_bst_helper(std::shared_ptr<internal::Node<T>> node, T min,
+                           T max) {
+    if (node->value < min || node->value >= max) return true;
+    if (node->left && !is_valid_bst_helper(node->left, min, node->value))
+      return false;
+
+    if (node->right && !is_valid_bst_helper(node->right, node->value, max))
+      return false;
+    return true;
+  }
+
+  void traverse_in_order_helper(std::shared_ptr<internal::Node<T>> node,
+                                std::vector<T> &result) {
+    if (!node) return;
+
+    traverse_in_order_helper(node->left, result);
+    result.push_back(node->value);
+    traverse_in_order_helper(node->right, result);
+  }
+
+  void traverse_post_order_helper(std::shared_ptr<internal::Node<T>> node,
+                                  std::vector<T> &result) {
+    if (!node) return;
+
+    traverse_post_order_helper(node->left, result);
+    traverse_post_order_helper(node->right, result);
+    result.push_back(node->value);
+  }
+
+  void traverse_pre_order_helper(std::shared_ptr<internal::Node<T>> node,
+                                 std::vector<T> &result) {
+    if (!node) return;
+
+    result.push_back(node->value);
+    traverse_pre_order_helper(node->left, result);
+    traverse_pre_order_helper(node->right, result);
+  }
+
  public:
   bool is_empty() { return root == nullptr; }
 
@@ -144,12 +191,20 @@ class BTree {
     return root->left == nullptr && root->right == nullptr;
   }
 
+  T get_root() { return root->value; }
+
   void clear() {
     // We assume that it is without child
     // the tree has only the root.
     assert(is_root_tree());
     root.reset();
     root = nullptr;
+  }
+
+  bool is_valid_bst() {
+    // A empty tree it is valid
+    if (is_empty()) return true;
+    return is_valid_bst_helper(root, INT_MIN, INT_MAX);
   }
 
   /**
@@ -170,6 +225,24 @@ class BTree {
     // It is no possible destroy a bst
     if (is_root_tree()) return;
     remove_helper(root, true, value);
+  }
+
+  std::vector<T> traverse_in_order() {
+    std::vector<T> result;
+    traverse_in_order_helper(root, result);
+    return result;
+  }
+
+  std::vector<T> traverse_post_order() {
+    std::vector<T> result;
+    traverse_post_order_helper(root, result);
+    return result;
+  }
+
+  std::vector<T> traverse_pre_order() {
+    std::vector<T> result;
+    traverse_pre_order_helper(root, result);
+    return result;
   }
 
   bool contains(T const &value) { return contains_helper(this->root, value); }
