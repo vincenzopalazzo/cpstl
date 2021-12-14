@@ -70,9 +70,9 @@ static void TEST_REMOVE_ROOT_BTREE() {
   cpstl::assert_equal("TEST_CREATE_BSTREE_CONTAINS_ROOT", bstree.get_root(), 1);
 
   bstree.remove(1);
-  cpstl::assert_equal("TEST_CREATE_BSTREE_CONTAINS_ROOT", bstree.get_root(), -1);
+  cpstl::assert_equal("TEST_CREATE_BSTREE_CONTAINS_ROOT", bstree.get_root(),
+                      -1);
 }
-
 
 int main() {
   TEST_CREATE_BTREE();

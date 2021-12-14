@@ -21,9 +21,9 @@
 #define BTREE_H
 
 #include <cassert>
-#include <vector>
-#include <memory>
 #include <climits>
+#include <memory>
+#include <vector>
 
 namespace cpstl {
 
@@ -106,7 +106,7 @@ class BTree {
     assert(node);
 
     if (node->value == value) {
-      //FIXME: In case of middle node what is the value
+      // FIXME: In case of middle node what is the value
       // that will go up? Left or right side?
       if (node->left) {
         auto max_to_left = get_max_to_left(node->left);
@@ -142,14 +142,14 @@ class BTree {
   /**
    * This helper it is a little bit tricky if the user don't think all the user
    * keys like me when I wrote the first version of this code.
-   * we need to pass max and min, because we can have a subtree valid, but all the
-   * tree it is invalid because we have a wrong sequence of nodes.
+   * we need to pass max and min, because we can have a subtree valid, but all
+   * the tree it is invalid because we have a wrong sequence of nodes.
    */
-  bool is_valid_bst_helper(std::shared_ptr<internal::Node<T>> node, T min, T max) {
-    if (node->value < min || node->value >= max)
-      return true;
+  bool is_valid_bst_helper(std::shared_ptr<internal::Node<T>> node, T min,
+                           T max) {
+    if (node->value < min || node->value >= max) return true;
     if (node->left && !is_valid_bst_helper(node->left, min, node->value))
-        return false;
+      return false;
 
     if (node->right && !is_valid_bst_helper(node->right, node->value, max))
       return false;
@@ -158,8 +158,7 @@ class BTree {
 
   void traverse_in_order_helper(std::shared_ptr<internal::Node<T>> node,
                                 std::vector<T> &result) {
-    if (!node)
-      return;
+    if (!node) return;
 
     traverse_in_order_helper(node->left, result);
     result.push_back(node->value);
@@ -176,7 +175,7 @@ class BTree {
   }
 
   void traverse_pre_order_helper(std::shared_ptr<internal::Node<T>> node,
-                                  std::vector<T> &result) {
+                                 std::vector<T> &result) {
     if (!node) return;
 
     result.push_back(node->value);
@@ -192,9 +191,7 @@ class BTree {
     return root->left == nullptr && root->right == nullptr;
   }
 
-  T get_root() {
-    return root->value;
-  }
+  T get_root() { return root->value; }
 
   void clear() {
     // We assume that it is without child
@@ -206,8 +203,7 @@ class BTree {
 
   bool is_valid_bst() {
     // A empty tree it is valid
-    if (is_empty())
-      return true;
+    if (is_empty()) return true;
     return is_valid_bst_helper(root, INT_MIN, INT_MAX);
   }
 
