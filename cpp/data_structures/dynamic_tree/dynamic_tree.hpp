@@ -219,14 +219,6 @@ namespace cpstl {
                 this->children = std::vector<DT_Node<t>>();
             }
 
-			// testing function
-			void print(){
-                std::cout << "==================================" << '\n'; 
-				for(DT_Node<t> &child : this->children){
-					std::cout << child.name << "=" << child.value << " "; 
-				}
-                std::cout << "\n==================================\n"; 
-			}
 
             // get length of children in this node
             unsigned int length(){
