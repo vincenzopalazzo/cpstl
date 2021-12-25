@@ -169,7 +169,7 @@ namespace cpstl {
             // o(1) --> o(log n)
             // get a copy of specific child , this copy not connected to the original tree
             // in case target not found return will be a empty node
-            DT_Node<t> getCopy(std::string target_node_name){
+            DT_Node<t> getCopy(std::string const &target_node_name){
                 
                 int index = -1;
 
