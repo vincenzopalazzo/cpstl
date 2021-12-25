@@ -221,7 +221,7 @@ namespace cpstl {
 
 
             // get length of children in this node
-            unsigned int length(){
+            std::size_t length(){
                 return this->children.size();
             }
 
