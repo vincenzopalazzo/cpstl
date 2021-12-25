@@ -48,9 +48,9 @@
 
 namespace cpstl {
 
-    // ================================
-    // === Dynamic Tree Nodes class ===
-    // ================================
+  /** 
+    * Dynamic Tree Nodes class.
+    **/
     template<typename t> class DT_Node {
 
         private:
