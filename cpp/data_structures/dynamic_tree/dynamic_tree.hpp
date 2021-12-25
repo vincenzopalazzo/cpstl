@@ -51,7 +51,8 @@ namespace cpstl {
   /** 
     * Dynamic Tree Nodes class.
     **/
-    template<typename t> class DT_Node {
+    template<typename t> 
+    class DTNode {
 
         private:
             // parent of this node 
