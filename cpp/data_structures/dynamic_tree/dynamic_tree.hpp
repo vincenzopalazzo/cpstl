@@ -65,7 +65,7 @@ namespace cpstl {
             std::string name;
 
             // node value
-            t value;
+            T value;
 
             // default constructor
             DT_Node() {}
