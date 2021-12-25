@@ -191,7 +191,7 @@ namespace cpstl {
 
             // o(log n) --> o(nodes * log n)
             // remove child with specific name with his all children
-            bool removeChild(std::string target_node_name){
+            bool removeChild(std::string const &target_node_name){
 
                 // search for target index
                 int index = -1;
