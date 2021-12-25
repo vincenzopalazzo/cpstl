@@ -107,7 +107,7 @@ namespace cpstl {
             // o(1) --> o(log n)
             // search => "bineay search" between children
             // target_index : useful if you want to get index of that target in case not found you get -1
-            bool search(std::string target_name , int &target_index = NULL){
+            bool search(std::string const &target_name , int &target_index = NULL){
 
                 int min = 0;
                 int max = this->children.size() - 1;
