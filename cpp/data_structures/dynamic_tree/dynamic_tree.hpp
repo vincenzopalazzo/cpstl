@@ -37,6 +37,7 @@
 */
 
 #include <iostream>
+#include <memory>
 #include <algorithm>
 #include <vector>
 #include <string>
@@ -45,22 +46,21 @@
 
 #ifndef DYNAMIC_TREE_H
 #define DYNAMIC_TREE_H
-
 namespace cpstl {
 
   /** 
     * Dynamic Tree Nodes class.
     **/
-    template<typename t> 
+    template<typename T> 
     class DTNode {
 
         private:
             // parent of this node 
-            std::shared_prt<DTNode<t>> parent;
+            std::shared_ptr<DTNode<T>> parent;
 
         public:
             // children of this node 
-            std::vector<DT_Node<t>> children;
+            std::vector<DTNode<T>> children;
             
             // name => for dealing with nodes "search , sort , ..."
             std::string name;
@@ -69,24 +69,25 @@ namespace cpstl {
             T value;
 
             // default constructor
-            DT_Node() {}
+            DTNode() {}
 
             // second constructor
-            DT_Node(std::string node_name, t node_value , DT_Node<t> *parent_node)
-                : name    { node_name }  ,
+            DTNode(std::string node_name, T node_value , std::shared_ptr<DTNode<T>> parent_node = NULL)
+                : name    { node_name }  , 
                   value   { node_value } ,
                   parent  { parent_node }
-            { }
+            { 
+            }
 
             // destructor
-            ~DT_Node() { }
+            ~DTNode() { }
 
             // o( (n log n) + (log n) + 1 )
             // duplicate names are not allowed here in dynamic tree
-            bool insert(std::string new_node_name , t new_node_value) {
+            bool insert(std::string new_node_name , T new_node_value) {
 
-                // just int for required parameterin search function
-                int fake_index = 0;
+                // just int for required parameter in search function
+                int fake_index = -1;
 
                 // o(log n)
                 // first we check if any node is already exist with the same name
@@ -94,7 +95,7 @@ namespace cpstl {
                 
                 // then
                 // insert new child
-                children.push_back(DT_Node<t>(new_node_name, new_node_value, this));
+                children.push_back( DTNode<T>(new_node_name, new_node_value, std::shared_ptr<DTNode<T>>(this) ) );
 
                 // o(n log n)
                 // sort children
@@ -151,7 +152,7 @@ namespace cpstl {
                 if(reverse){
                     std::sort(this->children.begin() , this->children.end() , 
                         // comparison function
-                        [](DT_Node<t> a , DT_Node<t> b){
+                        [](DTNode<T> a , DTNode<T> b){
                             return (a > b);
                         }
                     );
@@ -159,7 +160,7 @@ namespace cpstl {
                 else{
                     std::sort(this->children.begin() , this->children.end() , 
                         // comparison function
-                        [](DT_Node<t> a , DT_Node<t> b){
+                        [](DTNode<T> a , DTNode<T> b){
                             return (a < b);
                         }
                     );
@@ -170,7 +171,7 @@ namespace cpstl {
             // o(1) --> o(log n)
             // get a copy of specific child , this copy not connected to the original tree
             // in case target not found return will be a empty node
-            DT_Node<t> getCopy(std::string const &target_node_name){
+            DTNode<T> getCopy(std::string const &target_node_name){
                 
                 int index = -1;
 
@@ -178,7 +179,7 @@ namespace cpstl {
                 this->search(target_node_name,index);
 
                 // temp copy
-                DT_Node<t> copy_of_child;
+                DTNode<T> copy_of_child;
 
                 // in case target found
                 if(index != -1){
@@ -212,12 +213,12 @@ namespace cpstl {
             void removeChildren(){
                 
                 // nested recursive removeChildren => remove all children of children
-                for(DT_Node<t> &child : this->children){
+                for(DTNode<T> &child : this->children){
                     child.removeChildren();
                 }
 
                 // last step remove children by setup a new empty vector 
-                this->children = std::vector<DT_Node<t>>();
+                this->children = std::vector<DTNode<T>>();
             }
 
 
@@ -227,12 +228,12 @@ namespace cpstl {
             }
 
             // < comparison operator between tow nodes
-            bool operator < (DT_Node<t> &another_node){
+            bool operator < (DTNode<T> &another_node){
                 return ( this->name.compare(another_node.name) < 0 ) ? true : false;
             } 
 
             // > comparison operator between tow nodes
-            bool operator > (DT_Node<t> &another_node){
+            bool operator > (DTNode<T> &another_node){
                 return ( this->name.compare(another_node.name) > 0 ) ? true : false;
             }
 
@@ -250,7 +251,7 @@ namespace cpstl {
         private:
 
             // main node in DynamicTree
-            DT_Node<v> root;
+            DTNode<v> root;
 
             /* 
                 **** some private function **** 
@@ -260,7 +261,7 @@ namespace cpstl {
             // o(1) 
             // function take a "temp node" & make a simple check if that temp include a parent with specific name
             // return will be a "parent pointer" or NULL
-            DT_Node<v>* search_up(std::string &parent_name , DT_Node<v>* temp) {
+            DTNode<v>* search_up(std::string &parent_name , DTNode<v> *temp) {
                 
                 if(temp->parent != NULL && temp->parent->name == parent_name) {
                         return temp->parent;
@@ -271,7 +272,7 @@ namespace cpstl {
 
             // o(1) --> o(log n) 
             // like "search_up" function , but this one for looking "down" between children
-            DT_Node<v>* search_down(std::string &node_name , DT_Node<v>* temp) {
+            DTNode<v>* search_down(std::string &node_name , DTNode<v> *temp) {
                 
                 // o(log n)
                 // search for target 
@@ -289,12 +290,12 @@ namespace cpstl {
 
             // current_node => it's a node represent you position in tree
             // "important !" for many operation like search , movement , ...
-            DT_Node<v> *current_node;
+            DTNode<v> *current_node;
 
             // constructor
             DynamicTree(std::string root_name , v root_value) {
                 // parent of root must be null
-                root = DT_Node<v>( root_name , root_value , NULL ); 
+                root = DTNode<v>( root_name , root_value , NULL ); 
                 current_node = &root;
             }
 
@@ -303,7 +304,7 @@ namespace cpstl {
 
             // o(1) --> o(log n)
             // target_child_name => mean node where you want to go
-            bool go_to(const std::string &target_child_name) {
+            bool go_to(std::string const &target_child_name) {
 
                 // search for target index
                 int index = -1;
@@ -327,7 +328,7 @@ namespace cpstl {
                 // if parent not NULL
                 if(this->current_node->parent != NULL){
                     // move to parent
-                    this->current_node = this->current_node->parent;
+                    this->current_node = this->current_node->parent.get();
 
                     return true;
                 }
@@ -358,7 +359,7 @@ namespace cpstl {
                 // temp only for "check & test" if "path_of_names" are valid or not
                 // if "path_of_names" is valid we make it the new current_position "as last step" 
                 // else nothing will be happen
-                DT_Node<v>* temp = current_node;
+                DTNode<v> *temp = current_node;
 
                 // up true => mean that "path_of_names" in parents direction "up"
                 if(up){
