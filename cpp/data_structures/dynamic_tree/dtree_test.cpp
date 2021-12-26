@@ -1,9 +1,9 @@
 #include "./dynamic_tree.hpp"
 
-    // no test currently 
+    // no tests currently 
 int main() {
 
-   
+    std::cout << "working";
 
     return 0;
 }
