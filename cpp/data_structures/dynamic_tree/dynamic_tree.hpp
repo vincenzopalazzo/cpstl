@@ -56,7 +56,7 @@ namespace cpstl {
 
         private:
             // parent of this node 
-            DT_Node<t>* parent;
+            std::shared_prt<DTNode<t>> parent;
 
         public:
             // children of this node 
