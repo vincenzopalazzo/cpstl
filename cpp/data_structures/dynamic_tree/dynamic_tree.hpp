@@ -80,7 +80,6 @@ namespace cpstl {
             }
 
             // destructor
-            ~DTNode() { }
 
             // o( (n log n) + (log n) + 1 )
             // duplicate names are not allowed here in dynamic tree
