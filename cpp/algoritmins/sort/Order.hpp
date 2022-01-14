@@ -48,4 +48,7 @@ void randomize_quick_sort(std::vector<T> &inputs, int p, int r);
 template <typename T>
 void odd_even_sort(std::vector<T> &inputs, int p, int r);
 
+template <typename T>
+void radix_sort(std::vector<int> &inputs, int p, int r);
+
 }  // namespace cpstl
