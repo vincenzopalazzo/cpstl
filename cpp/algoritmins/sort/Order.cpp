@@ -175,6 +175,40 @@ void odd_even_sort(std::vector<T> &inputs, int p, int r) {
     }
   }
 }
+
+
+template <typename T>
+void count_sort(std::vector<T> &inputs, int p, int r, int exp){
+  int output[r]; 
+  int i, count[10] = { 0 };
+  for (i = p; i < r; i++)
+    count[(inputs[i] / exp) % 10]++;
+  for (i = 1; i < 10; i++)
+    count[i] += count[i - 1];
+  for (i = r - 1; i >= p; i--) {
+        output[count[(inputs[i] / exp) % 10] - 1] = inputs[i];
+        count[(inputs[i] / exp) % 10]--;
+    }
+  for (i = p; i < r; i++)
+        inputs[i] = output[i];
+}
+
+template <typename T>
+T getMax(std::vector<T> inputs, int p, int r){
+  auto mx=inputs[p];
+  for(int i=p+1; i<r; i++){
+    mx=max(mx,inputs[i]);
+  }
+  return mx;
+}
+
+template <typename T>
+void radix_sort(std::vector<T> &inputs, int p, int r){
+  auto mx = getMax<T>(inputs,p,r);
+  for (int exp = 1; mx / exp > 0; exp *= 10)
+        count_sort(inputs, p, r, exp);
+}
+
 }  // namespace cpstl
 
 // Type declaration
@@ -183,3 +217,4 @@ template void cpstl::quick_sort<int>(std::vector<int> &inputs, int p, int r);
 template void cpstl::randomize_quick_sort<int>(std::vector<int> &inputs, int p,
                                                int r);
 template void cpstl::odd_even_sort<int>(std::vector<int> &inputs, int p, int r);
+template void cpstl::radix_sort<int>(std::vector<int> &inputs, int p, int r);
