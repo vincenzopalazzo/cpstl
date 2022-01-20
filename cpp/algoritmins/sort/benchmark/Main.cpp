@@ -25,6 +25,8 @@
 
 using namespace cpstl;
 
+Order<int> order;
+
 static void BM_CPSTL_MERGE_SORT(benchmark::State& state) {
   for (auto _ : state) {
     state.PauseTiming();
@@ -36,7 +38,7 @@ static void BM_CPSTL_MERGE_SORT(benchmark::State& state) {
     for (int i = 0; i < state.range(0); i++)
       random_array.push_back(generator(mt));
     state.ResumeTiming();
-    merge_sort(random_array, 0, random_array.size() - 1);
+    order.merge_sort(random_array, 0, random_array.size() - 1);
   }
 }
 
@@ -51,7 +53,7 @@ static void BM_CPSTL_QUICK_SORT(benchmark::State& state) {
     for (int i = 0; i < state.range(0); i++)
       random_array.push_back(generator(mt));
     state.ResumeTiming();
-    merge_sort(random_array, 0, random_array.size() - 1);
+    order.quick_sort(random_array, 0, random_array.size() - 1);
   }
 }
 
@@ -66,7 +68,7 @@ static void BM_CPSTL_RANDOMIZED_QUICK_SORT(benchmark::State& state) {
     for (int i = 0; i < state.range(0); i++)
       random_array.push_back(generator(mt));
     state.ResumeTiming();
-    merge_sort(random_array, 0, random_array.size() - 1);
+    order.randomize_quick_sort(random_array, 0, random_array.size() - 1);
   }
 }
 
@@ -78,7 +80,7 @@ static void BM_CPSTL_SORTED_QUICK_SORT(benchmark::State& state) {
     random_array.reserve(state.range(0));
     for (int i = 0; i < state.range(0); i++) random_array.push_back(i);
     state.ResumeTiming();
-    merge_sort(random_array, 0, random_array.size() - 1);
+    order.quick_sort(random_array, 0, random_array.size() - 1);
   }
 }
 
@@ -89,7 +91,7 @@ static void BM_CPSTL_SORTED_RANDOMIZED_QUICK_SORT(benchmark::State& state) {
     random_array.reserve(state.range(0));
     for (int i = 0; i < state.range(0); i++) random_array.push_back(i);
     state.ResumeTiming();
-    merge_sort(random_array, 0, random_array.size() - 1);
+    order.randomize_quick_sort(random_array, 0, random_array.size() - 1);
   }
 }
 
@@ -104,7 +106,7 @@ static void BM_CPST_ODD_EVEN_SORT(benchmark::State& state) {
     for (int i = 0; i < state.range(0); i++)
       random_array.push_back(generator(mt));
     state.ResumeTiming();
-    odd_even_sort(random_array, 0, random_array.size() - 1);
+    order.odd_even_sort(random_array, 0, random_array.size() - 1);
   }
 }
 
@@ -138,13 +140,13 @@ static void BM_SORTED_STL(benchmark::State& state) {
   }
 }
 
-BENCHMARK(BM_CPSTL_MERGE_SORT)->Range(1 << 14, 1 << 18);
-BENCHMARK(BM_CPSTL_QUICK_SORT)->Range(1 << 14, 1 << 18);
-BENCHMARK(BM_CPSTL_RANDOMIZED_QUICK_SORT)->Range(1 << 14, 1 << 18);
-BENCHMARK(BM_CPSTL_SORTED_QUICK_SORT)->Range(1 << 14, 1 << 18);
-BENCHMARK(BM_CPSTL_SORTED_RANDOMIZED_QUICK_SORT)->Range(1 << 14, 1 << 18);
-BENCHMARK(BM_SORTED_STL)->Range(1 << 14, 1 << 18);
-BENCHMARK(BM_STL)->Range(1 << 14, 1 << 18);
-BENCHMARK(BM_CPST_ODD_EVEN_SORT)->Range(1 << 14, 1 << 18);
+BENCHMARK(BM_CPSTL_MERGE_SORT)->Range(1 << 10, 1 << 14);
+BENCHMARK(BM_CPSTL_QUICK_SORT)->Range(1 << 10, 1 << 14);
+BENCHMARK(BM_CPSTL_RANDOMIZED_QUICK_SORT)->Range(1 << 10, 1 << 14);
+BENCHMARK(BM_CPSTL_SORTED_QUICK_SORT)->Range(1 << 10, 1 << 14);
+BENCHMARK(BM_CPSTL_SORTED_RANDOMIZED_QUICK_SORT)->Range(1 << 10, 1 << 14);
+BENCHMARK(BM_SORTED_STL)->Range(1 << 10, 1 << 14);
+BENCHMARK(BM_STL)->Range(1 << 10, 1 << 14);
+BENCHMARK(BM_CPST_ODD_EVEN_SORT)->Range(1 << 10, 1 << 14);
 
 BENCHMARK_MAIN();
