@@ -26,7 +26,7 @@ namespace cpstl {
 class KarpRabinHash {
  private:
   std::vector<uint64_t> prime_numbers = {62563, 62581, 62591, 62597, 62603,
-                                    62617, 62627, 62633, 62639, 62653};
+                                         62617, 62627, 62633, 62639, 62653};
 
   uint64_t prime_number;
 

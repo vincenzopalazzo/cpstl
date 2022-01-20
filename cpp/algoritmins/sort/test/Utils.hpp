@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <bits/stdc++.h>
 
 #include <iostream>
@@ -103,3 +106,5 @@ inline void cp_log(Log log, std::vector<T> const &inputs) {
   std::cout << RESET;
 }
 }  // namespace cpstl
+
+#endif

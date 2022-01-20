@@ -17,41 +17,51 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
-#include <cstdlib>
+#include <string>
 #include <vector>
 
 #include "../Order.hpp"
 #include "TestTool.hpp"
 #include "Utils.hpp"
 
-using namespace std;
-
 const cpstl::Log LOG(true);
 
 void TEST_CASE_MERGE_SORT() {
-  vector<int> inputs = {20, 90, 40, 1, 32};
-  cpstl::merge_sort(inputs, 0, inputs.size() - 1);
+  std::vector<int> inputs = {20, 90, 40, 1, 32};
+  auto order = cpstl::Order<int>();
+  order.merge_sort(inputs, 0, inputs.size() - 1);
   cpstl::assert_equal("TEST_CASE_MERGE_SORT", {1, 20, 32, 40, 90}, inputs);
 }
 
 void TEST_CASE_QUICK_SORT() {
-  vector<int> inputs = {20, 90, 40, 1, 32};
-  cpstl::quick_sort(inputs, 0, inputs.size() - 1);
+  std::vector<int> inputs = {20, 90, 40, 1, 32};
+  auto order = cpstl::Order<int>();
+  order.quick_sort(inputs, 0, inputs.size() - 1);
   cpstl::assert_equal("TEST_CASE_QUICK_SORT", {1, 20, 32, 40, 90}, inputs);
   cpstl::cp_log(LOG, inputs);
 }
 
 void TEST_CASE_RANDOMIZED_QUICK_SORT() {
-  vector<int> inputs = {20, 90, 40, 1, 32};
-  cpstl::randomize_quick_sort(inputs, 0, inputs.size() - 1);
+  std::vector<int> inputs = {20, 90, 40, 1, 32};
+  auto order = cpstl::Order<int>();
+  order.randomize_quick_sort(inputs, 0, inputs.size() - 1);
   cpstl::assert_equal("TEST_CASE_RANDOMIZED_QUICK_SORT", {1, 20, 32, 40, 90},
                       inputs);
   cpstl::cp_log(LOG, inputs);
 }
 
+void TEST_CASE_COUNTING_SORT() {
+  std::vector<int> inputs = {20, 90, 40, 1, 32};
+  auto order = cpstl::Order<int>();
+  order.counting_sort(inputs, 90);
+  cpstl::assert_equal("TEST_CASE_COUNTING_SORT", {1, 20, 32, 40, 90}, inputs);
+  cpstl::cp_log(LOG, inputs);
+}
+
 void TEST_CASE_ODD_EVEN_SORT() {
-  vector<int> inputs = {20, 90, 40, 1, 32};
-  cpstl::odd_even_sort(inputs, 0, inputs.size());
+  std::vector<int> inputs = {20, 90, 40, 1, 32};
+  auto order = cpstl::Order<int>();
+  order.odd_even_sort(inputs, 0, inputs.size());
 
   cpstl::assert_equal("TEST_CASE_ODD_EVEN_SORT", {1, 20, 32, 40, 90}, inputs);
   cpstl::cp_log(LOG, inputs);
@@ -61,6 +71,7 @@ int main() {
   TEST_CASE_MERGE_SORT();
   TEST_CASE_QUICK_SORT();
   TEST_CASE_RANDOMIZED_QUICK_SORT();
+  TEST_CASE_COUNTING_SORT();
   TEST_CASE_ODD_EVEN_SORT();
   return EXIT_SUCCESS;
 }

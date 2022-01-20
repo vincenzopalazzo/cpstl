@@ -25,21 +25,21 @@
 
 using namespace std;
 
-
 static void TEST_ONE_LINKED_LIST_ADD() {
   auto list = cpstl::LinkedList<int>();
   list.add(12);
 
-  cpstl::assert_equal("TEST_ONE_LINKED_LIST_ADD", (std::string)"12", list.to_string());
+  cpstl::assert_equal("TEST_ONE_LINKED_LIST_ADD", (std::string) "12",
+                      list.to_string());
 
   list.add(150);
 
-  cpstl::assert_equal("TEST_ONE_LINKED_LIST_ADD", (std::string)"12, 150", list.to_string());
+  cpstl::assert_equal("TEST_ONE_LINKED_LIST_ADD", (std::string) "12, 150",
+                      list.to_string());
 
   auto vect = list.to_vector();
   cpstl::assert_equal("TEST_ONE_LINKED_LIST_ADD", {12, 150}, vect);
 }
-
 
 int main() {
   TEST_ONE_LINKED_LIST_ADD();
