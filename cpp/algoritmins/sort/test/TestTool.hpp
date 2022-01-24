@@ -17,7 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  */
+#ifndef TEST_TOOL_HPP
+#define TEST_TOOL_HPP
+
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "colors.h"
@@ -25,6 +29,8 @@
 namespace cpstl {
 
 inline void assert_is_true(std::string name_test, bool condition) {
+  std::cout << BOLDWHITE << "|------------ TEST " << name_test
+            << " -------------------|" << RESET << "\n";
   if (condition) {
     std::cout << BOLDGREEN << name_test << " PASSED" << RESET << "\n";
     return;
@@ -79,3 +85,5 @@ void assert_equal(std::string name_test, std::vector<T> const &aspected,
   std::cout << BOLDGREEN << name_test << " PASSED" << RESET << "\n";
 }
 }  // namespace cpstl
+
+#endif
