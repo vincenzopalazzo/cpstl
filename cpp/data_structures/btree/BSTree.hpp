@@ -96,16 +96,7 @@ class BTree {
     to->left = from->left;
     to->right = from->right;
     to->value = from->value;
-    from->parent = to->parent;
-    /*
-     FIXME: with the following assignment the shared_ptr will change owner
-     and goes our of scope
-    if (left)
-      from->parent.lock()->left = from;
-    else
-      from->parent.lock()->right = from;
-    */
-    to.reset();
+    from.reset();
   }
 
   void remove_helper(std::shared_ptr<internal::Node<T>> &node, bool left,
