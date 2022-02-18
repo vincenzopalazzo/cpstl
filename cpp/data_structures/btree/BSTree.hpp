@@ -106,8 +106,10 @@ class BTree {
     assert(node);
 
     if (node->value == value) {
-      // FIXME: In case of middle node what is the value
-      // that will go up? Left or right side?
+      /// TODO: there is recursion bug when we are going to
+      // remove and print it.
+      // The bug was founding during the porting into vlang
+      // https://github.com/vlang/v/pull/13453/files
       if (node->left) {
         auto max_to_left = get_max_to_left(node->left);
         mapping_node(max_to_left, node, true);
