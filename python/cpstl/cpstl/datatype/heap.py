@@ -1,35 +1,10 @@
 """Genetic implementation of the Heap that give the
-possibility to implement Min and Max heap"""
+possibility to implement Min and Max heap.
+
+If you want refresh your mind on how the heap is implemented, it is
+possible read some well known book introduction you can read this blog post
+https://www.educative.io/blog/data-structure-heaps-guide"""
 from abc import ABC, abstractmethod
-
-
-class HeapNode:
-    """Heap Node implementation that give the possibility
-    to abstract the wal strategy"""
-
-    def __init__(self, value, idx: int) -> None:
-        self.value = value
-        self.idx = idx
-
-    def __gt__(self, other):
-        return self.value > other.value
-
-    def __lt__(self, other):
-        return self.value < other.value
-
-    def __eq__(self, other):
-        return self.value == other.value
-
-    def left(self) -> int:
-        """Return the index of the left child"""
-        return (self.idx * 2) + 1
-
-    def right(self) -> int:
-        """Return the index of the right child"""
-        return (self.idx * 2) + 2
-
-    def parent(self) -> int:
-        return (self.idx + 1) // 2
 
 
 class Heap(ABC):
@@ -38,69 +13,97 @@ class Heap(ABC):
     some behaivord"""
 
     def __init__(self, array: list = []) -> None:
-        self.heap = []
-        self.build(array)
+        self.heap = array
+        self.from_list(array)
 
-    def build(self, array: []) -> bool:
-        for elem in array:
-            self.insert(elem)
-        return True
+    def from_list(self, array: []) -> bool:
+        """Build the heap from the list"""
+        self.heap = array
+        print(self)
+        for idx in range(self.len(), -1, -1):
+            self.heapify(idx)
+        return self.verify()
+
+    @staticmethod
+    def parent(idx: int) -> int:
+        """Calculate the parent index"""
+        return idx - 1 // 2
+
+    @staticmethod
+    def left(idx: int) -> int:
+        return idx * 2 + 1
+
+    @staticmethod
+    def right(idx: int) -> int:
+        return (idx * 2) + 2
 
     def insert(self, value) -> bool:
-        node = HeapNode(value, len(self.heap))
-        self.heap.append(node)
-        self.__sift_down(0, self.len() - 1)
+        """Insert element inside the heap, this operation
+        swap the element from the bottom to the top, and can
+        be costly, a solution can be build the element from top to bottom
+        it is possible proof tha the operation cost less, but for now
+        in python we mantains this approach.
+
+        Time Complexity O(log N)
+        """
+        self.heap.append(value)
+        self.__swap_parent(len(self.heap) - 1)
         return True
 
     def peek(self) -> int:
         if self.len() == 0:
             raise Exception("Empty data structure")
-        return self.heap[0].value
-
-    def __at(self, idx: int) -> HeapNode:
-        return self.heap[idx]
+        return self.heap[0]
 
     def len(self) -> int:
         return len(self.heap)
 
-    def __sift_up(self, current_idx: int):
-        """Move the element at {currentIdx} to the top of the Min heap"""
-        current_node = self.__at(current_idx)
-        parent_idx = current_node.parent()
-        while parent_idx > 0 and self.cmp(parent_idx, current_idx):
-            self.swap(current_idx, parent_idx)
-            current_idx = parent_idx
-            parent_idx = self.__at(current_idx).parent()
+    def to_list(self) -> [int]:
+        return self.heap
 
-    def __sift_down(self, current_idx: int, end_idx: int):
-        """Move the element at {current_idx} to the {end_idx} position of the Min Heap"""
-        current_node = self.__at(current_idx)
-        while current_node.left() <= end_idx:
-            left_idx = current_node.left()
-            # Improove the readibility of the code, and
-            # avoid that variable jump out in some strange workflow
-            right_idx = -1
-            swap_idx = -1
-            if current_node.right() <= end_idx:
-                right_idx = current_node.right()
-            if right_idx != -1 and self.cmp(right_idx, current_idx):
-                swap_idx = right_idx
-            else:
-                swap_idx = left_idx
-            if self.cmp(swap_idx, current_idx):
-                self.swap(swap_idx, current_idx)
-                current_node = self.__at(swap_idx)
-            else:
-                return
+    def verify(self) -> bool:
+        for currentIdx in range(1, len(self.heap)):
+            parent_idx = Heap.parent(currentIdx)
+            if not self.cmp(parent_idx, currentIdx):
+                return False
+        return True
 
-    def swap(self, idx_one: int, idx_two: int) -> None:
+    def heapify(self, node):
+        """Restore the propriety inside the heap"""
+        left_node = Heap.left(node)
+        right_node = Heap.right(node)
+        target_node = node
+        if (self.len() - 1 >= left_node) and (not self.cmp(target_node, left_node)):
+            target_node = left_node
+        elif (self.len() - 1 >= right_node) and (not self.cmp(target_node, right_node)):
+            target_node = right_node
+
+        if target_node != node:
+            self.__swap(node, target_node)
+            self.heapify(target_node)
+
+    def __swap_parent(self, node: int) -> None:
+        """Take a node and check if it is possible swap it with the parent
+        this mean that the heap violate the heap propriety"""
+        if node is None or node < 0:
+            return
+        parent_idx = Heap.parent(node)
+        if not self.cmp(parent_idx, node):
+            self.__swap(node, parent_idx)
+            self.__swap_parent(parent_idx)
+
+    def __swap(self, idx_one: int, idx_two: int) -> None:
         """Swap the position of the two element in index {idx_two} and {idx_two}"""
-        one_node = self.heap[idx_one]
-        two_node = self.heap[idx_two]
-        two_node.idx = idx_one
-        one_node.idx = idx_two
-        self.heap[idx_one] = two_node
-        self.heap[idx_two] = one_node
+        self.heap[idx_one], self.heap[idx_two] = self.heap[idx_two], self.heap[idx_one]
+
+    def __str__(self):
+        result = ""
+        for _, value in enumerate(self.heap):
+            result += f"{value}, "
+        return result
+
+    def __sizeof__(self):
+        return self.len()
 
     @abstractmethod
     def cmp(self, idx_one: int, idx_two: int) -> bool:
