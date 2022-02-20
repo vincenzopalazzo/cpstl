@@ -68,18 +68,22 @@ class Heap(ABC):
                 return False
         return True
 
-    def heapify(self, node):
+    def heapify(self, node, size_offset=0):
         """Restore the propriety inside the heap"""
         left_node = Heap.left(node)
         right_node = Heap.right(node)
         target_node = node
-        if (self.len() - 1 >= left_node) and (not self.cmp(target_node, left_node)):
+        if (self.len() - 1 - size_offset >= left_node) and (
+            not self.cmp(target_node, left_node)
+        ):
             target_node = left_node
-        elif (self.len() - 1 >= right_node) and (not self.cmp(target_node, right_node)):
+        elif (self.len() - 1 - size_offset >= right_node) and (
+            not self.cmp(target_node, right_node)
+        ):
             target_node = right_node
 
         if target_node != node:
-            self.__swap(node, target_node)
+            self.swap(node, target_node)
             self.heapify(target_node)
 
     def __swap_parent(self, node: int) -> None:
@@ -89,10 +93,10 @@ class Heap(ABC):
             return
         parent_idx = Heap.parent(node)
         if not self.cmp(parent_idx, node):
-            self.__swap(node, parent_idx)
+            self.swap(node, parent_idx)
             self.__swap_parent(parent_idx)
 
-    def __swap(self, idx_one: int, idx_two: int) -> None:
+    def swap(self, idx_one: int, idx_two: int) -> None:
         """Swap the position of the two element in index {idx_two} and {idx_two}"""
         self.heap[idx_one], self.heap[idx_two] = self.heap[idx_two], self.heap[idx_one]
 
