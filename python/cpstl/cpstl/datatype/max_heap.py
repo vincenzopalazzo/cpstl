@@ -1,4 +1,4 @@
-from .heap import Heap, HeapBottomUp
+from .heap import Heap, HeapTopDown
 
 
 class MaxHeap(Heap):
@@ -12,7 +12,7 @@ class MaxHeap(Heap):
         return self.verify()
 
 
-class MaxHeapBottomUp(HeapBottomUp):
+class MaxHeapTopDown(HeapTopDown):
     """Use optimization of heap to improve the insert time from O(N log N) to O(N)"""
 
     def cmp(self, start_idx: int, with_idx: int) -> bool:
