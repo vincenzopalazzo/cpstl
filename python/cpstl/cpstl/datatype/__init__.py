@@ -1,3 +1,3 @@
-from .heap import Heap
-from .max_heap import MaxHeap
-from .min_heap import MinHeap
+from .heap import Heap, HeapBottomUp
+from .max_heap import MaxHeap, MaxHeapBottomUp
+from .min_heap import MinHeap, MinHeapBottomUp
