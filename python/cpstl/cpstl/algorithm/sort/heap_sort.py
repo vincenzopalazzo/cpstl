@@ -7,12 +7,12 @@ class HeapSort(Sort):
 
     def sort(self, sequence: list, order=Order.INCREASE) -> list:
         heap = self.build_heap(sequence, order)
-        print(f"fmt start {heap}")
-        print(f"is valid {heap.verify()}")
+        print("---- start ------")
         offset = 1
         for idx in reversed(range(1, heap.len())):
+            print(f"idx {idx}")
             heap.swap(0, idx)
-            heap.heapify(0, offset)
+            heap.heapify(0, size_offset=offset)
             offset += 1
         return heap.to_list()
 
