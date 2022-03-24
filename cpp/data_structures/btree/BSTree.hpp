@@ -36,15 +36,15 @@ template <class T>
 class Node {
  private:
   T value;
-  std::shared_ptr<Node<T>> parent = nullptr;
-  std::shared_ptr<Node<T>> left = nullptr;
-  std::shared_ptr<Node<T>> right = nullptr;
+  std::weak_ptr<Node<T>> parent;
+  std::shared_ptr<Node<T>> left;
+  std::shared_ptr<Node<T>> right;
   friend cpstl::BTree<T>;
 
  public:
   Node(T const &value) : value(value) {}
   Node(T const &value, std::shared_ptr<internal::Node<T>> node)
-      : value(value), parent(node) {}
+    : value(value), parent(node) {}
 };
 };  // namespace internal
 
@@ -96,37 +96,27 @@ class BTree {
     to->left = from->left;
     to->right = from->right;
     to->value = from->value;
-    // It is correct?
-    to->parent = from->parent;
-    // TODO: Add the logic to handler also the parent option
+    from.reset();
   }
 
-  void remove_helper(std::shared_ptr<internal::Node<T>> node, bool left,
+  void remove_helper(std::shared_ptr<internal::Node<T>> &node, bool left,
                      T const &value) {
     assert(node);
 
     if (node->value == value) {
-      // FIXME: In case of middle node what is the value
-      // that will go up? Left or right side?
       if (node->left) {
         auto max_to_left = get_max_to_left(node->left);
         mapping_node(max_to_left, node, true);
-        auto parent = max_to_left->parent;
-        parent->right = node;
-        max_to_left.reset();
       } else if (node->right) {
         // take the minimum to the right
         auto min_to_right = get_min_to_right(node->right);
         mapping_node(min_to_right, node, false);
-        auto parent = min_to_right->parent;
-        parent->left = node;
-        min_to_right.reset();
       } else {
         auto parent = node->parent;
         if (left)
-          parent->left = nullptr;
+          parent.lock()->left = nullptr;
         else
-          parent->right = nullptr;
+          parent.lock()->right = nullptr;
         // it is a leaft
         node.reset();
       }
@@ -198,7 +188,6 @@ class BTree {
     // the tree has only the root.
     assert(is_root_tree());
     root.reset();
-    root = nullptr;
   }
 
   bool is_valid_bst() {

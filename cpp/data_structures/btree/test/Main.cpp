@@ -62,20 +62,34 @@ static void TEST_REMOVE_ROOT_BTREE() {
   bstree.insert(2);
   bstree.insert(-1);
 
-  cpstl::assert_is_true("TEST_CREATE_BSTREE_VALID", bstree.is_valid_bst());
+  cpstl::assert_is_true("TEST_REMOVE_BSTREE_VALID", bstree.is_valid_bst());
 
-  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_1", bstree.contains(1));
-  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_2", bstree.contains(2));
-  cpstl::assert_is_true("TEST_CREATE_BSTREE_CONTAINS_-1", bstree.contains(-1));
-  cpstl::assert_equal("TEST_CREATE_BSTREE_CONTAINS_ROOT", bstree.get_root(), 1);
+  cpstl::assert_is_true("TEST_REMOVE_BSTREE_CONTAINS_1", bstree.contains(1));
+  cpstl::assert_is_true("TEST_REMOVE_BSTREE_CONTAINS_2", bstree.contains(2));
+  cpstl::assert_is_true("TEST_REMOVE_BSTREE_CONTAINS_-1", bstree.contains(-1));
+  cpstl::assert_equal("TEST_REMOVE_BSTREE_CONTAINS_ROOT", bstree.get_root(), 1);
 
   bstree.remove(1);
   cpstl::assert_equal("TEST_CREATE_BSTREE_CONTAINS_ROOT", bstree.get_root(),
                       -1);
 }
 
+static void TEST_REMOVE_FROM_BTREE() {
+  auto bstree = cpstl::BTree<int>();
+
+  bstree.insert(10);
+  bstree.insert(20);
+  bstree.insert(21);
+  bstree.insert(1);
+  cpstl::assert_equal("TEST_REMOVE_FROM_BSTREE_SANITY", {1, 10, 20, 21}, bstree.traverse_in_order());
+  bstree.remove(20);
+  cpstl::assert_equal("TEST_REMOVE_FROM_BSTREE", {1, 10, 21}, bstree.traverse_in_order());
+}
+
+
 int main() {
   TEST_CREATE_BTREE();
   TEST_REMOVE_ROOT_BTREE();
+  TEST_REMOVE_FROM_BTREE();
   return EXIT_SUCCESS;
 }
