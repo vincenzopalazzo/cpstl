@@ -1,6 +1,6 @@
 """
 Graph data structure implementation with adjacency list in Python 3
-Copyright (C) 2021 Vincenzo Palazzo vincenzopalazzodev@gmail.com
+Copyright (C) 2021-2022 Vincenzo Palazzo vincenzopalazzodev@gmail.com
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 USA.
 """
+from abc import ABC, abstractmethod
 
 class Node:
     """
@@ -31,3 +32,19 @@ class Node:
     def add_node(self, value) -> None:
         node = Node(value)
         self.children.append(node)
+
+class Graph(ABC):
+    """Graph interface"""
+
+    @abstractmethod
+    def add_edge(self, u, v, opts: dict = None):
+        """Add the edge from A to b"""
+        pass
+
+    @abstractmethod
+    def dfs(self) -> None:
+        pass
+
+    @abstractmethod
+    def bfs(self) -> None:
+        pass

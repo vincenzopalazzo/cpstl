@@ -19,10 +19,10 @@ USA.
 """
 # FIXME: implementing it in the package and use it
 from queue import Queue
-from .graph import Node
+from .graph import Node, Graph
 
 
-class GraphList:
+class GraphList(Graph):
     """
     Class implementation of graph with adjacency list.
     This class use contains a list of node
@@ -73,10 +73,10 @@ class GraphList:
                 return True
         return False
 
-    def add_edge(self, u, v) -> None:
+    def add_edge(self, u, v, opts: dict = None) -> None:
         """
-        Adding a edge to graph, if directed is true
-        add the edge from u -> v, otherwise adding a
+        Adding an edge to graph, if directed is true
+        add the edge from u -> v, otherwise adding an
         edge u -> v and v -> u.
         """
         if self.directed:
@@ -108,7 +108,7 @@ class GraphList:
             paths.append(path)
         return paths
 
-    def size(self) -> int:
+    def __sizeof__(self) -> int:
         uniques = set()
         for node in self.nodes:
             uniques.add(node.value)
