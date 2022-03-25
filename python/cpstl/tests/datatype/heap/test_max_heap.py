@@ -1,5 +1,5 @@
 import heapq
-from cpstl.datatype import MaxHeap, MaxHeapTopDown
+from cpstl.datatype.heap import MaxHeap, MaxHeapTopDown
 
 
 def test_build_max_heap_one():
