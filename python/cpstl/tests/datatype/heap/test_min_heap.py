@@ -1,6 +1,6 @@
 import logging
 
-from cpstl.datatype.min_heap import MinHeap, MinHeapTopDown
+from cpstl.datatype.heap import MinHeap, MinHeapTopDown
 
 logger = logging.Logger(__name__)
 

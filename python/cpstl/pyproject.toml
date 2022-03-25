@@ -1,8 +1,16 @@
 [tool.poetry]
 name = "cpstl"
-version = "0.1.0"
-description = ""
+version = "0.0.1"
+description = "Copy and Paste standard library (CPSTL) is a repository with a collection of data structure and algorithms in many different languages"
 authors = ["Vincenzo Palazzo <vincenzopalazzodev@gmail.com>"]
+keywords = ["copy_past_library", "heap", "max_heap", "min_heap"]
+readme = "README.md"
+license = "GNU GENERAL PUBLIC LICENSE v2"
+homepage = "https://vincenzopalazzo.github.io/cpstl"
+repository = "https://github.com/vincenzopalazzo/cpstl"
+include = [
+    "LICENSE",
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
