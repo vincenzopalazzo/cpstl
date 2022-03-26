@@ -43,6 +43,10 @@ namespace cpstl {
 
             ~DT_Node() { }
 
+            std::string get_name() {
+                return this->name;
+            }
+
             // giving access to DynamicTree class to control each node
             template<typename T> friend class DynamicTree;
     }; // end of Dynamic Tree Class 
@@ -145,36 +149,80 @@ namespace cpstl {
 
             // sort children of this current node
             // o(n log n) --> o(n²)
-            void sort(bool reverse = false) {
+            void sort() {
 
-                if (reverse) {
-                    std::sort(current_node->children.begin(), current_node->children.end(),
-                        // comparison function
-                        [&](std::shared_ptr<DT_Node<V>>& a, std::shared_ptr<DT_Node<V>>& b) {
-                            return (a->name > b->name);
-                        }
-                    );
-                }
-                else {
-                    std::sort(current_node->children.begin(), current_node->children.end(),
-                        // comparison function
-                        [&](std::shared_ptr<DT_Node<V>> &a, std::shared_ptr<DT_Node<V>> &b) {
-                            return ( a->name < b->name );
-                        }
-                    );
-                }
-
+                std::sort(current_node->children.begin(), current_node->children.end(),
+                    // comparison function
+                    [&](std::shared_ptr<DT_Node<V>> &a, std::shared_ptr<DT_Node<V>> &b) {
+                        return ( a->name < b->name );
+                    }
+                );
+               
             }
             
+            // o(1) --> o(log n)
+            // target_child_name => mean sub node where you want to go
+            bool go_to(std::string const& target_child_name) {
+
+                // search for target index
+                int index = -1;
+                this->search_for_index(target_child_name, index);
+
+                // in case target found
+                if (index != -1) {
+
+                    this->current_node = this->current_node->children[index];
+                    return true;
+
+                }
+
+                // in case target 'not found'
+                return false;
+            }
+
+            // o(1)
+            // go from this current_node to its parent node
+            bool go_back() {
+
+                // if parent not NULL
+                if (this->current_node->parent != NULL) {
+                    // move to parent
+                    this->current_node = this->current_node->parent;
+
+                    return true;
+                }
+
+                // else mean parent found
+                return false;
+            }
+
+
+            // o(1)
+            // go to the root directly 
+            bool go_to_root() {
+
+                // if parent of current node is NULL that mean current node already in root
+                if (this->current_node->parent == NULL) return false;
+
+                // else
+                this->current_node = this->root;
+                return true;
+            }
 
             // just for testing 
             void print() {
 
+                int i = 0;
+                std::cout << "================\n";
+                std::cout <<"== " << this->current_node->name << '\n';
                 for (std::shared_ptr<DT_Node<V>> node : current_node->children) {
-                    std::cout << node->name << " : " << node->value << '\n';
+                    std::cout << "---->[" << i << "] " << node->name << " : " << node->value << '\n';
+                    i += 1;
                 }
-            }
+                std::cout << "================\n";
 
+            }
+            
     }; // end of "Dynamic Tree" Class 
 
 } // end of "cpstl" namespace 
