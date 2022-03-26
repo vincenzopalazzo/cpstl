@@ -64,6 +64,8 @@ namespace cpstl {
             // main node in DynamicTree
             std::shared_ptr<DT_Node<V>> root;
 
+            // o(log n) 
+            // search for children node in current node
             bool binary_search(std::string const& target_name, int& target_index) {
                 int min = 0;
                 int max = current_node->children.size() - 1;
@@ -98,6 +100,118 @@ namespace cpstl {
                     target_index = -1;
                 }
                 return false;
+            }
+            
+            // o(log n) 
+            // search for children in temp node
+            int binary_search(std::string const& target_name , std::shared_ptr<DT_Node<V>> temp) {
+                int min = 0;
+                int max = temp->children.size() - 1;
+                int mid = (min + max) / 2;
+
+                while (min <= max) {
+
+                    // in case target found
+                    if (temp->children[mid]->name == target_name) {
+                        return mid;
+                    }
+
+                    // going left
+                    if (temp->children[mid]->name.compare(target_name) > 0) {
+                        max = (mid - 1);
+                    }
+
+                    // going right
+                    if (temp->children[mid]->name.compare(target_name) < 0) {
+                        min = (mid + 1);
+                    }
+
+                    // update mid
+                    mid = (min + max) / 2;
+                }
+
+                // in case not found
+                return -1;
+            }
+
+            // o(1) 
+            // function take a "temp node" & make a simple check if that temp include a parent with specific name
+            // return => "parent pointer" or NULL
+            std::shared_ptr<DT_Node<V>> search_up(std::string& parent_name, std::shared_ptr<DT_Node<V>> temp) {
+
+                if (temp->parent != NULL && temp->parent->name == parent_name) {
+                    return temp->parent;
+                }
+                else return NULL;
+
+            }
+
+            // o(1) --> o(log n) 
+            // like "search_up" function , but this one for looking "down" between children
+            std::shared_ptr<DT_Node<V>> search_down(std::string& child_name , std::shared_ptr<DT_Node<V>> temp) {
+
+                // o(log n)
+                // search for target 
+                int index = this->binary_search(child_name,temp);
+
+                if (index != -1) {
+                    return temp->children[index];
+                }
+
+                return NULL;
+            }
+
+
+            // o(path) --> o(log n * path)
+            /*
+                like go_to but this require a hole path of "names" in one direction
+                note !! travel will happend only if "the whole path of names" is valid
+                otherwise nothing will be happen & return will be false
+            */
+            bool travel(std::vector<std::string> const& path_of_names, bool up = false) {
+
+                // temp only for "check & test" if "path_of_names" are valid or not
+                // if "path_of_names" is valid we make it the new current_position "as last step" 
+                // else nothing will be happen
+                std::shared_ptr<DT_Node<V>> temp = current_node;
+
+                // up true => mean that "path_of_names" in parents direction "up"
+                if (up) {
+
+                    // o(path)
+                    // we start looking up by using a private function "search_up"
+                    for (std::string target_name : path_of_names) {
+
+                        // o(log n)
+                        temp = search_up(target_name, temp);
+
+                        // in case not found "that's mean invalid path"
+                        if (temp == NULL) return false;
+                    }
+
+                }
+                // "up == false" mean that "path_of_names" in children direction "down"
+                else {
+
+                    // o(path)
+                    // we start looking down by using a private function "search_down"
+                    for (std::string target_name : path_of_names) {
+
+                        // o(log n)
+                        temp = search_down(target_name, temp);
+
+                        // in case not found "that's mean invalid path"
+                        if (temp == NULL) return false;
+                    }
+
+                }
+
+                // in case "path_of_names" is valid 
+                // last step => travel/jump from "current_position" to "temp node"
+                this->current_node = temp;
+
+                // and confirmation 
+                return true;
             }
 
         public:
@@ -209,13 +323,23 @@ namespace cpstl {
                 return true;
             }
 
+            // travel in parent's direction   "up"
+            bool travel_up(std::vector<std::string> const&  path_of_names) {
+                return this->travel(path_of_names, true);
+            }
+
+            // travel in child's direction    "down"
+            bool travel_down(std::vector<std::string> const& path_of_names) {
+                return this->travel(path_of_names, false);
+            }
+
             // just for testing 
             void print() {
 
                 int i = 0;
                 std::cout << "================\n";
                 std::cout <<"== " << this->current_node->name << '\n';
-                for (std::shared_ptr<DT_Node<V>> node : current_node->children) {
+                for(std::shared_ptr<DT_Node<V>> node : current_node->children) {
                     std::cout << "---->[" << i << "] " << node->name << " : " << node->value << '\n';
                     i += 1;
                 }
