@@ -1,5 +1,5 @@
 from .sort import Sort, Order
-from cpstl.datatype import MaxHeap, MinHeap
+from cpstl.datatype.heap import MaxHeap, MinHeap
 
 
 class HeapSort(Sort):

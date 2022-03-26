@@ -1,4 +1,4 @@
-from .heap import Heap, HeapTopDown
+from cpstl.datatype.heap import Heap, HeapTopDown
 
 
 class MinHeap(Heap):
