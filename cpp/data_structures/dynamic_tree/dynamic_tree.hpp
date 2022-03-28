@@ -24,6 +24,52 @@ namespace cpstl {
             // node name => each node must have a name for dealing with it => "search , sort , ..."
             std::string name;
 
+            // o(log n) 
+            // search for children in temp node
+            int binary_search(std::string const& target_name) {
+                int min = 0;
+                int max = this->children.size() - 1;
+                int mid = (min + max) / 2;
+
+                while (min <= max) {
+
+                    // in case target found
+                    if (this->children[mid]->name == target_name) {
+                        return mid;
+                    }
+
+                    // going left
+                    if (this->children[mid]->name.compare(target_name) > 0) {
+                        max = (mid - 1);
+                    }
+
+                    // going right
+                    if (this->children[mid]->name.compare(target_name) < 0) {
+                        min = (mid + 1);
+                    }
+
+                    // update mid
+                    mid = (min + max) / 2;
+                }
+
+                // in case not found
+                return -1;
+            }
+
+            bool sub_full_search(std::string const& target_name) {
+
+                if (this->name == target_name) return true;
+                else {
+                    int index = this->binary_search(target_name);
+                    if (index != -1) return true;
+                    
+                    for (std::shared_ptr < DT_Node<T> > node : this->children) {
+                        if (node->sub_full_search(target_name)) return true;
+                    }
+                }
+
+                return false;
+            }
         public:
             // children of this node 
             std::vector< std::shared_ptr<DT_Node<T>> > children;
@@ -47,10 +93,42 @@ namespace cpstl {
                 return this->name;
             }
 
+            std::string get_parent_name() {
+                return this->parent->get_name();
+            }
+
+            // get length of children in this node
+            std::size_t length() {
+                return this->children.size();
+            }
+
+            // remove all children of "current node"
+            void remove_children() {
+
+                // nested recursive remove_children => remove all children of children
+                for (std::shared_ptr<DT_Node<T>>& child : this->children) {
+                    child->remove_children();
+                }
+
+                // last step make a new empty vector 
+                this->children = std::vector< std::shared_ptr<DT_Node<T>> >();
+            }
+
+            // o(1)
+            // get a copy of this node without parent or children
+            DT_Node<T> copy() {
+
+                DT_Node<T> node_copy = *this;
+                node_copy.parent = std::make_shared< DT_Node<T> >();
+                node_copy.children.clear();
+    
+                return node_copy;
+
+            }
+
             // giving access to DynamicTree class to control each node
             template<typename T> friend class DynamicTree;
     }; // end of Dynamic Tree Class 
-
 
 
 
@@ -63,7 +141,7 @@ namespace cpstl {
         private:
             // main node in DynamicTree
             std::shared_ptr<DT_Node<V>> root;
-
+            
             // o(log n) 
             // search for children node in current node
             bool binary_search(std::string const& target_name, int& target_index) {
@@ -104,7 +182,7 @@ namespace cpstl {
             
             // o(log n) 
             // search for children in temp node
-            int binary_search(std::string const& target_name , std::shared_ptr<DT_Node<V>> temp) {
+            int  binary_search(std::string const& target_name , std::shared_ptr<DT_Node<V>> temp) {
                 int min = 0;
                 int max = temp->children.size() - 1;
                 int mid = (min + max) / 2;
@@ -161,7 +239,6 @@ namespace cpstl {
                 return NULL;
             }
 
-
             // o(path) --> o(log n * path)
             /*
                 like go_to but this require a hole path of "names" in one direction
@@ -214,6 +291,11 @@ namespace cpstl {
                 return true;
             }
 
+            // search for child & get it's index
+            bool search_for_index(std::string const target_name, int& target_index) {
+                return this->binary_search(target_name, target_index);
+            }
+
         public:
 
             // current_node => it's a node represent you position in tree
@@ -227,11 +309,10 @@ namespace cpstl {
                 current_node = root;
             }
 
-            ~DynamicTree() {
+            // destructor
+            ~DynamicTree() { }
 
-            }
-
-            // o( (n log n) + (log n) + 1 )
+            // o( (n log n) + (log n) )
             // duplicate names are not allowed here in dynamic tree
             bool insert(std::string const new_node_name, V const new_node_value) {
 
@@ -240,7 +321,8 @@ namespace cpstl {
 
                 // o(log n)
                 // first we check if any node is already exist with the same name
-                if (search_for_index(new_node_name, fake_index)) return false;
+                if (this->search_for_index(new_node_name, fake_index)) return false;
+                
 
                 // then
                 // insert new child
@@ -256,9 +338,28 @@ namespace cpstl {
                 return true;
             }
 
-            // target_index : useful if you want to get index of that target in case not found you get -1
-            bool search_for_index(std::string const target_name, int& target_index) {
-                return this->binary_search(target_name, target_index);
+            // o( log n )
+            int search_for_index(std::string const target_name) {
+            
+                int index = -1;
+                this->binary_search(target_name, index);
+
+                return index;
+            }
+
+            // o( log n )
+            // same search but without index
+            bool search(std::string const& target_name) {
+
+                int skip_index = -1;
+
+                return this->binary_search(target_name , skip_index);
+            }
+
+            // o( path * log n )
+            // search for target in the hole tree 
+            bool full_search(std::string const& target_name) {
+                return this->root->sub_full_search(target_name);
             }
 
             // sort children of this current node
@@ -310,7 +411,6 @@ namespace cpstl {
                 return false;
             }
 
-
             // o(1)
             // go to the root directly 
             bool go_to_root() {
@@ -331,6 +431,47 @@ namespace cpstl {
             // travel in child's direction    "down"
             bool travel_down(std::vector<std::string> const& path_of_names) {
                 return this->travel(path_of_names, false);
+            }
+
+            // o(log n) --> o(log n * path)
+            // remove child with all it's children
+            bool remove_child(std::string const& target_node_name) {
+
+                // search for target index
+                int index = -1;
+                this->search_for_index(target_node_name, index);
+
+                // call recursive remove of this child node
+                if (index != -1) {
+                    this->current_node->children[index]->remove_children();
+                    this->current_node->children.erase(this->current_node->children.begin() + index);
+                    return true;
+                }
+
+                return false;
+            }
+
+            // o(1) --> o(log n)
+            // get a copy of specific child , the copy will contain name & value only
+            DT_Node<V> get_child(std::string const& target_node_name) {
+
+                int index = -1;
+
+                // search for target
+                this->search_for_index(target_node_name, index);
+
+                // temp copy
+                DT_Node<V> copy_of_child;
+
+                // in case target found
+                if (index != -1) {
+
+                    copy_of_child = *(this->current_node->children[index]);
+                    copy_of_child.parent = std::make_shared<DT_Node<V>>();
+                    copy_of_child.children.clear();
+                }
+
+                return copy_of_child;
             }
 
             // just for testing 
