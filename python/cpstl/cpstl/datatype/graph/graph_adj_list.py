@@ -108,7 +108,7 @@ class GraphList(Graph):
             paths.append(path)
         return paths
 
-    def __sizeof__(self) -> int:
+    def size(self) -> int:
         uniques = set()
         for node in self.nodes:
             uniques.add(node.value)

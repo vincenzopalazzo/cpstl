@@ -1,5 +1,5 @@
 """
-Graph data structure implementation with adjacency list in Python 3
+Flajolet–Martin (FM) Sketch algorithm in pure python 3.
 Copyright (C) 2021-2022 Vincenzo Palazzo vincenzopalazzodev@gmail.com
 
 This program is free software; you can redistribute it and/or
@@ -17,36 +17,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 USA.
 """
-from abc import ABC, abstractmethod
+from cpstl.algorithm.sketch.flajolet_martin import FMSketch
 
 
-class Node:
-    """
-    Node implementation that contains the value of the element.
-    This class contains a list of children and the value of the node.
-    """
-
-    def __init__(self, value) -> None:
-        self.value = value
-        self.children = []
-
-    def add_node(self, value) -> None:
-        node = Node(value)
-        self.children.append(node)
-
-
-class Graph(ABC):
-    """Graph interface"""
-
-    @abstractmethod
-    def add_edge(self, u, v, opts: dict = None):
-        """Add the edge from A to b"""
-        pass
-
-    @abstractmethod
-    def dfs(self) -> None:
-        pass
-
-    @abstractmethod
-    def bfs(self) -> None:
-        pass
+def test_fm_sketch():
+    """FM Sketch algorithm"""
+    stream = [1, 2, 3, 4, 5, 6, 4, 2, 5, 9, 1, 6, 3, 7, 1, 2, 2, 4, 2, 1]
+    found = False
+    # The hash function can be badly defined!
+    # so we iterate and check sometimes
+    for _ in range(10):
+        counter = FMSketch.count_distinct(stream)
+        if counter == len(set(stream)):
+            found = True
+    assert found

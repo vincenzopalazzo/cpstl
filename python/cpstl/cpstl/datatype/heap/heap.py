@@ -121,6 +121,7 @@ class HeapTopDown(ABC):
     """Optimization of the Heap datastructure where the construction time move from
     O(N log N) to O(N), by the moving of the shift down of the element.
     FIXME: this is done also from the previous Heap implementation from the heap data structure, right?"""
+
     def __init__(self, array=[]):
         self.heap = array
         self.heap = self.from_array(array)
