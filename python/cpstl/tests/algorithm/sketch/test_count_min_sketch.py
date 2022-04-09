@@ -22,7 +22,7 @@ from cpstl.algorithm.sketch.count_min_sketch import CountMinSketch
 
 def test_count_min_sketch():
     """Simple test of usage of Count Min Sketch"""
-    sketch = CountMinSketch(size_hash_table=10, hash_functions=100)
+    sketch = CountMinSketch()
     sketch.increment(12)
     sketch.increment(10)
     sketch.increment(1, increment=123)

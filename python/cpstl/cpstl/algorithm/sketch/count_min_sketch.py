@@ -18,7 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 USA.
 """
 from array import array
-from math import pow
+from math import pow, log
 from ..hash.universal_hash import UniversalHash
 
 
@@ -41,20 +41,41 @@ class CountMinSketch:
     """
     Count Min Sketch algorithm in pure python 3.
 
+    The Count min sketch will divide the algorithm in different steps, like:
+    - Step 1: Build a Matrix of size [C x R] with all possession sets to zero
+    - Where the Colum is calculated with the formula `C = eulero_contant / approximation`
+    and the row is calculated with the formula `R = ln(1 / gamma)`
     author: Vincenzo Palazzo https://github.com/vincenzopalazzo
     """
 
-    def __init__(self, size_hash_table: int, hash_functions: int):
+    def __init__(self, approximation: float = 0.001):
         self.size = 0
         self.matrix = []
-        # TODO: how the matrix is defined?
-        for _ in range(size_hash_table):
-            table = array("l", (0 for _ in range(hash_functions)))
+        colum = CountMinSketch.calculate_colums(approximation)
+        row = CountMinSketch.calculate_rows()
+        for _ in range(row):
+            table = array("l", (0 for _ in range(colum)))
             self.matrix.append(table)
 
+        # generate R hash functions, with a universe that is `h -> [c]`
         self.hash_functions = generate_n_hash_function(
-            number_hashes=hash_functions, universe_hash=size_hash_table
+            number_hashes=row, universe_hash=colum
         )
+
+    @staticmethod
+    def calculate_colums(approximation: float) -> int:
+        """
+        Calculate the colums size from an approximation number
+        :param approximation:
+        :return: Size of the colums calculate with the formula `C = eulero_contant / approximation`
+        """
+        eulero_constant = 2.71828
+        return int(eulero_constant / approximation)
+
+    @staticmethod
+    def calculate_rows() -> int:
+        """"""
+        return int(log((1 / (1 / 3)), 2))
 
     def __compute_hashes(self, val):
         if not isinstance(val, int):
