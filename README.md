@@ -46,8 +46,8 @@ New implementation of data structure need to be push also in repository cpstl.
   <img src="https://opensource.org/files/osi_keyhole_300X300_90ppi_0.png" width="150" height="150"/>
 </div>
 
-    Collection of algorithm's and data struct developer in different language
-    and with the Code Style guide line, to resolve Competitive Programming problem.
+    Copy and Paste standard library: a collection of library written 
+    in many different languages.
     Copyright (C) 2020-2021 Vincenzo Palazzo vincenzopalazzodev@gmail.com
 
     This program is free software; you can redistribute it and/or modify
