@@ -1,3 +1,0 @@
-"""
-Write here your logic
-"""
