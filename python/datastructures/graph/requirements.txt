@@ -1,3 +1,0 @@
-pytest==6.2.4
-google-benchmark==0.1.2
-black
