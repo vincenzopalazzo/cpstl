@@ -53,21 +53,19 @@ class FMSketch(object):
     """
 
     @staticmethod
-    def count_distinct(input_list: list) -> int:
+    def count_distinct(input_list: list, bits: int = 64) -> int:
         """
         Return the number of distinct elements in the input list.
         :return: The FM estimation of distinct elements in the list of elements.
         """
         max_zeros_sum = 0
-        # FIXME: What is a good hash function size?
-        # look inside the theory!
-        universal_hashing = UniversalHash(size=len(input_list) * 2 + 1)
+        # number of univers! that in this case is the number of bits
+        universal_hashing = UniversalHash(size=pow(2, bits))
         for index in range(len(input_list)):
-            # The hash function returns an integer that is a binary rappresentation
+            # The hash function returns an integer that is a binary presentation
             # of the hash value returned.
             hash_val = bin(universal_hashing.hash(input_list[index]))[2:]
             zeros_sum = 0
-            print(list(reversed(hash_val)))
             for val in range(len(hash_val) - 1, 0, -1):
                 if hash_val[val] == "0":
                     zeros_sum += 1
