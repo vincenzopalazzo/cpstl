@@ -1,0 +1,16 @@
+{
+    "package_name": "python",
+    "version": "v0.0.5",
+    "api": {
+      "name": "github",
+      "repository": "vincenzopalazzo/cpstl",
+      "branch": "master"
+    },
+    "generation_method": {
+      "name": "metadata",
+      "header_filter": true
+    },
+    "serialization_method": {
+      "name": "md"
+    }
+  }
