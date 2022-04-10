@@ -1,4 +1,4 @@
-name: cpstl cpp code check
+name: cpstl build C++ check
 
 on:
   pull_request:
@@ -13,5 +13,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Cpp code sanity check
-      run: cd cpp/ && ./check_cpp_code.sh
+    - name: Install google benchmark
+      run: |
+          git clone https://github.com/google/benchmark.git
+          cd benchmark
+          cmake -E make_directory "build"
+          cmake -E chdir "build" cmake -DBENCHMARK_DOWNLOAD_DEPENDENCIES=on -DCMAKE_BUILD_TYPE=Release ../
+          sudo cmake --build "build" --config Release --target install
+    - name: cpstl compiling module
+      run: cd cpp/ && ./compile_cpstl.sh

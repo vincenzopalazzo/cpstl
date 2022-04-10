@@ -28,7 +28,7 @@ const cpstl::Log LOG(true);
 static void TEST_ONE_POSTING_LIST_CREATION() {
   auto invertedIndex = cpstl::InvertedIndex();
 
-  invertedIndex.add_file("res/small.txt");
+  invertedIndex.add_file("res/small.in");
 
   std::string elem = invertedIndex.to_string();
   cpstl::cp_log(LOG, "----- SMALL FILE -------");
@@ -38,7 +38,7 @@ static void TEST_ONE_POSTING_LIST_CREATION() {
 static void TEST_ONE_POSTING_LIST_CREATION_TWO() {
   auto invertedIndex = cpstl::InvertedIndex();
 
-  invertedIndex.add_file("res/sample3.txt");
+  invertedIndex.add_file("res/sample3.in");
 
   std::string table = invertedIndex.to_string();
   cpstl::cp_log(LOG, "------ BIG FILE --------");

@@ -20,14 +20,16 @@
 #include <benchmark/benchmark.h>
 
 #include <cmath>
+#include <random>
 
-#include "../BloomFilter.hpp"
+#include "../LinkedList.hpp"
 
 std::random_device rd;
 std::mt19937_64 mt(rd());
 
 static void CustomArguments(benchmark::internal::Benchmark* b);
 
+/*
 static void BM_BLOOM_FILTER_REPORT(benchmark::State& state) {
   for (auto _ : state) {
     state.PauseTiming();
@@ -55,6 +57,7 @@ static void BM_BLOOM_FILTER_REPORT(benchmark::State& state) {
 }
 
 BENCHMARK(BM_BLOOM_FILTER_REPORT)->Apply(CustomArguments)->Complexity();
+*/
 BENCHMARK_MAIN();
 
 static void CustomArguments(benchmark::internal::Benchmark* b) {
