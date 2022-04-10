@@ -1,0 +1,24 @@
+name: cpstl build C++ check
+
+on:
+  pull_request:
+  push:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  run:
+    name: Run
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install google benchmark
+      run: |
+          git clone https://github.com/google/benchmark.git
+          cd benchmark
+          cmake -E make_directory "build"
+          cmake -E chdir "build" cmake -DBENCHMARK_DOWNLOAD_DEPENDENCIES=on -DCMAKE_BUILD_TYPE=Release ../
+          sudo cmake --build "build" --config Release --target install
+    - name: cpstl compiling module
+      run: cd cpp/ && ./compile_cpstl.sh

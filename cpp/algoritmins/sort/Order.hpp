@@ -165,7 +165,6 @@ class Order {
     }
   }
 
-
   /**
    * Implementation of the counting sort algorithm, and
    * the time complexity of the algorithm is O(N + K) where:

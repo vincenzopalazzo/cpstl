@@ -18,35 +18,27 @@
  * USA.
  */
 #include <cstdlib>
+#include <fstream>
+#include <vector>
 
-#include "../InvertedIndex.hpp"
 #include "TestTool.hpp"
 #include "Utils.hpp"
 
-const cpstl::Log LOG(true);
+using namespace std;
+using namespace cpstl;
 
-static void TEST_ONE_POSTING_LIST_CREATION() {
-  auto invertedIndex = cpstl::InvertedIndex();
-
-  invertedIndex.add_file("res/small.in");
-
-  std::string elem = invertedIndex.to_string();
-  cpstl::cp_log(LOG, "----- SMALL FILE -------");
-  cpstl::cp_log(LOG, elem);
+void TEST_CASE_ONE() {
+  vector<int> inputs = {20, 90, 40, 90};
+  assert_equal("TEST_CASE_ONE", {20, 90, 40, 90}, inputs);
 }
 
-static void TEST_ONE_POSTING_LIST_CREATION_TWO() {
-  auto invertedIndex = cpstl::InvertedIndex();
-
-  invertedIndex.add_file("res/sample3.in");
-
-  std::string table = invertedIndex.to_string();
-  cpstl::cp_log(LOG, "------ BIG FILE --------");
-  cpstl::cp_log(LOG, table);
+void TEST_CASE_TWO() {
+  vector<int> inputs = {30, 30, 10};
+  assert_equal("TEST_CASE_TWO", {30, 10, 10}, inputs);
 }
 
 int main() {
-  TEST_ONE_POSTING_LIST_CREATION();
-  TEST_ONE_POSTING_LIST_CREATION_TWO();
+  TEST_CASE_ONE();
+  TEST_CASE_TWO();
   return EXIT_SUCCESS;
 }

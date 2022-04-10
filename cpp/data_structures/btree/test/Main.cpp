@@ -81,11 +81,12 @@ static void TEST_REMOVE_FROM_BTREE() {
   bstree.insert(20);
   bstree.insert(21);
   bstree.insert(1);
-  cpstl::assert_equal("TEST_REMOVE_FROM_BSTREE_SANITY", {1, 10, 20, 21}, bstree.traverse_in_order());
+  cpstl::assert_equal("TEST_REMOVE_FROM_BSTREE_SANITY", {1, 10, 20, 21},
+                      bstree.traverse_in_order());
   bstree.remove(20);
-  cpstl::assert_equal("TEST_REMOVE_FROM_BSTREE", {1, 10, 21}, bstree.traverse_in_order());
+  cpstl::assert_equal("TEST_REMOVE_FROM_BSTREE", {1, 10, 21},
+                      bstree.traverse_in_order());
 }
-
 
 int main() {
   TEST_CREATE_BTREE();

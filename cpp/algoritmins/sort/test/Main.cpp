@@ -53,7 +53,7 @@ void TEST_CASE_RANDOMIZED_QUICK_SORT() {
 void TEST_CASE_COUNTING_SORT() {
   std::vector<int> inputs = {20, 90, 40, 1, 32};
   auto order = cpstl::Order<int>();
-  order.counting_sort(inputs, 90);
+  order.counting_sort(inputs, 1, 90);
   cpstl::assert_equal("TEST_CASE_COUNTING_SORT", {1, 20, 32, 40, 90}, inputs);
   cpstl::cp_log(LOG, inputs);
 }
