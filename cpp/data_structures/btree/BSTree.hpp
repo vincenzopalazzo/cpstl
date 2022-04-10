@@ -44,7 +44,7 @@ class Node {
  public:
   Node(T const &value) : value(value) {}
   Node(T const &value, std::shared_ptr<internal::Node<T>> node)
-    : value(value), parent(node) {}
+      : value(value), parent(node) {}
 };
 };  // namespace internal
 
