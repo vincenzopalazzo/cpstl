@@ -19,7 +19,6 @@ class Heap(ABC):
     def from_list(self, array: []) -> bool:
         """Build the heap from the list"""
         self.heap = array
-        print(self)
         for idx in range(self.len(), -1, -1):
             self.heapify(idx)
         return self.verify()
@@ -98,9 +97,8 @@ class Heap(ABC):
 
     def swap(self, idx_one: int, idx_two: int) -> None:
         """Swap the position of the two element in index {idx_two} and {idx_two}"""
-        print(self)
         self.heap[idx_one], self.heap[idx_two] = self.heap[idx_two], self.heap[idx_one]
-        print(f"Swapping {self.heap[idx_one]} <-> {self.heap[idx_two]}")
+        # print(f"Swapping {self.heap[idx_one]} <-> {self.heap[idx_two]}")
 
     def __str__(self):
         result = ""
