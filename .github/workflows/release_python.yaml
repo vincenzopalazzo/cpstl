@@ -18,7 +18,7 @@ jobs:
           python-version: 3.7
       - name: Publish
         run: |
-          cd python/cpstl
+          cd python
           python -m pip install --upgrade pip
           pip install poetry
           poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
