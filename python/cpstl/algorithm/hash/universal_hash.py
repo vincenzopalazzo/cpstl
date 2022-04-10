@@ -18,24 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 USA.
 """
 import random
-from math import sqrt
-
-
-def generate_random_prime(target_number: int) -> int:
-    """
-    Trivial function to generate a random prime number,
-    from a target number.
-    :return: The prime number generated.
-    """
-    for number in range(target_number + 1, (2 * target_number) + 1):
-        is_prime = True
-        for prime in range(3, int(sqrt(number) - 1), -1):
-            if prime % 2 == 0:
-                is_prime = False
-                break
-        if is_prime:
-            return number
-    raise Exception(f"Prime number not found with target number {target_number}!")
+from .utils import Utils
 
 
 class UniversalHash:
@@ -46,11 +29,15 @@ class UniversalHash:
     """
 
     def __init__(self, size: int = -1):
-        """Init the Universal Hash with a default size of 10 (take a random number, no motivation here)"""
+        """
+        Init the Universal Hash with a default size of 10 (take a random number, no motivation here)
+
+        :param size: is equivalent in the Computer science theory to the Universe of values.
+        """
         self.value_a = -1
         self.value_b = -1
         self.size = size
-        self.prime_number = generate_random_prime(size)
+        self.prime_number = Utils.generate_random_prime(size)
         self.random_choice()
 
     def random_choice(self) -> None:
@@ -66,3 +53,11 @@ class UniversalHash:
         return (
             (self.value_a * value_to_hash * self.value_b) % self.prime_number
         ) % self.size
+
+    def hash_a_str(self, value_to_hash: str) -> int:
+        """Calculate the Universal Hash function of the string value"""
+        accumulator = 0
+        binary_str = "".join(format(ord(i), "08b") for i in value_to_hash)
+        for _, elem in enumerate(binary_str):
+            accumulator += int(elem)
+        return self.hash(accumulator)
