@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cpstl"
-version = "0.0.4"
+version = "0.0.5"
 description = "Copy and Paste standard library (CPSTL) is a repository with a collection of data structure and algorithms in many different languages"
 authors = ["Vincenzo Palazzo <vincenzopalazzodev@gmail.com>"]
 keywords = ["copy_past_library", "heap", "max_heap", "min_heap"]
