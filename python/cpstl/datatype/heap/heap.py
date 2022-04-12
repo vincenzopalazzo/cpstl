@@ -8,9 +8,9 @@ from abc import ABC, abstractmethod
 
 
 class Heap(ABC):
-    """Generic implementation of the heap that implement
-    some common function and leave to the subclass redefine
-    some behaivord"""
+    """Generic implementation of the heap that implements
+    some common functions and leave to the subclass redefine
+    some behavior"""
 
     def __init__(self, array: list = []) -> None:
         self.heap = array
@@ -38,10 +38,10 @@ class Heap(ABC):
 
     def insert(self, value) -> bool:
         """Insert element inside the heap, this operation
-        swap the element from the bottom to the top, and can
-        be costly, a solution can be build the element from top to bottom
-        it is possible proof tha the operation cost less, but for now
-        in python we mantains this approach.
+        swaps the element from the bottom to the top, and can
+        be costly, a solution can build the element from top to bottom
+        it is a possible proof that the operation costs less, but for now
+        in python we maintains this approach.
 
         Time Complexity O(log N)
         """
@@ -57,7 +57,7 @@ class Heap(ABC):
     def len(self) -> int:
         return len(self.heap)
 
-    def to_list(self) -> [int]:
+    def to_list(self) -> list:
         return self.heap
 
     def verify(self) -> bool:
@@ -86,8 +86,8 @@ class Heap(ABC):
             self.heapify(target_node)
 
     def __swap_parent(self, node: int) -> None:
-        """Take a node and check if it is possible swap it with the parent
-        this mean that the heap violate the heap propriety"""
+        """Take a node and check if it is possible to swap it with the parent
+        this means that the heap violates the heap propriety"""
         if node is None or node < 0:
             return
         parent_idx = Heap.parent(node)
@@ -96,7 +96,7 @@ class Heap(ABC):
             self.__swap_parent(parent_idx)
 
     def swap(self, idx_one: int, idx_two: int) -> None:
-        """Swap the position of the two element in index {idx_two} and {idx_two}"""
+        """Swap the position of the two elements in index {idx_two} and {idx_two}"""
         self.heap[idx_one], self.heap[idx_two] = self.heap[idx_two], self.heap[idx_one]
         # print(f"Swapping {self.heap[idx_one]} <-> {self.heap[idx_two]}")
 
@@ -111,7 +111,7 @@ class Heap(ABC):
 
     @abstractmethod
     def cmp(self, idx_one: int, idx_two: int) -> bool:
-        """Compare the two element in position {idx_one} and {idx_two}"""
+        """Compare the two elements in position {idx_one} and {idx_two}"""
         pass
 
 
