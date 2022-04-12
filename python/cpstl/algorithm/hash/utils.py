@@ -37,3 +37,8 @@ class Utils:
             if is_prime:
                 return number
         raise Exception(f"Prime number not found with target number {target_number}!")
+
+    @staticmethod
+    def convert_str_to_byte(input_str: str) -> str:
+        """Convert the input string into the sequence of bytes into a string form"""
+        return "".join(format(ord(i), "08b") for i in input_str)
