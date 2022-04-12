@@ -57,7 +57,7 @@ class UniversalHash:
     def hash_a_str(self, value_to_hash: str) -> int:
         """Calculate the Universal Hash function of the string value"""
         accumulator = 0
-        binary_str = "".join(format(ord(i), "08b") for i in value_to_hash)
-        for _, elem in enumerate(binary_str):
+        binary_str = Utils.convert_str_to_byte(value_to_hash)
+        for elem in binary_str:
             accumulator += int(elem)
         return self.hash(accumulator)
