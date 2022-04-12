@@ -1,6 +1,6 @@
 {
     "package_name": "python",
-    "version": "v0.0.5",
+    "version": "v0.0.6",
     "api": {
       "name": "github",
       "repository": "vincenzopalazzo/cpstl",
