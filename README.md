@@ -28,7 +28,7 @@ to include some well tested code in some cool project.
 - [ ] Dart
 - [ ] Go 1.18
 - [ ] Rust
-
+- [X] V lang
 
 ## Contribute
 The repository is open to receive contribution to improve solutions or the quality of the repository, there are only a few rules to respect that are reported below.
