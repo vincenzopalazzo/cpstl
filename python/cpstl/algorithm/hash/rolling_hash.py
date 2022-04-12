@@ -27,6 +27,8 @@ class RollingHash:
     with reference implementation of the C++ implementation.
 
     Reference implementation: https://github.com/vincenzopalazzo/cpstl/blob/master/cpp/algoritmins/karp_rabin_fingerprint/KarpRabinHash.hpp
+
+    author: Vincenzo Palazzo https://github.com/vincenzopalazzo
     """
 
     def __init__(self) -> None:
