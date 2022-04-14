@@ -16,7 +16,7 @@ class Heap(ABC):
         self.heap = array
         self.from_list(array)
 
-    def from_list(self, array: []) -> bool:
+    def from_list(self, array: list) -> bool:
         """Build the heap from the list"""
         self.heap = array
         for idx in range(self.len(), -1, -1):
@@ -26,11 +26,11 @@ class Heap(ABC):
     @staticmethod
     def parent(idx: int) -> int:
         """Calculate the parent index"""
-        return idx - 1 // 2
+        return (idx - 1) // 2
 
     @staticmethod
     def left(idx: int) -> int:
-        return idx * 2 + 1
+        return (idx * 2) + 1
 
     @staticmethod
     def right(idx: int) -> int:
@@ -83,6 +83,7 @@ class Heap(ABC):
 
         if target_node != node:
             self.swap(node, target_node)
+            self.heapify(node)
             self.heapify(target_node)
 
     def __swap_parent(self, node: int) -> None:
@@ -91,9 +92,11 @@ class Heap(ABC):
         if node is None or node < 0:
             return
         parent_idx = Heap.parent(node)
-        if not self.cmp(parent_idx, node):
+        if parent_idx >= 0 and not self.cmp(parent_idx, node):
             self.swap(node, parent_idx)
             self.__swap_parent(parent_idx)
+
+        
 
     def swap(self, idx_one: int, idx_two: int) -> None:
         """Swap the position of the two elements in index {idx_two} and {idx_two}"""
@@ -202,7 +205,7 @@ class HeapTopDown(ABC):
     def len(self) -> int:
         return len(self.heap)
 
-    def to_list(self) -> [int]:
+    def to_list(self) -> list[int]:
         return self.heap
 
     def __sizeof__(self):
