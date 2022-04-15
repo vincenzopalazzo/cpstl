@@ -203,7 +203,7 @@ class HeapTopDown(ABC):
     def len(self) -> int:
         return len(self.heap)
 
-    def to_list(self) -> list[int]:
+    def to_list(self) -> list:
         return self.heap
 
     def __sizeof__(self):
