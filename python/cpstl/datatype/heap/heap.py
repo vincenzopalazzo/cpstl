@@ -89,11 +89,11 @@ class Heap(ABC):
     def __swap_parent(self, node: int) -> None:
         """Take a node and check if it is possible to swap it with the parent
         this means that the heap violates the heap propriety"""
-        if node is None or node < 0:
+        if node is None:
             return
         parent_idx = Heap.parent(node)
         if parent_idx >= 0 and not self.cmp(parent_idx, node):
-            self.swap(node, parent_idx)
+            self.swap(parent_idx, node)
             self.__swap_parent(parent_idx)
 
     def swap(self, idx_one: int, idx_two: int) -> None:
@@ -162,7 +162,7 @@ class HeapTopDown(ABC):
     def sift_up(self, start_idx):
         """Bring the node to the top of the tree"""
         parent_idx = self.parent(start_idx)
-        while parent_idx > 0 and self.cmp(start_idx, parent_idx):
+        while parent_idx >= 0 and self.cmp(start_idx, parent_idx):
             self.swap(start_idx, parent_idx)
             start_idx = parent_idx
             parent_idx = self.parent(start_idx)
