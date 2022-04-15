@@ -12,12 +12,16 @@ class Heap(ABC):
     some common functions and leave to the subclass redefine
     some behavior"""
 
-    def __init__(self, array: list = []) -> None:
+    def __init__(self, array=None) -> None:
+        if array is None:
+            array = []
         self.heap = array
         self.from_list(array)
 
-    def from_list(self, array: []) -> bool:
+    def from_list(self, array: list) -> bool:
         """Build the heap from the list"""
+        if len(array) == 0:
+            return self.verify()
         self.heap = array
         for idx in range(self.len(), -1, -1):
             self.heapify(idx)
@@ -26,11 +30,11 @@ class Heap(ABC):
     @staticmethod
     def parent(idx: int) -> int:
         """Calculate the parent index"""
-        return idx - 1 // 2
+        return (idx - 1) // 2
 
     @staticmethod
     def left(idx: int) -> int:
-        return idx * 2 + 1
+        return (idx * 2) + 1
 
     @staticmethod
     def right(idx: int) -> int:
@@ -83,16 +87,17 @@ class Heap(ABC):
 
         if target_node != node:
             self.swap(node, target_node)
+            # self.heapify(node)
             self.heapify(target_node)
 
     def __swap_parent(self, node: int) -> None:
         """Take a node and check if it is possible to swap it with the parent
         this means that the heap violates the heap propriety"""
-        if node is None or node < 0:
+        if node is None:
             return
         parent_idx = Heap.parent(node)
-        if not self.cmp(parent_idx, node):
-            self.swap(node, parent_idx)
+        if parent_idx >= 0 and self.cmp(node, parent_idx):
+            self.swap(parent_idx, node)
             self.__swap_parent(parent_idx)
 
     def swap(self, idx_one: int, idx_two: int) -> None:
@@ -137,6 +142,8 @@ class HeapTopDown(ABC):
         return (idx * 2) + 2
 
     def from_array(self, array) -> list:
+        if len(array) == 0:
+            return []
         parent_id = self.parent(len(array) - 1)
         for currentIdx in reversed(range(parent_id + 1)):
             self.sift_down(currentIdx, len(array) - 1)
@@ -161,7 +168,7 @@ class HeapTopDown(ABC):
     def sift_up(self, start_idx):
         """Bring the node to the top of the tree"""
         parent_idx = self.parent(start_idx)
-        while parent_idx > 0 and self.cmp(start_idx, parent_idx):
+        while parent_idx >= 0 and self.cmp(start_idx, parent_idx):
             self.swap(start_idx, parent_idx)
             start_idx = parent_idx
             parent_idx = self.parent(start_idx)
@@ -202,7 +209,7 @@ class HeapTopDown(ABC):
     def len(self) -> int:
         return len(self.heap)
 
-    def to_list(self) -> [int]:
+    def to_list(self) -> list:
         return self.heap
 
     def __sizeof__(self):
