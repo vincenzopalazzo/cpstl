@@ -96,8 +96,6 @@ class Heap(ABC):
             self.swap(node, parent_idx)
             self.__swap_parent(parent_idx)
 
-        
-
     def swap(self, idx_one: int, idx_two: int) -> None:
         """Swap the position of the two elements in index {idx_two} and {idx_two}"""
         self.heap[idx_one], self.heap[idx_two] = self.heap[idx_two], self.heap[idx_one]

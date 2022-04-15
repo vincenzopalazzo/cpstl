@@ -12,6 +12,7 @@ def test_build_min_heap():
     assert min_heap.peek() == 1
     assert min_heap.is_min_heap()
 
+
 def test_build_max_heap_one_insert():
     """Build the max heap from an array"""
     max_heap = MinHeap()
