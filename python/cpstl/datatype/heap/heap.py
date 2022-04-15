@@ -12,12 +12,16 @@ class Heap(ABC):
     some common functions and leave to the subclass redefine
     some behavior"""
 
-    def __init__(self, array: list = []) -> None:
+    def __init__(self, array=None) -> None:
+        if array is None:
+            array = []
         self.heap = array
         self.from_list(array)
 
     def from_list(self, array: list) -> bool:
         """Build the heap from the list"""
+        if len(array) == 0:
+            return self.verify()
         self.heap = array
         for idx in range(self.len(), -1, -1):
             self.heapify(idx)
@@ -83,7 +87,7 @@ class Heap(ABC):
 
         if target_node != node:
             self.swap(node, target_node)
-            self.heapify(node)
+            # self.heapify(node)
             self.heapify(target_node)
 
     def __swap_parent(self, node: int) -> None:
@@ -92,7 +96,7 @@ class Heap(ABC):
         if node is None:
             return
         parent_idx = Heap.parent(node)
-        if parent_idx >= 0 and not self.cmp(parent_idx, node):
+        if parent_idx >= 0 and self.cmp(node, parent_idx):
             self.swap(parent_idx, node)
             self.__swap_parent(parent_idx)
 
@@ -138,6 +142,8 @@ class HeapTopDown(ABC):
         return (idx * 2) + 2
 
     def from_array(self, array) -> list:
+        if len(array) == 0:
+            return []
         parent_id = self.parent(len(array) - 1)
         for currentIdx in reversed(range(parent_id + 1)):
             self.sift_down(currentIdx, len(array) - 1)
