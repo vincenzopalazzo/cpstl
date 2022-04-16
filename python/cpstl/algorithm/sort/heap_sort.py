@@ -3,7 +3,10 @@ from cpstl.datatype.heap import MaxHeap, MinHeap
 
 
 class HeapSort(Sort):
-    """Heap sort algorithm pure Python 3 implementation"""
+    """Heap sort algorithm pure Python 3 implementation.
+
+    author: Vincenzo Palazzo https://github.com/vincenzopalazzo
+    """
 
     def sort(self, sequence: list, order=Order.INCREASE) -> list:
         heap = self.build_heap(sequence, order)

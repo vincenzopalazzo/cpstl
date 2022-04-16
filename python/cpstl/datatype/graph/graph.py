@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 USA.
 """
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class Node:
@@ -26,17 +27,54 @@ class Node:
     This class contains a list of children and the value of the node.
     """
 
-    def __init__(self, value) -> None:
+    def __init__(self, value, opts: dict = None) -> None:
         self.value = value
         self.children = []
+        if opts is None:
+            self.opts = opts
 
     def add_node(self, value) -> None:
         node = Node(value)
         self.children.append(node)
 
+    def add_opt(self, key: str, value: Any) -> None:
+        """Add the option with the key to the node.
+
+        :param key: Key of the value
+        :param value: the value that the user wants to assign
+        """
+        self.opts[key] = value
+
+    def get_opt(self, key: str) -> Any:
+        """Check if the node contains the option
+
+        :param key: the key of the option.
+        :return the option is exist None otherwise.
+        """
+        if key in self.opts:
+            return self.opts[key]
+        return None
+
+    def get_option_or_def(self, key: str, def_val: Any = None):
+        """Get an option wit key if existed, otherwise return the default value.
+
+        :param key: The key of the option
+        :param def_val: The default value if not exist, None otherwise
+        """
+        value = self.get_opt(key)
+        if value is None:
+            self.add_opt(key, def_val)
+        return def_val
+
+    def __hash__(self) -> int:
+        return hash(self.value)
+
 
 class Graph(ABC):
-    """Graph interface"""
+    """Graph interface.
+
+    author: Vincenzo Palazzo https://github.com/vincenzopalazzo
+    """
 
     @abstractmethod
     def add_edge(self, u, v, opts: dict = None):

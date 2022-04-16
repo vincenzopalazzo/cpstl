@@ -19,13 +19,17 @@ USA.
 """
 # FIXME: implementing it in the package and use it
 from queue import Queue
+from typing import Optional
+
 from .graph import Node, Graph
 
 
 class GraphList(Graph):
     """
     Class implementation of graph with adjacency list.
-    This class use contains a list of node
+    This class use contains a list of node.
+
+    author: Vincenzo Palazzo https://github.com/vincenzopalazzo
     """
 
     def __init__(self, directed=False) -> None:
@@ -36,7 +40,7 @@ class GraphList(Graph):
         path.append(target.value)
         for node in target.children:
             self.__dfs_helper(node, path)
-
+    
     def __bsf_helper(self, target: Node, path: list) -> None:
         to_visit = Queue()
         to_visit.put(target)
@@ -46,7 +50,7 @@ class GraphList(Graph):
             for child in node.children:
                 to_visit.put(child)
 
-    def __find_node(self, node: Node, value) -> Node:
+    def __find_node(self, node: Node, value) -> Optional[Node]:
         """
         Find the node with the value in the node
         if it exist return the node, otherwise return None
