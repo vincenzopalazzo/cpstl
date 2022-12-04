@@ -12,6 +12,15 @@ def test_build_min_heap():
     assert min_heap.peek() == 1
     assert min_heap.is_min_heap()
 
+def test_build_max_heap_one_insert():
+    """Build the max heap from an array"""
+    max_heap = MinHeap()
+    for _, elem in enumerate([3, 9, 2, 1, 4, 5]):
+        max_heap.insert(elem)
+    assert max_heap.to_list() == [1, 3, 2, 9, 4, 5]
+    assert max_heap.peek() == 1
+    assert max_heap.is_min_heap()
+
 
 def test_build_min_heap_one_optimization():
     """Build the max heap from an array"""
