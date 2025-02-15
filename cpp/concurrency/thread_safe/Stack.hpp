@@ -43,7 +43,7 @@ class Node {
 class EmptyStackException : public std::runtime_error {
  public:
   EmptyStackException(const std::string &cause) throw()
-      : std::runtime_error(cause){};
+      : std::runtime_error(cause) {};
 };
 };  // namespace internal
 
@@ -58,14 +58,13 @@ class Stack {
   void push(T const &data) {
     auto node = new internal::Node<T>(data);
     node->next = head.load();
-    while (!head.compare_exchange_weak(node->next, node))
-      ;
+    while (!head.compare_exchange_weak(node->next, node));
   }
 
   std::shared_ptr<T> pop() {
     auto prev_head = head.load();
-    while (prev_head && !head.compare_exchange_weak(prev_head, prev_head->next))
-      ;
+    while (prev_head &&
+           !head.compare_exchange_weak(prev_head, prev_head->next));
     return prev_head ? prev_head->data : std::shared_ptr<T>();
   }
 
