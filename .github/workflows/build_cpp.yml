@@ -3,6 +3,8 @@ name: cpstl build C++ check
 on:
   pull_request:
   push:
+    branches:
+      - master
     paths-ignore:
       - '**.md'
 
